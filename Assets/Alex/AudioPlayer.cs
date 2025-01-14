@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioPlayer : MonoBehaviour
 {
     [SerializeField]
-    AudioManager manager;
+    AudioManager audioManager;
     AudioSource audioSource;
     void Start()
     {
@@ -17,15 +17,15 @@ public class AudioPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            manager.PlaySound(audioSource, ESoundType.NumberCardSound);
+            audioManager.PlaySound(audioSource, ESoundType.NumberCardSound);
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            manager.PlaySoundtrack(audioSource, ESoundTrack.DefaultSoundtrack);
+            audioManager.PlaySoundtrack(audioSource, ESoundTrack.DefaultSoundtrack);
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            manager.StopSoundtrack(audioSource);
+            audioManager.StopSoundtrack(audioSource);
         }
     }
 }
