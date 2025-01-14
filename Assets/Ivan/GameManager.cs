@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+
     }
     /// <summary>
     /// Restarts the game
