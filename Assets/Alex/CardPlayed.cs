@@ -5,6 +5,7 @@ namespace events
     {
         public CardPlayed(CardWrapper card) : base(card)
         {
+
         }
     }
 }

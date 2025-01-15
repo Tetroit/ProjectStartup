@@ -15,8 +15,5 @@ namespace config
 
         [SerializeField]
         public float releasePosition = 2000f;
-
-        [SerializeField]
-        public float zoom = 0.3f;
     }
 }
