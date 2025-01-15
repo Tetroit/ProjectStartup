@@ -45,7 +45,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         UpdateRotation();
         UpdatePosition();
-        UpdateScale();
         UpdateUILayer();
     }
 
@@ -78,12 +77,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             var delta = ((Vector2)Input.mousePosition + dragStartPos);
             rectTransform.position = new Vector2(delta.x, delta.y);
         }
-    }
-
-    private void UpdateScale()
-    {
-/*        var targetZoom = (isDragged || isHovered) && zoomConfig.zoomOnHover ? zoomConfig.multiplier : 1;
-        var xZoom = Mathf.Abs(rectTransform.localScale.x - targetZoom);*/
     }
 
     private void UpdateRotation()
@@ -130,7 +123,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             canvas.sortingOrder = zoomConfig.zoomedSortOrder;
         }
 
-        eventsConfig?.OnCardHover?.Invoke(new CardClick(this));
+        eventsConfig?.OnCardClkick?.Invoke(new CardClick(this));
         isHovered = true;
     }
 
@@ -143,7 +136,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         canvas.sortingOrder = uiLayer;
         isHovered = false;
-        eventsConfig?.OnCardUnhover?.Invoke(new CardRelease(this));
+        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -153,7 +146,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         dragStartPos = new Vector2(transform.position.x - eventData.position.x,
             transform.position.y - eventData.position.y);
         container.OnCardDragStart(this);
-        eventsConfig?.OnCardUnhover?.Invoke(new CardRelease(this));
+        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
     }
 
     public void OnPointerUp(PointerEventData eventData)

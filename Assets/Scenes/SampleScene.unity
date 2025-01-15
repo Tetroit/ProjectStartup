@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &15588338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,9 +680,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc11a96f9e865f249bbdbce66be96754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preventCardInteraction: 0
   alignment: 1
-  allowCardRepositioning: 0
+  allowCardRepositioning: 1
   maxCardRotation: 20
   maxHeightDisplacement: 76
   zoomConfig:
@@ -702,7 +701,7 @@ MonoBehaviour:
     OnCardPlayed:
       m_PersistentCalls:
         m_Calls: []
-    OnCardHover:
+    OnCardClkick:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 15588338}
@@ -717,7 +716,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    OnCardUnhover:
+    OnCardRelease:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 15588338}

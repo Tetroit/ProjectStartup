@@ -23,14 +23,14 @@ namespace demo
 
         private Dictionary<CardWrapper, Transform> previews = new();
 
-        public void OnCardClick(CardClick cardHover)
+        public void OnCardClick(CardClick cardClick)
         {
-            OnCardPreviewStarted(cardHover.card);
+            OnCardPreviewStarted(cardClick.card);
         }
 
-        public void OnCardRelease(CardRelease cardUnhover)
+        public void OnCardRelease(CardRelease cardRelease)
         {
-            OnCardPreviewEnded(cardUnhover.card);
+            OnCardPreviewEnded(cardRelease.card);
         }
 
         public void OnCardPreviewStarted(CardWrapper card)

@@ -9,8 +9,7 @@ using UnityEngine.UI;
 public class CardContainer : MonoBehaviour
 {
     [Header("Constraints")]
-    [SerializeField]
-    private bool preventCardInteraction;
+    private bool preventCardInteraction = false;
 
     [Header("Alignment")]
     [SerializeField]
