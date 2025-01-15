@@ -82,9 +82,8 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void UpdateScale()
     {
-        var targetZoom = (isDragged || isHovered) && zoomConfig.zoomOnHover ? zoomConfig.multiplier : 2;
-        var xZoom = Mathf.Abs(rectTransform.localScale.x - targetZoom);
-        //var newZoom = Mathf.Lerp(rectTransform.localScale.x, targetZoom,animationSpeedConfig.zoom / xZoom * Time.deltaTime);rectTransform.localScale = new Vector3(newZoom, newZoom, 1);
+/*        var targetZoom = (isDragged || isHovered) && zoomConfig.zoomOnHover ? zoomConfig.multiplier : 1;
+        var xZoom = Mathf.Abs(rectTransform.localScale.x - targetZoom);*/
     }
 
     private void UpdateRotation()

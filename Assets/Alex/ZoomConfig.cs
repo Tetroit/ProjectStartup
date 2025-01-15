@@ -6,14 +6,6 @@ namespace config
     [Serializable]
     public class ZoomConfig
     {
-
-        [SerializeField]
-        public bool zoomOnHover;
-
-        [Range(1f, 5f)]
-        [SerializeField]
-        public float multiplier = 1;
-
         [Tooltip("This is the Y position of the card when it is zoomed in. If this is -1, the card will not be moved on the Y axis.")]
         [SerializeField]
         public float overrideYPosition = -1;

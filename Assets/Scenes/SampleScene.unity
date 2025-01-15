@@ -688,7 +688,7 @@ MonoBehaviour:
   zoomConfig:
     zoomOnHover: 0
     multiplier: 1
-    overrideYPosition: 50
+    overrideYPosition: 140
     defaultSortOrder: 0
     bringToFrontOnHover: 0
     zoomedSortOrder: 0
