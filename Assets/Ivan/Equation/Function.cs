@@ -39,4 +39,20 @@ namespace Equation
             return (int)Mathf.Sqrt(a);
         }
     }
+
+    public class Sqr : Function
+    {
+        public override int Calculate(int a)
+        {
+            return a * a;
+        }
+    }
+
+    public class Negate : Function
+    {
+        public override int Calculate(int a)
+        {
+            return -a;
+        }
+    }
 }

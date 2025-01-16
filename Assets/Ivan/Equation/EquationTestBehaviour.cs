@@ -10,21 +10,13 @@ public class EquationTestBehaviour : MonoBehaviour
     public Formula equation;
     void Start()
     {
-        //sqrt(sqrt((81+19)*100)) = 10
-        equation.AddElement(new Sqrt());
-        //open bracket omited
-        equation.AddElement(new Sqrt());
-        equation.AddElement(new BracketOpen());
-        equation.AddElement(new BracketOpen());
-        equation.AddElement(new Number(81));
-        equation.AddElement(new Plus());
-        equation.AddElement(new Number(19));
-        equation.AddElement(new BracketClose());
-        equation.AddElement(new Multiply());
-        equation.AddElement(new Number(100));
-        equation.AddElement(new BracketClose());
-        //close bracket omited
+        //7*(6+2*5) 16*7 = 112
 
+        //open bracket omited
+
+        //close bracket omited
+        equation.AddElement(new Negate());
+        equation.AddElement(new Number(7));
         Debug.Log("Result is " + equation.Calculate());
     }
 }
