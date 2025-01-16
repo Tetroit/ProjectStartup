@@ -1,11 +1,16 @@
 using config;
 using events;
+using System;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler,
     IPointerUpHandler
 {
+    public event Action<CardWrapper> OnCardStartDragEvent;
+    public event Action<CardWrapper> OnCardDragEnded;
+
     private const float EPS = 0.01f;
 
     public float targetRotation;
@@ -16,15 +21,16 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private RectTransform rectTransform;
     private Canvas canvas;
 
-    public ZoomConfig zoomConfig;
-    public AnimationSpeedConfig animationSpeedConfig;
-    public CardContainer container;
+    private ZoomConfig zoomConfig;
+    private AnimationSpeedConfig animationSpeedConfig;
 
     private bool isHovered;
     private bool isDragged;
     private Vector2 dragStartPos;
-    public EventsConfig eventsConfig;
-    public bool preventCardInteraction;
+    private EventsConfig eventsConfig;
+    private bool preventCardInteraction;
+
+    private bool isCardPlayed;
 
     public float width
     {
@@ -43,9 +49,32 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Update()
     {
-        UpdateRotation();
-        UpdatePosition();
-        UpdateUILayer();
+        if (!isCardPlayed)
+        {
+            UpdateRotation();
+            UpdatePosition();
+            UpdateUILayer();
+        }
+    }
+
+    public void Initialize(ZoomConfig zoomConfig, AnimationSpeedConfig animationSpeedConfig, EventsConfig eventsConfig, bool preventCardInteraction)
+    {
+        this.zoomConfig = zoomConfig;
+        this.animationSpeedConfig = animationSpeedConfig;
+        this.eventsConfig = eventsConfig;
+        this.preventCardInteraction = preventCardInteraction;
+        eventsConfig?.OnCardPlayed.AddListener(OnCardPlayed);
+    }
+
+    private void OnCardPlayed(CardPlayed card)
+    {
+        if(card.card != this)
+        {
+            return;
+        }
+
+        eventsConfig?.OnCardPlayed.RemoveListener(OnCardPlayed);
+        isCardPlayed = true;
     }
 
     private void UpdateUILayer()
@@ -145,7 +174,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         isHovered = true;
         dragStartPos = new Vector2(transform.position.x - eventData.position.x,
             transform.position.y - eventData.position.y);
-        container.OnCardDragStart(this);
+        OnCardStartDragEvent?.Invoke(this);
         eventsConfig?.OnCardClkick?.Invoke(new CardClick(this));
     }
 
@@ -153,7 +182,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         isDragged = false;
         isHovered = false;
-        container.OnCardDragEnd();
+        OnCardDragEnded?.Invoke(this);
         eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
     }
 }

@@ -72,7 +72,7 @@ public class ChipManager : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle
             (inventoryGrid.GetComponent<RectTransform>(), Input.mousePosition, null, out cursorPos);
 
-        Debug.Log(GetIDToMove(cursorPos));
+        //Debug.Log(GetIDToMove(cursorPos));
         Gizmos.DrawSphere(cursorPos, 1);
         Vector3 pos = inventoryGrid.CellToLocal(inventoryGrid.LocalToCell(cursorPos));
         Gizmos.DrawWireCube(inventoryGrid.transform.TransformPoint(pos), Vector3.Scale(inventoryGrid.transform.lossyScale, inventoryGrid.cellSize));

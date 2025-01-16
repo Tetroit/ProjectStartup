@@ -101,6 +101,9 @@ public class CardContainer : MonoBehaviour
         cards.Clear();
         foreach(Transform card in transform)
         {
+            // get an array of card prefabs
+            // spawn them dynamically here
+
             var wrapper = card.GetComponent<CardWrapper>();
             if(wrapper == null)
             {
@@ -112,12 +115,45 @@ public class CardContainer : MonoBehaviour
             AddOtherComponentsIfNeeded(wrapper);
 
             // Pass child card any extra config it should be aware of
-            wrapper.zoomConfig = zoomConfig;
-            wrapper.animationSpeedConfig = animationSpeedConfig;
-            wrapper.eventsConfig = eventsConfig;
-            wrapper.preventCardInteraction = preventCardInteraction;
-            wrapper.container = this;
+            wrapper.Initialize(zoomConfig, animationSpeedConfig, eventsConfig, preventCardInteraction);
+            wrapper.OnCardStartDragEvent += OnCardDragStart;
+            wrapper.OnCardDragEnded += OnCardDragEnd;
         }
+    }
+
+    private void OnCardDragStart(CardWrapper card)
+    {
+        currentDraggedCard = card;
+    }
+
+    public void OnCardDragEnd(CardWrapper card)
+    {
+        if (currentDraggedCard != card)
+        {
+            return;
+        }
+
+        for(int i = 0; i < cardPlayConfig.playableSlots.Count; i++)
+        {
+            // if slot[i] is != null - return the cards to the hand
+            // else - assign the position of the card to slot
+
+            RectTransform slot = cardPlayConfig.playableSlots[i];
+            if(currentDraggedCard != null && IsCursorInPlayArea(slot))
+            {
+                // assign what slot you have targeted
+
+
+                // remove card from the container (don't destroy)
+                // unparent from card container
+                // parent to the slot
+                eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard));
+                RemoveCard(currentDraggedCard);
+                currentDraggedCard.transform.SetParent(slot, false);
+            }
+        }
+
+        currentDraggedCard = null;
     }
 
     private void AddOtherComponentsIfNeeded(CardWrapper wrapper)
@@ -242,38 +278,21 @@ public class CardContainer : MonoBehaviour
         }
     }
 
-    public void OnCardDragStart(CardWrapper card)
+    public void RemoveCard(CardWrapper card)
     {
-        currentDraggedCard = card;
-    }
-
-    public void OnCardDragEnd()
-    {
-        // If card is in play area, play it!
-        if(IsCursorInPlayArea())
-        {
-            eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard));
-            if(cardPlayConfig.destroyOnPlay)
-            {
-                DestroyCard(currentDraggedCard);
-            }
-        }
-        currentDraggedCard = null;
-    }
-
-    public void DestroyCard(CardWrapper card)
-    {
+        card.OnCardStartDragEvent -= OnCardDragStart;
+        card.OnCardDragEnded -= OnCardDragEnd;
         cards.Remove(card);
-        eventsConfig.OnCardDestroy?.Invoke(new CardDestroy(card));
-        Destroy(card.gameObject);
+        //eventsConfig.OnCardDestroy?.Invoke(new CardDestroy(card));
+        //Destroy(card.gameObject);
     }
 
-    private bool IsCursorInPlayArea()
+    private bool IsCursorInPlayArea(RectTransform slot)
     {
-        if(cardPlayConfig.slot_1 == null) return false;
+        if(slot == null) return false;
 
         var cursorPosition = Input.mousePosition;
-        var playArea = cardPlayConfig.slot_1;
+        var playArea = slot;
         var playAreaCorners = new Vector3[4];
         playArea.GetWorldCorners(playAreaCorners);
         return cursorPosition.x > playAreaCorners[0].x &&
@@ -281,16 +300,6 @@ public class CardContainer : MonoBehaviour
                cursorPosition.y > playAreaCorners[0].y &&
                cursorPosition.y < playAreaCorners[2].y;
 
-    }
-
-    private void CheckPlayArea()
-    {
-        for (int i = 0; i < cardPlayConfig.playableSlots.Count; i++)
-        {
-            // if slot[i] is != null - return the cards to the hand
-            // else - assign the position of the card to slot
-
-        }
     }
 
     private bool IsCursorInPreviewArea()
