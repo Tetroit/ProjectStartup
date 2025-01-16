@@ -3,6 +3,7 @@ using System.Linq;
 using config;
 using DefaultNamespace;
 using events;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -151,6 +152,11 @@ public class CardContainer : MonoBehaviour
         SetCardsRotation();
         SetCardsUILayers();
         UpdateCardOrder();
+
+        if(!IsCursorInPreviewArea() && currentDraggedCard != null)
+        {
+            eventsConfig?.OnCardRelease?.Invoke(new CardRelease(currentDraggedCard));
+        }
     }
 
     private void SetCardsUILayers()
@@ -264,10 +270,35 @@ public class CardContainer : MonoBehaviour
 
     private bool IsCursorInPlayArea()
     {
-        if(cardPlayConfig.playArea == null) return false;
+        if(cardPlayConfig.slot_1 == null) return false;
 
         var cursorPosition = Input.mousePosition;
-        var playArea = cardPlayConfig.playArea;
+        var playArea = cardPlayConfig.slot_1;
+        var playAreaCorners = new Vector3[4];
+        playArea.GetWorldCorners(playAreaCorners);
+        return cursorPosition.x > playAreaCorners[0].x &&
+               cursorPosition.x < playAreaCorners[2].x &&
+               cursorPosition.y > playAreaCorners[0].y &&
+               cursorPosition.y < playAreaCorners[2].y;
+
+    }
+
+    private void CheckPlayArea()
+    {
+        for (int i = 0; i < cardPlayConfig.playableSlots.Count; i++)
+        {
+            // if slot[i] is != null - return the cards to the hand
+            // else - assign the position of the card to slot
+
+        }
+    }
+
+    private bool IsCursorInPreviewArea()
+    {
+        if (cardPlayConfig.previewArea == null) return false;
+
+        var cursorPosition = Input.mousePosition;
+        var playArea = cardPlayConfig.previewArea;
         var playAreaCorners = new Vector3[4];
         playArea.GetWorldCorners(playAreaCorners);
         return cursorPosition.x > playAreaCorners[0].x &&
