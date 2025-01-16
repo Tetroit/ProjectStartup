@@ -23,6 +23,8 @@ namespace demo
 
         private Dictionary<CardWrapper, Transform> previews = new();
 
+        public bool isClicked = false;
+
         public void OnCardClick(CardClick cardClick)
         {
             OnCardPreviewStarted(cardClick.card);
@@ -35,7 +37,8 @@ namespace demo
 
         public void OnCardPreviewStarted(CardWrapper card)
         {
-            if(!previews.ContainsKey(card))
+
+            if (!previews.ContainsKey(card))
             {
                 CreateCloneForCard(card);
             }
@@ -60,13 +63,13 @@ namespace demo
         private static void StripCloneComponents(GameObject clone)
         {
             var cloneWrapper = clone.GetComponent<CardWrapper>();
-            if(cloneWrapper != null)
+            if (cloneWrapper != null)
             {
                 Destroy(cloneWrapper);
             }
 
             var cloneRaycaster = clone.GetComponent<GraphicRaycaster>();
-            if(cloneRaycaster != null)
+            if (cloneRaycaster != null)
             {
                 Destroy(cloneRaycaster);
             }

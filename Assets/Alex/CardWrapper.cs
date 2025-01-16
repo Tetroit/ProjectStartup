@@ -113,6 +113,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //Hover
         if(isDragged)
         {
             // Avoid hover events while dragging
@@ -122,36 +123,37 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             canvas.sortingOrder = zoomConfig.zoomedSortOrder;
         }
-
-        eventsConfig?.OnCardClkick?.Invoke(new CardClick(this));
-        isHovered = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        //Unhover
         if(isDragged)
         {
             // Avoid hover events while dragging
             return;
         }
+
         canvas.sortingOrder = uiLayer;
-        isHovered = false;
-        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         if(preventCardInteraction) return;
         isDragged = true;
+        isHovered = true;
         dragStartPos = new Vector2(transform.position.x - eventData.position.x,
             transform.position.y - eventData.position.y);
         container.OnCardDragStart(this);
-        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
+        eventsConfig?.OnCardClkick?.Invoke(new CardClick(this));
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         isDragged = false;
+        isHovered = false;
         container.OnCardDragEnd();
+        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
     }
 }
