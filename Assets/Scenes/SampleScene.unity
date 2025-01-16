@@ -183,6 +183,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chip (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6298218
+      objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
       propertyPath: m_Pivot.x
@@ -536,6 +551,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chip (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8861102
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9245283
       objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
@@ -1649,6 +1679,7 @@ MonoBehaviour:
   inventoryCellSize: {x: 120, y: 120}
   padding: {x: 10, y: 10}
   equationArea: {fileID: 0}
+  dragging: 0
 --- !u!1001 &638294280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1661,6 +1692,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chip (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.10509261
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.9056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
@@ -2959,6 +3005,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chip (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.09433961
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.08155814
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.07698468
+      objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3082,6 +3143,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chip
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
@@ -3349,6 +3425,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chip (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.9575104
+      objectReference: {fileID: 0}
+    - target: {fileID: 4892292520492802046, guid: b4eff3cc7edfe9840b24ed3afe44c458,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
         type: 3}
