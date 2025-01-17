@@ -21,5 +21,11 @@ namespace CustomEvents
             OnEvent?.Invoke(pEvent);
         }
     }
+
+    public class ChipPickedEvent : Event
+    {
+        public Chip chip;
+        public ChipPickedEvent(Chip chip) { this.chip = chip; }
+    }
 }
    
