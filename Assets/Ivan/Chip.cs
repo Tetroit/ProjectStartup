@@ -10,9 +10,11 @@ public class Chip : MonoBehaviour
 {
     bool hovered = false;
 
+    public AutoLayout layout;
     ChipManager chipManager;
     Collider hitBox;
     public EquationElement element { get; protected set; }
+
     private void OnEnable()
     {
         chipManager = ChipManager.instance;
@@ -34,8 +36,11 @@ public class Chip : MonoBehaviour
 
     void OnClick()
     {
-        chipManager.inventoryLayout.RemoveItem(gameObject);
-        chipManager.selected = gameObject;
+        if (chipManager.selected == null)
+        {
+            chipManager.Select(this);
+            Debug.Log("asd");
+        }
 
     }
 
@@ -47,4 +52,5 @@ public class Chip : MonoBehaviour
             OnClick();
         }
     }
+
 }

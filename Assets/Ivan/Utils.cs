@@ -50,7 +50,7 @@ public static class Utils
         if (cam == null) cam = Camera.main;
         Ray mouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        Vector3 normal = Vector3.Cross(obj.up, obj.right);
+        Vector3 normal = Vector3.Normalize(Vector3.Cross(obj.up, obj.right));
         float fac =
         Vector3.Dot(obj.position - mouse.origin, normal) /
         Vector3.Dot(mouse.direction, normal);

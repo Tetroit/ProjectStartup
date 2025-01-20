@@ -9,7 +9,7 @@ using static UnityEditor.Progress;
 public class AutoLayout : MonoBehaviour
 {
     [SerializeField]
-    bool shiftingMode = false;
+    public bool shiftingMode = false;
     [SerializeField]
     public int rows = 6;
     [SerializeField]
@@ -24,7 +24,7 @@ public class AutoLayout : MonoBehaviour
     [SerializeField]
     public Vector2 padding = new Vector2(10, 10);
 
-    int currentShiftID = -1;
+    public int currentShiftID { get; private set; } = -1;
     Grid grid;
     class LayoutInfo
     {
@@ -52,15 +52,17 @@ public class AutoLayout : MonoBehaviour
     {
         if (shiftingMode)
         {
-            Vector2 cursorPos = GetMousePos();
-
-            int readShiftID = GetIDToMove(cursorPos);
-
-            if (readShiftID != currentShiftID)
-                ShiftItems(readShiftID);
+            UpdateShift();
         }
+    }
+    void UpdateShift()
+    {
+        Vector2 cursorPos = GetMousePos();
 
+        int readShiftID = GetIDToMove(cursorPos);
 
+        if (readShiftID != currentShiftID)
+            ShiftItems(readShiftID);
     }
     private void OnValidate()
     {
@@ -96,22 +98,27 @@ public class AutoLayout : MonoBehaviour
         pos.y += 0.5f * grid.cellSize.y;
         Vector3Int gridPos = grid.LocalToCell(pos);
         int ID = GetGridID(gridPos);
+        if (ID > items.Count)
+            return -1;
         return ID;
     }
 
-    public void AddObject(GameObject obj)
+    public void AddObject(GameObject obj, bool disableShifting = false)
     {
         int id = transform.childCount;
-        AddObject(obj, id);
+        AddObject(obj, id, disableShifting);
     }
-    public void AddObject(GameObject obj, int id)
+    public void AddObject(GameObject obj, int id, bool disableShifting = false)
     {
         obj.transform.parent = transform;
         obj.transform.localPosition = grid.CellToLocal(GetGridPosition(id));
         if (!Has(obj))
         {
-            items.Add(new LayoutInfo(obj));
+            items.Insert(id, new LayoutInfo(obj));
         }
+        if (disableShifting) shiftingMode = false;
+        for (int i=0; i<items.Count; i++)
+            items[i].isShifted = false;
     }
     public bool Has(GameObject obj)
     {
@@ -147,26 +154,37 @@ public class AutoLayout : MonoBehaviour
         }
 
     }
-    public void RemoveItem(int id)
+    public void RemoveItem(int id, bool enableShifting = false)
     {
+        if (enableShifting)
+        {
+            shiftingMode = true;
+        }
         for (int i = 0; i < items.Count; i++)
         {
             LayoutInfo info = items[i];
             if (i > id)
             {
-                Vector3 targetPos = GetLocalCellPosition(i-1);
-                StartCoroutine(ShiftAnimation(info.obj, info.obj.transform.localPosition, targetPos, 0.2f));
+                if (enableShifting)
+                {
+                    info.isShifted = true;
+                }
+                else
+                {
+                    Vector3 targetPos = GetLocalCellPosition(i - 1);
+                    StartCoroutine(ShiftAnimation(info.obj, info.obj.transform.localPosition, targetPos, 0.2f));
+                }
             }
         }
         items.RemoveAt(id);
     }
-    public void RemoveItem(GameObject go)
+    public void RemoveItem(GameObject go, bool enableShifting = false)
     {
         for (int i=0; i< items.Count; i++)
         { 
             if (items[i].obj == go) 
             {
-                RemoveItem(i);
+                RemoveItem(i, enableShifting);
                 return; 
             } 
         }
