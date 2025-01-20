@@ -5,6 +5,7 @@ using DefaultNamespace;
 using events;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CardContainer : MonoBehaviour
@@ -18,6 +19,9 @@ public class CardContainer : MonoBehaviour
 
     [SerializeField]
     private bool allowCardRepositioning = true;
+
+    [SerializeField]
+    private float cardWidth = 4f;
 
     [Header("Rotation")]
     [SerializeField]
@@ -39,6 +43,7 @@ public class CardContainer : MonoBehaviour
     [Header("Events")]
     [SerializeField]
     private EventsConfig eventsConfig;
+
 
     private List<CardWrapper> cards = new();
 
@@ -97,7 +102,7 @@ public class CardContainer : MonoBehaviour
     void SetUpCards()
     {
         cards.Clear();
-        foreach(Transform card in transform)
+        foreach(Transform card in base.transform)
         {
             // get an array of card prefabs
             // spawn them dynamically here
@@ -109,8 +114,6 @@ public class CardContainer : MonoBehaviour
             }
 
             cards.Add(wrapper);
-
-            AddOtherComponentsIfNeeded(wrapper);
 
             // Pass child card any extra config it should be aware of
             wrapper.Initialize(zoomConfig, animationSpeedConfig, eventsConfig, preventCardInteraction);
@@ -126,7 +129,7 @@ public class CardContainer : MonoBehaviour
 
     public void OnCardDragEnd(CardWrapper card)
     {
-        if (currentDraggedCard != card)
+        if(currentDraggedCard != card)
         {
             return;
         }
@@ -154,25 +157,9 @@ public class CardContainer : MonoBehaviour
         currentDraggedCard = null;
     }
 
-    private void AddOtherComponentsIfNeeded(CardWrapper wrapper)
-    {
-/*        var canvas = wrapper.GetComponent<Canvas>();
-        if(canvas == null)
-        {
-            canvas = wrapper.gameObject.AddComponent<Canvas>();
-        }
-
-        canvas.overrideSorting = true;
-
-        if(wrapper.GetComponent<GraphicRaycaster>() == null)
-        {
-            wrapper.gameObject.AddComponent<GraphicRaycaster>();
-        }*/
-    }
-
     private void UpdateCards()
     {
-        if(transform.childCount != cards.Count)
+        if(base.transform.childCount != cards.Count)
         {
             InitCards();
         }
@@ -186,19 +173,29 @@ public class CardContainer : MonoBehaviour
         SetCardsRotation();
         SetCardsUILayers();
         UpdateCardOrder();
-/*
+
         if(!IsCursorInPreviewArea() && currentDraggedCard != null)
         {
             eventsConfig?.OnCardRelease?.Invoke(new CardRelease(currentDraggedCard));
-        }*/
+        }
     }
 
     private void SetCardsUILayers()
     {
-/*        for(var i = 0; i < cards.Count; i++)
+        for(var i = 0; i < cards.Count; i++)
         {
             cards[i].uiLayer = zoomConfig.defaultSortOrder + i;
-        }*/
+        }
+
+        cards.Sort((a, b) =>
+        {
+            return a.uiLayer.CompareTo(b.uiLayer);
+        });
+
+        for(var i = 0; i < cards.Count; i++)
+        {
+            cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 - i;
+        }
     }
 
     private void UpdateCardOrder()
@@ -224,39 +221,39 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsPosition()
     {
-/*        // Compute the total width of all the cards in global space
-        var cardsTotalWidth = cards.Sum(card => card.width * card.transform.lossyScale.x);
-        DistributeChildrenToFitContainer(cardsTotalWidth);*/
+        // Compute the total width of all the cards in global space
+        var cardsTotalWidth = cards.Sum(card => cardWidth * card.transform.lossyScale.x);
+        DistributeChildrenToFitContainer(cardsTotalWidth);
     }
 
-    private void DistributeChildrenToFitContainer(float childrenTotalWidth)
+    private void DistributeChildrenToFitContainer(float totalCardWidth)
     {
-/*        // Get the width of the container
-        var width = transform.position.x * transform.lossyScale.x;
+        // Get the width of the container
+        var scaledWidth = transform.position.x * transform.lossyScale.x;
         // Get the distance between each child
-        var distanceBetweenChildren = (width - childrenTotalWidth) / (cards.Count - 1);
+        var distanceBetweenChildren = (scaledWidth - totalCardWidth) / (cards.Count - 1);
         // Set all children's positions to be evenly spaced out
-        var currentX = transform.position.x - width / 2;
+        var currentX = transform.position.x - scaledWidth / 2f;
 
         foreach(CardWrapper child in cards)
         {
-            var adjustedChildWidth = child.width * child.transform.lossyScale.x;
-            child.targetPosition = new Vector2(currentX + adjustedChildWidth / 2, transform.position.y);
+            var adjustedChildWidth = cardWidth * child.transform.lossyScale.x;
+            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y, transform.position.z);
             currentX += adjustedChildWidth + distanceBetweenChildren;
-        }*/
+        }
 
     }
 
     private void UpdateContainerPosition()
     {
-        switch (alignment)
+        switch(alignment)
         {
             case CardAlignment.Left:
-                transform.position = new Vector3(-4, transform.position.y, transform.position.z);
+                transform.position = new Vector3(-350, transform.position.y, transform.position.z);
                 break;
 
             case CardAlignment.Right:
-                transform.position = new Vector3(4, transform.position.y, transform.position.z);
+                transform.position = new Vector3(350, transform.position.y, transform.position.z);
                 break;
 
             case CardAlignment.Center:
@@ -267,10 +264,10 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsAnchor()
     {
-/*        foreach(CardWrapper child in cards)
-        {
-            child.SetAnchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f));
-        }*/
+        //foreach(CardWrapper child in cards)
+        //{
+        //    child.SetAnchor(new Vector3(0, 0.5f, 0f), new Vector3(0, 0.5f, 0f));
+        //}
     }
 
     public void RemoveCard(CardWrapper card)
@@ -299,7 +296,7 @@ public class CardContainer : MonoBehaviour
 
     private bool IsCursorInPreviewArea()
     {
-        if (cardPlayConfig.previewArea == null) return false;
+        if(cardPlayConfig.previewArea == null) return false;
 
         var cursorPosition = Input.mousePosition;
         var playArea = cardPlayConfig.previewArea;

@@ -12,12 +12,11 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public event Action<CardWrapper> OnCardDragEnded;
 
     private const float EPS = 0.01f;
+    public Material Material { get; private set; }
 
     public float targetRotation;
     public Vector3 targetPosition;
     public float targetVerticalDisplacement;
-
-    private int cardXDeg = 45;
     public int uiLayer;
 
     private ZoomConfig zoomConfig;
@@ -26,30 +25,27 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private bool isHovered;
     private bool isDragged;
     private Vector3 dragStartPos;
-    private Vector3 initialPosition;
     private EventsConfig eventsConfig;
     private bool preventCardInteraction;
 
     private bool isCardPlayed;
 
-/*    public float width
-    {
-        get => rectTransform.rect.width * rectTransform.localScale.x;
-    }*/
-
     private void Awake()
     {
-
+        var renderer = GetComponent<Renderer>();
+        var mat = renderer.material;
+        Material = new Material(mat);
+        renderer.material = Material;
     }
 
     private void Start()
     {
-        initialPosition = transform.position;
+
     }
 
     private void Update()
     {
-        if (!isCardPlayed)
+        if(!isCardPlayed)
         {
             UpdateRotation();
             UpdatePosition();
@@ -79,27 +75,36 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void UpdateUILayer()
     {
-/*        if(!isHovered && !isDragged)
+        if(!isHovered && !isDragged)
         {
-            canvas.sortingOrder = uiLayer;
-        }*/
+            //canvas.sortingOrder = uiLayer;
+        }
     }
 
     private void UpdatePosition()
     {
         if(!isDragged)
         {
-            var target = new Vector3(initialPosition.x, initialPosition.y + targetVerticalDisplacement, initialPosition.z + targetVerticalDisplacement);
+            Vector3 upDirection = transform.rotation * Vector3.up;
+            Vector3 target = targetPosition + upDirection * targetVerticalDisplacement;
+
+            if(isHovered && zoomConfig.overrideYPosition != -1)
+            {
+                //target = new Vector3(target.x, zoomConfig.overrideYPosition);
+            }
+
             var distance = Vector3.Distance(transform.position, target);
             var repositionSpeed = transform.position.y > target.y || transform.position.y < 0
                 ? animationSpeedConfig.releasePosition
                 : animationSpeedConfig.position;
-            transform.position = Vector3.Lerp(transform.position, target,
+
+            var lerped = Vector3.Lerp(transform.position, target,
                 repositionSpeed / distance * Time.deltaTime);
+            transform.position = lerped;
         } else
         {
             var delta = ((Vector3)Input.mousePosition + dragStartPos);
-            transform.position = new Vector3(delta.x, delta.y);
+            transform.position = new Vector3(delta.x, delta.y, transform.position.z);
         }
     }
 
@@ -114,7 +119,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             : targetRotation;
         tempTargetRotation = tempTargetRotation < 0 ? tempTargetRotation + 360 : tempTargetRotation;
         var deltaAngle = Mathf.Abs(crtAngle - tempTargetRotation);
-        if (!(deltaAngle > EPS)) return;
+        if(!(deltaAngle > EPS)) return;
 
         // Adjust the current angle and target angle so that the rotation is done in the shortest direction
         var adjustedCurrent = deltaAngle > 180 && crtAngle < tempTargetRotation ? crtAngle + 360 : crtAngle;
@@ -122,21 +127,22 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             ? tempTargetRotation + 360
             : tempTargetRotation;
         var newDelta = Mathf.Abs(adjustedCurrent - adjustedTarget);
+
         var nextRotation = Mathf.Lerp(adjustedCurrent, adjustedTarget,
             animationSpeedConfig.rotation / newDelta * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(cardXDeg, 0, nextRotation);
+        transform.rotation = Quaternion.Euler(45, 0, nextRotation);
     }
 
 
-    public void SetAnchor(Vector2 min, Vector2 max)
+    public void SetAnchor(Vector3 min, Vector3 max)
     {
-/*        rectTransform.anchorMin = min;
-        rectTransform.anchorMax = max;*/
+        //transform.anchorMin = min;
+        //transform.anchorMax = max;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-/*        //Hover
+        //Hover
         if(isDragged)
         {
             // Avoid hover events while dragging
@@ -144,20 +150,20 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         if(zoomConfig.bringToFrontOnHover)
         {
-            canvas.sortingOrder = zoomConfig.zoomedSortOrder;
-        }*/
+            //canvas.sortingOrder = zoomConfig.zoomedSortOrder;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-/*        //Unhover
+        //Unhover
         if(isDragged)
         {
             // Avoid hover events while dragging
             return;
         }
 
-        canvas.sortingOrder = uiLayer;*/
+        //canvas.sortingOrder = uiLayer;
 
     }
 
@@ -166,8 +172,8 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if(preventCardInteraction) return;
         isDragged = true;
         isHovered = true;
-        dragStartPos = new Vector2(transform.position.x - eventData.position.x,
-            transform.position.y - eventData.position.y);
+        dragStartPos = new Vector3(base.transform.position.x - eventData.position.x,
+            base.transform.position.y - eventData.position.y);
         OnCardStartDragEvent?.Invoke(this);
         eventsConfig?.OnCardClkick?.Invoke(new CardClick(this));
     }
