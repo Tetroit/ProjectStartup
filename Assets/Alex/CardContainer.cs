@@ -42,14 +42,12 @@ public class CardContainer : MonoBehaviour
 
     private List<CardWrapper> cards = new();
 
-    private RectTransform rectTransform;
     private CardWrapper currentDraggedCard;
 
     private bool forceFitContainer;
 
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
         InitCards();
         UpdateContainerPosition();
     }
@@ -158,7 +156,7 @@ public class CardContainer : MonoBehaviour
 
     private void AddOtherComponentsIfNeeded(CardWrapper wrapper)
     {
-        var canvas = wrapper.GetComponent<Canvas>();
+/*        var canvas = wrapper.GetComponent<Canvas>();
         if(canvas == null)
         {
             canvas = wrapper.gameObject.AddComponent<Canvas>();
@@ -169,7 +167,7 @@ public class CardContainer : MonoBehaviour
         if(wrapper.GetComponent<GraphicRaycaster>() == null)
         {
             wrapper.gameObject.AddComponent<GraphicRaycaster>();
-        }
+        }*/
     }
 
     private void UpdateCards()
@@ -188,19 +186,19 @@ public class CardContainer : MonoBehaviour
         SetCardsRotation();
         SetCardsUILayers();
         UpdateCardOrder();
-
+/*
         if(!IsCursorInPreviewArea() && currentDraggedCard != null)
         {
             eventsConfig?.OnCardRelease?.Invoke(new CardRelease(currentDraggedCard));
-        }
+        }*/
     }
 
     private void SetCardsUILayers()
     {
-        for(var i = 0; i < cards.Count; i++)
+/*        for(var i = 0; i < cards.Count; i++)
         {
             cards[i].uiLayer = zoomConfig.defaultSortOrder + i;
-        }
+        }*/
     }
 
     private void UpdateCardOrder()
@@ -226,15 +224,15 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsPosition()
     {
-        // Compute the total width of all the cards in global space
+/*        // Compute the total width of all the cards in global space
         var cardsTotalWidth = cards.Sum(card => card.width * card.transform.lossyScale.x);
-        DistributeChildrenToFitContainer(cardsTotalWidth);
+        DistributeChildrenToFitContainer(cardsTotalWidth);*/
     }
 
     private void DistributeChildrenToFitContainer(float childrenTotalWidth)
     {
-        // Get the width of the container
-        var width = rectTransform.rect.width * transform.lossyScale.x;
+/*        // Get the width of the container
+        var width = transform.position.x * transform.lossyScale.x;
         // Get the distance between each child
         var distanceBetweenChildren = (width - childrenTotalWidth) / (cards.Count - 1);
         // Set all children's positions to be evenly spaced out
@@ -245,37 +243,34 @@ public class CardContainer : MonoBehaviour
             var adjustedChildWidth = child.width * child.transform.lossyScale.x;
             child.targetPosition = new Vector2(currentX + adjustedChildWidth / 2, transform.position.y);
             currentX += adjustedChildWidth + distanceBetweenChildren;
-        }
+        }*/
 
     }
 
     private void UpdateContainerPosition()
     {
-        if(rectTransform == null)
-            rectTransform = GetComponent<RectTransform>();
-
-        switch(alignment)
+        switch (alignment)
         {
             case CardAlignment.Left:
-                rectTransform.anchoredPosition = new Vector2(-350, rectTransform.anchoredPosition.y);
+                transform.position = new Vector3(-4, transform.position.y, transform.position.z);
                 break;
 
             case CardAlignment.Right:
-                rectTransform.anchoredPosition = new Vector2(350, rectTransform.anchoredPosition.y);
+                transform.position = new Vector3(4, transform.position.y, transform.position.z);
                 break;
 
             case CardAlignment.Center:
-                rectTransform.anchoredPosition = new Vector2(0, rectTransform.anchoredPosition.y);
+                transform.position = new Vector3(0, transform.position.y, transform.position.z);
                 break;
         }
     }
 
     private void SetCardsAnchor()
     {
-        foreach(CardWrapper child in cards)
+/*        foreach(CardWrapper child in cards)
         {
             child.SetAnchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f));
-        }
+        }*/
     }
 
     public void RemoveCard(CardWrapper card)
