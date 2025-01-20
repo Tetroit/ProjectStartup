@@ -1,49 +1,35 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ChipManager : MonoBehaviour
 {
-    [SerializeField]
-    RectTransform inventoryArea;
-    [SerializeField]
-    public int inventoryRows = 6;
-    [SerializeField]
-    public Vector2 inventoryCellSize = new Vector2(120, 120);
-
-    public Vector2 spacing {
-        get => inventoryGrid.cellGap;
-        set { inventoryGrid.cellGap = value; }
-    }
-    [SerializeField]
-    public Vector2 padding = new Vector2 (10, 10);
-
-    int currentShiftID = -1;
-    Grid inventoryGrid;
+    [HideInInspector]
+    public Chip selected;
 
     [SerializeField]
-    RectTransform equationArea;
+    GameObject inventoryArea;
+    [SerializeField]
+    GameObject equationArea;
+    public AutoLayout inventoryLayout { get; private set; }
+    public AutoLayout equationLayout { get; private set; }
 
-    class LayoutInfo
+
+    List<Chip> chips = new List<Chip>();
+
+    static ChipManager _instance;
+    public static ChipManager instance => _instance;
+
+    void Awake()
     {
-        public int id;
-        public bool isShifted;
-
-        public LayoutInfo(int id, bool isShifted = false) 
+        if (instance == null)
         {
-            this.id = id;
-            this.isShifted = isShifted;
+            _instance = this;
         }
+        else if (instance != this) Destroy(gameObject);
     }
-
-    Dictionary<GameObject, LayoutInfo> inventoryItems = new Dictionary<GameObject, LayoutInfo>();
-
-
 
     [Space(30)]
     [Header("So this option enables dragging... Like... \n\nImagine that you are always dragging an item okay?\n As if you are about to place it into the grid")]
@@ -59,47 +45,23 @@ public class ChipManager : MonoBehaviour
         return null;
     }
 
-    public Vector2 GetNextFreeGridPosition()
-    {
-        GridLayoutGroup gridLayout = inventoryArea.GetComponent<GridLayoutGroup>();
-        Vector2 lastPos = gridLayout.transform.GetChild(inventoryArea.childCount - 1).localPosition;
-        Vector2 nextPos = lastPos + new Vector2(gridLayout.cellSize.x + gridLayout.spacing.x, 0);
-        return nextPos;
-    }
     [ExecuteInEditMode]
     private void OnValidate()
     {
-        inventoryGrid = GetComponentInChildren<Grid>();
-        inventoryGrid.transform.localPosition = new Vector2 (0, inventoryArea.rect.height) + (padding + inventoryCellSize/2) * new Vector2(1, -1);
-        ArrangeInventoryChildren();
+        inventoryLayout = inventoryArea.GetComponent<AutoLayout>();
+        equationLayout = equationArea.GetComponent<AutoLayout>();
     }
     private void Start()
     {
-        for (int i = 0; i < inventoryGrid.transform.childCount; i++)
-        {
-            Transform child = inventoryGrid.transform.GetChild(i);
-
-            if (!inventoryItems.ContainsKey(child.gameObject))
-            {
-                inventoryItems.Add(child.gameObject, new LayoutInfo(i));
-            }
-        }
     }
     private void Update()
     {
-        if (dragging)
+        if (selected != null)
         {
-            Vector2 cursorPos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle
-                (inventoryGrid.GetComponent<RectTransform>(), Input.mousePosition, null, out cursorPos);
-
-            int readShiftID = GetIDToMove(cursorPos);
-            Debug.Log(readShiftID);
-
-            if (readShiftID != currentShiftID)
-                ShiftInventoryItems(readShiftID);
+            selected.transform.localPosition = Utils.GetMousePos(transform);
+            if (Input.GetMouseButtonUp(0))
+                Deselect();
         }
-
     }
     [ExecuteAlways]
     private void OnDrawGizmos()
@@ -109,89 +71,62 @@ public class ChipManager : MonoBehaviour
 
 
     }
-    public Vector3Int GetGridPosition(int i)
+   
+    public void AddChip(Chip chip)
     {
-        return new Vector3Int(i % inventoryRows, - i / inventoryRows, 0);
-    }
-    public Vector3 GetLocalCellPosition(int i)
-    {
-        return inventoryGrid.CellToLocal(GetGridPosition(i));
-    }
-    public int GetGridID(Vector3Int pos)
-    {
-        if (pos.x < 0 || pos.y > 0 || pos.x >= 6)
-            return -1;
-        return pos.x - pos.y * inventoryRows;
-    }
-    public int GetIDToMove(Vector3 pos)
-    {
-        pos.x += 0.5f * inventoryGrid.cellSize.x;
-        pos.y += 0.5f * inventoryGrid.cellSize.y;
-        Vector3Int gridPos = inventoryGrid.LocalToCell(pos);
-        int ID = GetGridID(gridPos);
-        return ID;
-    }
-    [ContextMenu("Arrange")]
-    public void ArrangeInventoryChildren()
-    {
-        for (int i = 0; i < inventoryGrid.transform.childCount; i++)
+        if (!chips.Contains(chip))
         {
-            Transform child = inventoryGrid.transform.GetChild(i);
-            child.localPosition = inventoryGrid.CellToLocal(GetGridPosition(i));
+            chips.Add(chip);
+            if (chip.transform.parent == inventoryArea.transform)
+                chip.layout = inventoryLayout;
+            if (chip.transform.parent == equationArea.transform)
+                chip.layout = equationLayout;
         }
     }
-
-    public void AddToInventory(GameObject obj)
+    public void RemoveChip(Chip chip)
     {
-        int id = inventoryArea.transform.childCount;
-        AddToInventory(obj, id);
+        if (chips.Contains(chip))
+            chips.Remove(chip);
     }
-    public void AddToInventory(GameObject obj, int id)
+    public void Select(Chip chip)
     {
-        obj.transform.parent = inventoryArea.transform;
-        obj.transform.localPosition = inventoryGrid.CellToLocal(GetGridPosition(id));
-        if (!inventoryItems.ContainsKey(obj))
-        {
-            inventoryItems.Add(obj, new LayoutInfo(id));
-        }
+        chip.layout.RemoveItem(chip.gameObject, true);
+        inventoryLayout.shiftingMode = true;
+        equationLayout.shiftingMode = true;
+        selected = chip;
+        chip.transform.parent = transform;
     }
-    public void ShiftInventoryItems(int id)
+    public void Deselect()
     {
-        currentShiftID = id;
-        foreach (GameObject go in inventoryItems.Keys)
+        if (equationLayout.currentShiftID != -1)
         {
-            LayoutInfo info = inventoryItems[go];
-            //we should shift forward
-            if (!info.isShifted && id > -1 && info.id >= id)
-            {
-                info.isShifted = true;
-                Vector3 targetPos = GetLocalCellPosition(info.id + 1);
-                //go.transform.localPosition = targetPos;
-                StartCoroutine(ShiftAnimation(go, go.transform.localPosition, targetPos, 0.2f));
-            }
-            //we should shift back
-            else if (info.isShifted && (info.id < id || id < 0))
-            {
-                info.isShifted = false;
-                Vector3 targetPos = GetLocalCellPosition(info.id);
-                //go.transform.localPosition = GetLocalCellPosition(info.id);
-                StartCoroutine(ShiftAnimation(go, go.transform.localPosition, targetPos, 0.2f));
-            }
+            AddToLayout(selected, equationLayout, equationLayout.currentShiftID);
         }
-
+        else if (inventoryLayout.currentShiftID != -1)
+        {
+            AddToLayout(selected, inventoryLayout, inventoryLayout.currentShiftID);
+        }
+        else
+        {
+            AddBack(selected);
+        }
+        inventoryLayout.shiftingMode = false;
+        equationLayout.shiftingMode = false;
+        selected = null;
     }
 
-    IEnumerator ShiftAnimation(GameObject go, Vector3 startPos, Vector3 endPos, float animTime)
+    public void AddBack(Chip chip)
     {
-        float elapsed = 0;
-        while (elapsed < animTime)
-        {
-            elapsed += Time.deltaTime;
-            
-            go.transform.localPosition = Vector3.Lerp(startPos, endPos, elapsed/animTime);
+        AddToLayout(chip, chip.layout);
+    }
 
-            yield return new WaitForEndOfFrame();
-        }
-        yield break;
+    public void AddToLayout(Chip chip, AutoLayout layout, int id = -1)
+    {
+        chip.layout = layout;
+        if (id == -1)
+            layout.AddObject(selected.gameObject, true);
+        else
+            layout.AddObject(selected.gameObject, id, true);
+
     }
 }
