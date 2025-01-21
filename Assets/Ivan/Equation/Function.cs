@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Equation
         {
             _priority = 2; 
         }
+        [HideInInspector]
         public EquationElement dependency;
         abstract public int Calculate(int a);
         public void SetDependency(EquationElement element)
@@ -24,6 +26,7 @@ namespace Equation
         
         public override bool YieldResult()
         {
+            stackOverflowLock.IncreaseYieldCount();
             if (dependency == null) return false;
             if (!dependency.calculated)
                 if (!dependency.YieldResult()) return false;
@@ -31,28 +34,36 @@ namespace Equation
             calculated = true;
             return true;
         }
-    }
-    public class Sqrt : Function
-    {
-        public override int Calculate(int a)
+        protected override void Init()
         {
-            return (int)Mathf.Sqrt(a);
+            _type = Type.FUNCTION;
+            _priority = 2;
         }
     }
 
+    [CreateAssetMenu(fileName = "Square", menuName = "Equation Element/Square")]
     public class Sqr : Function
     {
         public override int Calculate(int a)
         {
             return a * a;
         }
+        public override string ToString()
+        {
+            return "sqr";
+        }
     }
 
+    [CreateAssetMenu(fileName = "Negate", menuName = "Equation Element/Negate")]
     public class Negate : Function
     {
         public override int Calculate(int a)
         {
             return -a;
+        }
+        public override string ToString()
+        {
+            return "-";
         }
     }
 }

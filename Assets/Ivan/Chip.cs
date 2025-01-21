@@ -4,16 +4,24 @@ using UnityEngine;
 using Equation;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class Chip : MonoBehaviour
 {
-    bool hovered = false;
+    //bool hovered = false;
+    [SerializeField]
+    public bool selfDestructable = false;
+    public bool duplicating = false;
 
     public AutoLayout layout;
+
     ChipManager chipManager;
     Collider hitBox;
-    public EquationElement element { get; protected set; }
+
+    [SerializeField]
+    EquationElement equationElement;
+    public EquationElement element { get { return equationElement; } protected set { equationElement = value; }}
 
     private void OnEnable()
     {
@@ -38,8 +46,17 @@ public class Chip : MonoBehaviour
     {
         if (chipManager.selected == null)
         {
-            chipManager.Select(this);
-            Debug.Log("asd");
+            if (duplicating)
+            {
+                GameObject instance = Instantiate(gameObject);
+                Chip chip = instance.GetComponent<Chip>();
+                chip.duplicating = false;
+                chipManager.Select(chip);
+            }
+            else
+            {
+                chipManager.Select(this);
+            }
         }
 
     }
@@ -52,5 +69,4 @@ public class Chip : MonoBehaviour
             OnClick();
         }
     }
-
 }
