@@ -1,5 +1,7 @@
+using Equation;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -13,6 +15,9 @@ public class ChipManager : MonoBehaviour
     GameObject inventoryArea;
     [SerializeField]
     GameObject equationArea;
+
+    [SerializeField]
+    TextMeshProUGUI equationDisplay;
     public AutoLayout inventoryLayout { get; private set; }
     public AutoLayout equationLayout { get; private set; }
 
@@ -22,6 +27,8 @@ public class ChipManager : MonoBehaviour
     static ChipManager _instance;
     public static ChipManager instance => _instance;
 
+    Formula formula = new Formula();
+
     void Awake()
     {
         if (instance == null)
@@ -30,11 +37,6 @@ public class ChipManager : MonoBehaviour
         }
         else if (instance != this) Destroy(gameObject);
     }
-
-    [Space(30)]
-    [Header("So this option enables dragging... Like... \n\nImagine that you are always dragging an item okay?\n As if you are about to place it into the grid")]
-    [Space(20)]
-    public bool dragging = false;
 
     public IEnumerable GetInventoryChips()
     {
@@ -53,6 +55,13 @@ public class ChipManager : MonoBehaviour
     }
     private void Start()
     {
+        foreach (Transform tr in equationArea.transform) 
+        {
+            Chip chip = tr.GetComponent<Chip>();
+            if (chip && chip.element)
+                formula.AddElement(chip.element);
+        }
+        UpdateEquation();
     }
     private void Update()
     {
@@ -60,7 +69,12 @@ public class ChipManager : MonoBehaviour
         {
             selected.transform.localPosition = Utils.GetMousePos(transform);
             if (Input.GetMouseButtonUp(0))
-                Deselect();
+            {
+                if (selected.selfDestructable)
+                    DeselectSelfDestructive();
+                else
+                    Deselect();
+            }
         }
     }
     [ExecuteAlways]
@@ -90,14 +104,39 @@ public class ChipManager : MonoBehaviour
     }
     public void Select(Chip chip)
     {
-        chip.layout.RemoveItem(chip.gameObject, true);
-        inventoryLayout.shiftingMode = true;
-        equationLayout.shiftingMode = true;
+        if (chip.layout)
+            chip.layout.RemoveItem(chip.gameObject, true);
+
+        if (!chip.selfDestructable)
+            inventoryLayout.EnableShifting();
+        equationLayout.EnableShifting();
+
         selected = chip;
         chip.transform.parent = transform;
     }
+    public void DeselectSelfDestructive()
+    {
+        if (equationLayout.currentShiftID != -1)
+        {
+            AddToLayout(selected, equationLayout, equationLayout.currentShiftID);
+        }
+        else
+        {
+            if (selected.layout == equationLayout)
+            {
+                equationLayout.RemoveItem(selected.gameObject, true);
+                formula.RemoveElement(selected.element);
+                UpdateEquation();
+            }
+            Destroy(selected.gameObject);
+        }
+
+        equationLayout.DisableShifting();
+        selected = null;
+    }
     public void Deselect()
     {
+
         if (equationLayout.currentShiftID != -1)
         {
             AddToLayout(selected, equationLayout, equationLayout.currentShiftID);
@@ -110,8 +149,9 @@ public class ChipManager : MonoBehaviour
         {
             AddBack(selected);
         }
-        inventoryLayout.shiftingMode = false;
-        equationLayout.shiftingMode = false;
+
+        inventoryLayout.DisableShifting();
+        equationLayout.DisableShifting();
         selected = null;
     }
 
@@ -122,11 +162,35 @@ public class ChipManager : MonoBehaviour
 
     public void AddToLayout(Chip chip, AutoLayout layout, int id = -1)
     {
+        if (chip.layout == equationLayout)
+        {
+            formula.RemoveElement(chip.element);
+            UpdateEquation();
+        }
+        if (layout == equationLayout)
+        {   if (id == -1)
+                formula.AddElement(chip.element);
+            else
+                formula.AddElement(chip.element, id);
+            UpdateEquation();
+        }
+
         chip.layout = layout;
+
         if (id == -1)
             layout.AddObject(selected.gameObject, true);
         else
             layout.AddObject(selected.gameObject, id, true);
 
+    }
+    void UpdateEquation()
+    {
+        bool valid = formula.Validate();
+        if (valid)
+            equationDisplay.color = Color.green;
+        else
+            equationDisplay.color = Color.red;
+
+        equationDisplay.text = formula.ToString() + (valid ? (" = " + formula.Calculate()) : "");
     }
 }

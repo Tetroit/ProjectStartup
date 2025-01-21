@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
+
 namespace Equation
 {
 
     [System.Serializable]
     public abstract class Operator : EquationElement
     {
+        [HideInInspector]
         public EquationElement[] dependencies = new EquationElement[2] { null, null };
         public Operator() : base(Type.OPERATOR) 
         {
@@ -26,6 +29,7 @@ namespace Equation
         }
         public override bool YieldResult()
         {
+            stackOverflowLock.IncreaseYieldCount();
             if (dependencies[0] == null)
             {
                 Debug.LogError("left dependency was null");
@@ -42,69 +46,12 @@ namespace Equation
             calculated = true;
             return true;
         }
-    }
 
-    [System.Serializable]
-    public class Plus : Operator
-    {
-        public Plus() : base()
+        protected override void Init()
         {
-            _priority = 4;
-        }
-        public override int Calculate(int a, int b)
-        {
-            return a + b;
-        }
-        public override string ToString()
-        {
-            return "+";
+            _type = Type.OPERATOR;
+            _priority = 3;
         }
     }
 
-    [System.Serializable]
-    public class Minus : Operator
-    {
-        public Minus() : base()
-        {
-            _priority = 4;
-        }
-        public override int Calculate(int a, int b)
-        {
-            return a - b;
-        }
-        public override string ToString()
-        {
-            return "-";
-        }
-    }
-
-    [System.Serializable]
-    public class Multiply : Operator
-    {
-        public Multiply() : base() { }
-        public override int Calculate(int a, int b)
-        {
-            return a * b;
-        }
-        public override string ToString()
-        {
-            return "*";
-        }
-    }
-
-    [System.Serializable]
-    public class Divide : Operator
-    {
-        public Divide() : base() { }
-        public override int Calculate(int a, int b)
-        {
-            if (b == 0)
-                Debug.LogError("division by 0 is prohibited (yet)");
-            return a / b;
-        }
-        public override string ToString()
-        {
-            return "/";
-        }
-    }
 }

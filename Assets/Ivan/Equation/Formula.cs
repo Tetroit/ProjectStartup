@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Equation
 {
+    using static UnityEngine.Rendering.DebugUI;
     using ElType = EquationElement.Type;
 
     [System.Serializable]
@@ -12,8 +15,15 @@ namespace Equation
     {
         [SerializeField]
         List<EquationElement> elements = new List<EquationElement>();
+        public int size { get { return elements.Count; } }
         List<BracketOpen> bracketOrder = new List<BracketOpen>();
 
+        public StackOverflowLock stackOverflowLock;
+
+        public Formula()
+        {
+            stackOverflowLock = new StackOverflowLock(this);
+        }
         static Dictionary<ElType, List<ElType>> validationTable = new Dictionary<ElType, List<ElType>>()
         {
             {ElType.NONE, new List<ElType> (){ElType.NUMBER, ElType.FUNCTION, ElType.BRACKET_OPEN, ElType.NONE} },
@@ -27,17 +37,37 @@ namespace Equation
 
         public bool ValidateCombination(ElType first, ElType second)
         {
-            return validationTable[first].Contains(second) ;
+            return validationTable[first].Contains(second);
         }
         public void AddElement(EquationElement element)
         {
             element.ID = elements.Count;
             elements.Add(element);
+            element.OnFormulaAdded(this);
+        }
+        public void AddElement(EquationElement element, int id)
+        {
+            id = Math.Clamp(id, 0, elements.Count);
+            for (int i = id; i < elements.Count; i++)
+                elements[i].ID++;
+            element.ID = id;
+            elements.Insert(id, element);
+            element.OnFormulaAdded(this);
         }
         public void RemoveElement(EquationElement element)
         {
-            element.ID = 0;
-            elements.Remove(element);
+            bool found = false;
+            for (int i=0; i < elements.Count; i++)
+            {
+                if (found)
+                    elements[i].ID--;
+                if (element == elements[i])
+                {
+                    elements.RemoveAt(i);
+                    i--;
+                    found = true;
+                }
+            }
         }
         public IEnumerable GetElements()
         {
@@ -46,7 +76,10 @@ namespace Equation
         public bool Validate()
         {
             if (elements.Count == 0) return true;
-
+            for (int i=0; i<elements.Count; i++)
+            {
+                if (elements[i].ID != i) throw new Exception("ORDER");
+            }
             ElType current = elements[0].type;
             ElType previous = ElType.NONE;
             if (!ValidateCombination(previous, current)) return false;
@@ -65,22 +98,33 @@ namespace Equation
         }
         public int Calculate()
         {
+            stackOverflowLock.Reset();
+
             if (!Validate())
             {
                 Debug.LogError("invalid equation");
                 return 0;
             }
+            foreach (EquationElement element in elements)
+            {
+                element.calculated = false;
+            }
             for (int i=0; i<bracketOrder.Count; i++)
             {
-                bracketOrder[i].resultRef = CalculateDependencies(bracketOrder[i].ID+1, bracketOrder[i].pair.ID);
+                bracketOrder[i].SetDependency(CalculateDependencies(bracketOrder[i].ID+1, bracketOrder[i].pair.ID));
             }
             EquationElement last = CalculateDependencies(0, elements.Count);
-            last.YieldResult();
-            return last.result;
+            if (last != null)
+            {
+                last.YieldResult();
+                return last.result;
+            }
+            return 0;
 
         }
         EquationElement CalculateDependencies(int startID, int endID)
         {
+            if (startID == endID) return null;
             //Debug.Log("Calculating range (" + startID + ", " + endID + ")");
             EquationElement leastPriorityElement = elements[startID];
             int leastPriority = 0;
@@ -200,6 +244,7 @@ namespace Equation
         }
         bool PairBrackets()
         {
+            bracketOrder.Clear();
             Stack<BracketOpen> order = new Stack<BracketOpen>();
             for (int i=0; i<elements.Count; i++)
             {
@@ -222,6 +267,16 @@ namespace Equation
             }
             if (order.Count != 0) return false;
             return true;
+        }
+
+        public override string ToString()
+        {
+            string res = "= ";
+            foreach(EquationElement element in elements)
+            {
+                res += element.ToString();
+            }
+            return res;
         }
     }
 }

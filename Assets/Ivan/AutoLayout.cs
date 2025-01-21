@@ -1,4 +1,5 @@
 using Equation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,7 +40,8 @@ public class AutoLayout : MonoBehaviour
     }
 
     List<LayoutInfo> items = new List<LayoutInfo>();
-    // Start is called before the first frame update
+
+
     private void Start()
     {
         for (int i = 0; i < grid.transform.childCount; i++)
@@ -54,6 +56,15 @@ public class AutoLayout : MonoBehaviour
         {
             UpdateShift();
         }
+    }
+    public void EnableShifting()
+    {
+        shiftingMode = true;
+    }
+    public void DisableShifting()
+    {
+        shiftingMode = false;
+        ShiftItems(items.Count);
     }
     void UpdateShift()
     {
@@ -214,7 +225,6 @@ public class AutoLayout : MonoBehaviour
     //}
     Vector2 GetMousePos()
     {
-        Vector2 cursorPos;
         Ray mouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Vector3 normal = Vector3.Cross(transform.up, transform.right);
