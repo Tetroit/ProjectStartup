@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using config;
 using events;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace demo
@@ -11,19 +13,32 @@ namespace demo
      */
     public class ClonePreviewManager : MonoBehaviour, CardPreviewManager
     {
+        [SerializeField]
+        private float previewHeightOffset = 2f;
+        [SerializeField]
+        private float previewScaleMultiplier = 3f;
+        [SerializeField]
+        private float previewForwardOffset = 0.5f;
 
         [SerializeField]
-        private float verticalPosition;
+        private RectTransform previewArea;
 
-        [SerializeField]
-        private float previewScale = 1f;
+        private int xDeg = 45;
 
-        [SerializeField]
-        private int previewSortingOrder = 1;
+        private Dictionary<CardWrapper, GameObject> previews = new();
 
-        private Dictionary<CardWrapper, Transform> previews = new();
+        private CardWrapper currentCard;
 
-        public bool isClicked = false;
+        private void Update()
+        {
+            if (currentCard != null)
+            {
+                bool shouldEnable = IsCursorInPreviewArea();
+                GameObject preview = previews[currentCard];
+                preview.SetActive(shouldEnable);
+                preview.transform.position = currentCard.transform.position + new Vector3(0, previewHeightOffset, previewForwardOffset);
+            }
+        }
 
         public void OnCardClick(CardClick cardClick)
         {
@@ -37,47 +52,74 @@ namespace demo
 
         public void OnCardPreviewStarted(CardWrapper card)
         {
-
-            if (!previews.ContainsKey(card))
+            if(!previews.ContainsKey(card))
             {
                 CreateCloneForCard(card);
             }
 
-            var preview = previews[card];
-            preview.gameObject.SetActive(true);
-            preview.position = new Vector3(card.transform.position.x, verticalPosition, card.transform.position.z);
+            currentCard = card;
+            GameObject currentPreview = previews[currentCard];
+            currentPreview.SetActive(true);
+
+            Vector3 newPosition = card.transform.position + new Vector3(0, previewHeightOffset, previewForwardOffset);
+            currentPreview.transform.position = newPosition;
+            currentPreview.transform.localScale = card.transform.localScale * previewScaleMultiplier;
         }
 
         private void CreateCloneForCard(CardWrapper card)
         {
-            var clone = Instantiate(card.gameObject, transform);
+            GameObject clone = Instantiate(card.gameObject, transform);
             clone.transform.position = card.transform.position;
-            clone.transform.localScale = Vector3.one * previewScale;
-            clone.transform.rotation = Quaternion.identity;
-            var cloneCanvas = clone.GetComponent<Canvas>();
-            cloneCanvas.sortingOrder = previewSortingOrder;
+            clone.transform.localScale = card.transform.localScale * previewScaleMultiplier;
+            clone.transform.rotation = Quaternion.Euler(xDeg, card.transform.localRotation.y, 0f);
+
+            Renderer renderer = clone.GetComponent<Renderer>();
+            renderer.material.renderQueue = (int)RenderQueue.GeometryLast + 100;
+
             StripCloneComponents(clone);
-            previews.Add(card, clone.transform);
+            previews.Add(card, clone);
         }
 
         private static void StripCloneComponents(GameObject clone)
         {
             var cloneWrapper = clone.GetComponent<CardWrapper>();
-            if (cloneWrapper != null)
+            if(cloneWrapper != null)
             {
                 Destroy(cloneWrapper);
             }
 
-            var cloneRaycaster = clone.GetComponent<GraphicRaycaster>();
-            if (cloneRaycaster != null)
+            var collider = clone.GetComponent<Collider>();
+            if(collider != null)
             {
-                Destroy(cloneRaycaster);
+                Destroy(collider);
             }
         }
 
         public void OnCardPreviewEnded(CardWrapper card)
         {
-            previews[card].gameObject.SetActive(false);
+            if(previews.ContainsKey(card))
+            {
+                previews[card].SetActive(false);
+            }
+
+            currentCard = null;
+        }
+
+        private bool IsCursorInPreviewArea()
+        {
+            if (previewArea == null)
+            {
+                Debug.LogError($"{nameof(previewArea)} is not assigned");
+                return false;
+            }
+
+            var cursorPosition = Input.mousePosition;
+            var playAreaCorners = new Vector3[4];
+            previewArea.GetWorldCorners(playAreaCorners);
+            return cursorPosition.x > playAreaCorners[0].x &&
+                   cursorPosition.x < playAreaCorners[2].x &&
+                   cursorPosition.y > playAreaCorners[0].y &&
+                   cursorPosition.y < playAreaCorners[2].y;
         }
     }
 }

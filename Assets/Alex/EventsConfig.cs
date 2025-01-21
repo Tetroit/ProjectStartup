@@ -12,7 +12,7 @@ namespace config
         public UnityEvent<CardPlayed> OnCardPlayed;
 
         [SerializeField]
-        public UnityEvent<CardClick> OnCardClkick;
+        public UnityEvent<CardClick> OnCardClick;
 
         [SerializeField]
         public UnityEvent<CardRelease> OnCardRelease;
