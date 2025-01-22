@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Plus", menuName = "Equation Element/Plus")]
     public class Plus : Operator
     {
         public Plus() : base()
@@ -19,11 +18,6 @@ namespace Equation
         public override string ToString()
         {
             return "+";
-        }
-        protected override void Init()
-        {
-            base.Init();
-            _priority = 4;
         }
     }
 }

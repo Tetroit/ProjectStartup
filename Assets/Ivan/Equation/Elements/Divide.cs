@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Divide", menuName = "Equation Element/Divide")]
     public class Divide : Operator
     {
         public Divide() : base() { }

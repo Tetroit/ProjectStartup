@@ -34,14 +34,8 @@ namespace Equation
             calculated = true;
             return true;
         }
-        protected override void Init()
-        {
-            _type = Type.FUNCTION;
-            _priority = 2;
-        }
     }
 
-    [CreateAssetMenu(fileName = "Square", menuName = "Equation Element/Square")]
     public class Sqr : Function
     {
         public override int Calculate(int a)
@@ -54,7 +48,6 @@ namespace Equation
         }
     }
 
-    [CreateAssetMenu(fileName = "Negate", menuName = "Equation Element/Negate")]
     public class Negate : Function
     {
         public override int Calculate(int a)

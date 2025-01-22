@@ -46,12 +46,5 @@ namespace Equation
             calculated = true;
             return true;
         }
-
-        protected override void Init()
-        {
-            _type = Type.OPERATOR;
-            _priority = 3;
-        }
     }
-
 }

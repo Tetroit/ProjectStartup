@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Multiply", menuName = "Equation Element/Multiply")]
     public class Multiply : Operator
     {
         public Multiply() : base() { }
