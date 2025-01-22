@@ -50,15 +50,15 @@ public class ChipManager : MonoBehaviour
     [ExecuteInEditMode]
     private void OnValidate()
     {
-        //inventoryLayout = inventoryArea.GetComponent<AutoLayout>();
-        //equationLayout = equationArea.GetComponent<AutoLayout>();
+        inventoryLayout = inventoryArea.GetComponent<AutoLayout>();
+        equationLayout = equationArea.GetComponent<AutoLayout>();
     }
     private void Start()
     {
         foreach (Transform tr in equationArea.transform) 
         {
             Chip chip = tr.GetComponent<Chip>();
-            if (chip && chip.element)
+            if (chip && chip.element != null)
                 formula.AddElement(chip.element);
         }
         UpdateEquation();

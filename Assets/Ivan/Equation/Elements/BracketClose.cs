@@ -29,11 +29,6 @@ namespace Equation
         {
             return ")";
         }
-        protected override void Init()
-        {
-            _type = Type.BRACKET_CLOSE;
-            _priority = 1;
-        }
     }
 }
 

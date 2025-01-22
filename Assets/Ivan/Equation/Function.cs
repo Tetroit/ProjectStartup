@@ -34,11 +34,6 @@ namespace Equation
             calculated = true;
             return true;
         }
-        protected override void Init()
-        {
-            _type = Type.FUNCTION;
-            _priority = 2;
-        }
     }
 
     [CreateAssetMenu(fileName = "Square", menuName = "Equation Element/Square")]

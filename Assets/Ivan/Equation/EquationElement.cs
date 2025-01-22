@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,15 +18,29 @@ namespace Equation
         {
             yieldCount = 0;
         }
-        public void IncreaseYieldCount() 
+        public void IncreaseYieldCount()
         {
             yieldCount++;
-            if (formula.size * 2 < yieldCount)
+            if (formula.size * 4 < yieldCount)
                 throw new System.Exception("Operation caused stack overflow");
         }
     }
+
+    public static class EquationElementFactory
+    {
+        public static EquationElement Get(string str, params object[] args)
+        {
+            Type type = Type.GetType("Equation." + str);
+            Debug.Log(str);
+            Debug.Log(type);
+            if (type != null && typeof(EquationElement).IsAssignableFrom(type))
+                return Activator.CreateInstance(type, args) as EquationElement;
+            else
+                throw new Exception("Object is not of EquationElement type");
+        }
+    }
     [System.Serializable]
-    public abstract class EquationElement : ScriptableObject
+    public abstract class EquationElement
     {
         public enum Type
         {
@@ -54,11 +69,6 @@ namespace Equation
         public abstract IEnumerable<EquationElement> GetDependencies();
         public EquationElement(Type type) { _type = type; }
         public abstract bool YieldResult();
-        protected abstract void Init();
-        private void OnEnable()
-        {
-            Init();
-        }
         public void OnFormulaAdded(Formula formula)
         {
             stackOverflowLock = formula.stackOverflowLock;

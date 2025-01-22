@@ -12,7 +12,8 @@ namespace Equation
         int value;
         public Number(int value) : base(Type.NUMBER)
         {
-            result = value;
+
+            this.value = value;
             _priority = 1;
         }
         public override IEnumerable<EquationElement> GetDependencies()
@@ -29,12 +30,6 @@ namespace Equation
         public override string ToString()
         {
             return value.ToString();
-        }
-        protected override void Init()
-        {
-            _type = Type.NUMBER;
-            result = value;
-            _priority = 1;
         }
     }
 }

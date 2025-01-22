@@ -20,10 +20,5 @@ namespace Equation
         {
             return "+";
         }
-        protected override void Init()
-        {
-            base.Init();
-            _priority = 4;
-        }
     }
 }

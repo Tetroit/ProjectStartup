@@ -240,7 +240,7 @@ MonoBehaviour:
   selfDestructable: 1
   duplicating: 1
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 0343cec9b4aa5624799fc29e431e7a67, type: 2}
+  elementName: BracketOpen
 --- !u!65 &321840943
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 06a6e735a3475f346899d16cf43fbfc0, type: 2}
+  elementName: 4
 --- !u!65 &363157184
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 0046e829a6e13314587ca5137d8d1071, type: 2}
+  elementName: Plus
 --- !u!1 &833618490
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +633,7 @@ Transform:
   m_GameObject: {fileID: 833618490}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.801, y: 0.49475276, z: -3.9258652}
+  m_LocalPosition: {x: -3.684, y: 0.49475276, z: -3.9258652}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -689,7 +689,7 @@ MonoBehaviour:
   selfDestructable: 1
   duplicating: 1
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 291b5ed062f6cc3449e095e1cd0c1cef, type: 2}
+  elementName: BracketClose
 --- !u!65 &977429586
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -882,7 +882,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 1cde951fca362994f8edcdeed7724775, type: 2}
+  elementName: 10
 --- !u!1 &1004683332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1257,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 22ade581cacb2cf48a77f41e637ce933, type: 2}
+  elementName: Sqrt
 --- !u!65 &1432044856
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1460,7 +1460,7 @@ Transform:
   m_GameObject: {fileID: 1718850850}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1593,7 +1593,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 6b6056b5192524c4b96973aa2ce0e97d, type: 2}
+  elementName: 2
 --- !u!1 &1752028591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,7 +1896,7 @@ MonoBehaviour:
   selfDestructable: 0
   duplicating: 0
   layout: {fileID: 0}
-  equationElement: {fileID: 11400000, guid: 1191ca82346bfe3469fec31288e74e18, type: 2}
+  elementName: 64
 --- !u!65 &2006028944
 BoxCollider:
   m_ObjectHideFlags: 0
