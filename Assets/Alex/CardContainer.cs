@@ -20,6 +20,9 @@ public class CardContainer : MonoBehaviour
     [SerializeField]
     private float cardSpacing = 2f;
 
+    [SerializeField]
+    private bool flipCards = false;
+
     [Header("Rotation")]
     [SerializeField]
     [Range(-90f, 90f)]
@@ -27,9 +30,6 @@ public class CardContainer : MonoBehaviour
 
     [SerializeField]
     private float maxHeightDisplacement;
-
-    [SerializeField]
-    private ZoomConfig zoomConfig;
 
     [SerializeField]
     private AnimationSpeedConfig animationSpeedConfig;
@@ -113,8 +113,8 @@ public class CardContainer : MonoBehaviour
             cards.Add(wrapper);
 
             // Pass child card any extra config it should be aware of
-            wrapper.Initialize(zoomConfig, animationSpeedConfig, eventsConfig);
-            wrapper.OnCardStartDragEvent += OnCardDragStart;
+            wrapper.Initialize(animationSpeedConfig, eventsConfig);
+            wrapper.OnCardStartDragStarted += OnCardDragStart;
             wrapper.OnCardDragEnded += OnCardDragEnd;
         }
     }
@@ -174,19 +174,17 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsUILayers()
     {
-        for(var i = 0; i < cards.Count; i++)
-        {
-            cards[i].uiLayer = zoomConfig.defaultSortOrder + i;
-        }
-
-        cards.Sort((a, b) =>
-        {
-            return a.uiLayer.CompareTo(b.uiLayer);
-        });
 
         for(var i = 0; i < cards.Count; i++)
         {
-            cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 50 - i;
+            if(flipCards == true)
+            {
+                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 50 + i;
+
+            } else
+            {
+                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 50 - i;
+            }
         }
     }
 
@@ -196,7 +194,7 @@ public class CardContainer : MonoBehaviour
         if(!allowCardRepositioning || currentDraggedCard == null) return;
 
         // Counts how many cards have their x position less than the dragged card.
-        var newCardIdx = cards.Count(card => currentDraggedCard.transform.position.x > card.transform.position.x);
+        var newCardIdx = cards.Count(card => currentDraggedCard.transform.position.x < card.transform.position.x);
         //Finds the current position of the dragged card in the list.
         var originalCardIdx = cards.IndexOf(currentDraggedCard);
         if(newCardIdx != originalCardIdx)
@@ -261,7 +259,7 @@ public class CardContainer : MonoBehaviour
 
     public void RemoveCard(CardWrapper card)
     {
-        card.OnCardStartDragEvent -= OnCardDragStart;
+        card.OnCardStartDragStarted -= OnCardDragStart;
         card.OnCardDragEnded -= OnCardDragEnd;
         cards.Remove(card);
         //eventsConfig.OnCardDestroy?.Invoke(new CardDestroy(card));

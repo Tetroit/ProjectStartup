@@ -12,7 +12,5 @@ namespace config
         [SerializeField]
         public bool destroyOnPlay;
 
-        [SerializeField]
-        public RectTransform previewArea;
     }
 }

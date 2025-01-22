@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class CardWrapper : MonoBehaviour
 {
-    public event Action<CardWrapper> OnCardStartDragEvent;
+    public event Action<CardWrapper> OnCardStartDragStarted;
     public event Action<CardWrapper> OnCardDragEnded;
 
     private const float EPS = 0.01f;
@@ -17,15 +17,15 @@ public class CardWrapper : MonoBehaviour
     public Vector3 targetPosition;
     private Vector3 dragStartPos;
     public float targetVerticalDisplacement;
-    public int uiLayer;
 
-    private ZoomConfig zoomConfig;
     private AnimationSpeedConfig animationSpeedConfig;
 
     private bool isDragged;
     private EventsConfig eventsConfig;
 
     private bool isCardPlayed;
+
+    private int xDeg = 75;
 
     private void Awake()
     {
@@ -49,9 +49,8 @@ public class CardWrapper : MonoBehaviour
         }
     }
 
-    public void Initialize(ZoomConfig zoomConfig, AnimationSpeedConfig animationSpeedConfig, EventsConfig eventsConfig)
+    public void Initialize(AnimationSpeedConfig animationSpeedConfig, EventsConfig eventsConfig)
     {
-        this.zoomConfig = zoomConfig;
         this.animationSpeedConfig = animationSpeedConfig;
         this.eventsConfig = eventsConfig;
         eventsConfig?.OnCardPlayed.AddListener(OnCardPlayed);
@@ -80,8 +79,7 @@ public class CardWrapper : MonoBehaviour
                 ? animationSpeedConfig.releasePosition
                 : animationSpeedConfig.position;
 
-            var lerped = Vector3.Lerp(transform.position, target,
-                repositionSpeed / distance * Time.deltaTime);
+            var lerped = Vector3.Lerp(transform.position, target,repositionSpeed / distance * Time.deltaTime);
             transform.position = lerped;
         } else
         {
@@ -97,9 +95,7 @@ public class CardWrapper : MonoBehaviour
     {
         var currentAngle = transform.rotation.eulerAngles.z;
         currentAngle = currentAngle < 0 ? currentAngle + 360 : currentAngle;
-        var tempTargetRotation = isDragged && zoomConfig.resetRotationOnZoom
-            ? 0
-            : targetRotation;
+        var tempTargetRotation = isDragged? 0: targetRotation;
         tempTargetRotation = tempTargetRotation < 0 ? tempTargetRotation + 360 : tempTargetRotation;
         var deltaAngle = Mathf.Abs(currentAngle - tempTargetRotation);
         if(!(deltaAngle > EPS)) return;
@@ -112,7 +108,7 @@ public class CardWrapper : MonoBehaviour
 
         var nextRotation = Mathf.Lerp(adjustedCurrent, adjustedTarget,
             animationSpeedConfig.rotation / newDelta * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(45, 0, nextRotation);
+        transform.rotation = Quaternion.Euler(xDeg, 0, nextRotation);
     }
 
     private void OnMouseDown()
@@ -125,6 +121,7 @@ public class CardWrapper : MonoBehaviour
             {
                 dragStartPos = hit.point - transform.position;
                 isDragged = true;
+                OnCardStartDragStarted?.Invoke(this);
                 eventsConfig?.OnCardClick?.Invoke(new CardClick(this));
             }
         }

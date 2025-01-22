@@ -23,7 +23,7 @@ namespace demo
         [SerializeField]
         private RectTransform previewArea;
 
-        private int xDeg = 45;
+        private int xDeg = 75;
 
         private Dictionary<CardWrapper, GameObject> previews = new();
 
