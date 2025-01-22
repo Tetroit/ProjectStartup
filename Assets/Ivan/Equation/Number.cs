@@ -5,14 +5,12 @@ using UnityEngine;
 namespace Equation
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "New number", menuName = "Equation Element/Number")]
     public class Number : EquationElement
     {
         [SerializeField]
         int value;
         public Number(int value) : base(Type.NUMBER)
         {
-
             this.value = value;
             _priority = 1;
         }

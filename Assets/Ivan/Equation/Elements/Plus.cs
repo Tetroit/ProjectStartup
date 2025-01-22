@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Plus", menuName = "Equation Element/Plus")]
     public class Plus : Operator
     {
         public Plus() : base()

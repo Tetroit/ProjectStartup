@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Square Root", menuName = "Equation Element/Square Root")]
     public class Sqrt : Function
     {
         public override int Calculate(int a)

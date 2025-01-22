@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Equation
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "Open Bracket", menuName = "Equation Element/Open Bracket")]
     public class BracketOpen : EquationElement
     {
         public BracketOpen() : base(Type.BRACKET_OPEN)

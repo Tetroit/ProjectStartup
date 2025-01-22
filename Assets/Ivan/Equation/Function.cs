@@ -36,7 +36,6 @@ namespace Equation
         }
     }
 
-    [CreateAssetMenu(fileName = "Square", menuName = "Equation Element/Square")]
     public class Sqr : Function
     {
         public override int Calculate(int a)
@@ -49,7 +48,6 @@ namespace Equation
         }
     }
 
-    [CreateAssetMenu(fileName = "Negate", menuName = "Equation Element/Negate")]
     public class Negate : Function
     {
         public override int Calculate(int a)

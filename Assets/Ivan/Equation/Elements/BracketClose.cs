@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Equation
 {
-    [CreateAssetMenu(fileName = "Close Bracket", menuName = "Equation Element/Close Bracket")]
     public class BracketClose : EquationElement
     {
         public BracketClose() : base(Type.BRACKET_CLOSE)

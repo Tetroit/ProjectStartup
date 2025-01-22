@@ -6,7 +6,6 @@ using UnityEngine;
 namespace Equation
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "Minus", menuName = "Equation Element/Minus")]
     public class Minus : Operator
     {
         public Minus() : base()
