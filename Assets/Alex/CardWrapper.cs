@@ -19,9 +19,10 @@ public class CardWrapper : MonoBehaviour
     public float targetVerticalDisplacement;
 
     private AnimationSpeedConfig animationSpeedConfig;
+    private EventsConfig eventsConfig;
+    private CardWrapper currentDraggedCard;
 
     private bool isDragged;
-    private EventsConfig eventsConfig;
 
     private bool isCardPlayed;
 
@@ -49,11 +50,12 @@ public class CardWrapper : MonoBehaviour
         }
     }
 
-    public void Initialize(AnimationSpeedConfig animationSpeedConfig, EventsConfig eventsConfig)
+    public void Initialize(AnimationSpeedConfig animationSpeedConfig, EventsConfig eventsConfig, CardWrapper currentDraggedCard)
     {
         this.animationSpeedConfig = animationSpeedConfig;
         this.eventsConfig = eventsConfig;
         eventsConfig?.OnCardPlayed.AddListener(OnCardPlayed);
+        this.currentDraggedCard = currentDraggedCard;
     }
 
     private void OnCardPlayed(CardPlayed card)
@@ -132,5 +134,15 @@ public class CardWrapper : MonoBehaviour
         isDragged = false;
         OnCardDragEnded?.Invoke(this);
         eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
+
+        if(currentDraggedCard != null)
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
+            if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
+            {
+
+            }
+        }
     }
 }

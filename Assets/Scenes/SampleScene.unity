@@ -757,6 +757,7 @@ MonoBehaviour:
   alignment: 1
   allowCardRepositioning: 1
   cardSpacing: 3
+  cardScreenYPosition: -12.5
   flipCards: 0
   maxCardRotation: -16
   maxHeightDisplacement: 1
@@ -813,7 +814,7 @@ Transform:
   m_GameObject: {fileID: 166025338}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.7138582, y: -2.386694, z: -4.504479}
+  m_LocalPosition: {x: 1.7138582, y: -2.7999992, z: -4}
   m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1716,6 +1717,7 @@ MonoBehaviour:
   alignment: 1
   allowCardRepositioning: 1
   cardSpacing: 4
+  cardScreenYPosition: -4.5
   flipCards: 0
   maxCardRotation: 20
   maxHeightDisplacement: 76
@@ -4938,8 +4940,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b9bf0dacd27ca4da9d9d745afeca19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equation:
-    elements: []
 --- !u!4 &1843517876
 Transform:
   m_ObjectHideFlags: 0

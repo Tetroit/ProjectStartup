@@ -18,7 +18,12 @@ public class CardContainer : MonoBehaviour
     private bool allowCardRepositioning = true;
 
     [SerializeField]
+    [Range(-10f, 10f)]
     private float cardSpacing = 2f;
+
+    [SerializeField]
+    [Range(-20f, 20f)]
+    private float cardScreenYPosition = 0;
 
     [SerializeField]
     private bool flipCards = false;
@@ -29,6 +34,7 @@ public class CardContainer : MonoBehaviour
     private float maxCardRotation;
 
     [SerializeField]
+    [Range(-1f, 5f)]
     private float maxHeightDisplacement;
 
     [SerializeField]
@@ -113,7 +119,7 @@ public class CardContainer : MonoBehaviour
             cards.Add(wrapper);
 
             // Pass child card any extra config it should be aware of
-            wrapper.Initialize(animationSpeedConfig, eventsConfig);
+            wrapper.Initialize(animationSpeedConfig, eventsConfig, currentDraggedCard);
             wrapper.OnCardStartDragStarted += OnCardDragStart;
             wrapper.OnCardDragEnded += OnCardDragEnd;
         }
@@ -234,7 +240,7 @@ public class CardContainer : MonoBehaviour
         foreach(CardWrapper child in cards)
         {
             var adjustedChildWidth = cardSpacing * child.transform.lossyScale.x;
-            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y, transform.position.z);
+            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y, cardScreenYPosition);
             currentX += adjustedChildWidth + distanceBetweenChildren;
         }
     }
