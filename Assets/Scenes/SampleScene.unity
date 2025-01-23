@@ -655,6 +655,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardFireBall
       objectReference: {fileID: 0}
+    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -2730,6 +2735,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardFireBall
       objectReference: {fileID: 0}
+    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -3163,8 +3173,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 854775593}
+  - component: {fileID: 854775594}
   m_Layer: 0
-  m_Name: CardSlots
+  m_Name: SlotContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3190,6 +3201,19 @@ Transform:
   - {fileID: 650388947}
   m_Father: {fileID: 93186856}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &854775594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854775592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fd3daa54149394fb6bdcd4a8c5d807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slots: []
 --- !u!224 &868204299 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9209724056940996947, guid: b4eff3cc7edfe9840b24ed3afe44c458,
@@ -3853,6 +3877,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardFireBall
       objectReference: {fileID: 0}
+    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -3935,6 +3964,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CardFireBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
@@ -4907,6 +4941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shiftingMode: 0
+  columns: 6
   rows: 6
   cellSize: {x: 120, y: 120}
   shiftingAnim:
@@ -5392,6 +5427,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CardFireBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}

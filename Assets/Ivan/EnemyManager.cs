@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-
-public class CardEffect
-{ }
 public interface IEnemyManager
 {
     public void PickEnemy();

@@ -2,10 +2,9 @@ namespace events
 {
     public class CardPlayed : CardEvent
     {
-        public CardEffect effect;
-        public CardPlayed(CardWrapper card, CardEffect effect) : base(card)
+        public CardPlayed(CardWrapper card) : base(card)
         {
-            this.effect = effect;
+
         }
     }
 }

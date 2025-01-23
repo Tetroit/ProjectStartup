@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using config;
@@ -141,19 +142,37 @@ public class CardContainer : MonoBehaviour
         if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
         {
             Vector3 slotPosition = hit.point;
-            Debug.Log("Slot position: " + slotPosition);
-
-            eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard, null));
-            RemoveCard(currentDraggedCard);
-            currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, false);
-            currentDraggedCard.transform.localPosition = Vector3.zero;
-            currentDraggedCard.transform.localRotation = Quaternion.identity;
-            currentDraggedCard.transform.localScale = Vector3.one;
-
-            // figure out how to drag the cards from the slots back to the hand
+            eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard));
+            currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
+            StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
         }
 
         currentDraggedCard = null;
+    }
+
+    private IEnumerator SmoothMoveToSlot(Transform cardTransform, Transform slotTransform)
+    {
+        float duration = 0.3f; 
+        float elapsedTime = 0f;
+
+        Vector3 startPos = cardTransform.localPosition;
+        Quaternion startRot = cardTransform.localRotation;
+        Vector3 startScale = cardTransform.localScale;
+
+        Vector3 endPos = new Vector3(0, 0, -0.3f);
+        Quaternion endRot = Quaternion.identity;
+        Vector3 endScale = Vector3.one;
+
+        while(elapsedTime <= duration)
+        {
+            float t = elapsedTime / duration;
+            cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
+            cardTransform.localRotation = Quaternion.Lerp(startRot, endRot, t);
+            cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void UpdateCards()

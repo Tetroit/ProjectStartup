@@ -6,6 +6,6 @@ public class Fireball : CardEffect
 {
     public override void ApplyEffect(int ammount)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Fire Damage");
     }
 }
