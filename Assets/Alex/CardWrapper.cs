@@ -16,6 +16,7 @@ public class CardWrapper : MonoBehaviour
     public float targetRotation;
     public Vector3 targetPosition;
     private Vector3 dragStartPos;
+    private Vector3 slotPosition;
     public float targetVerticalDisplacement;
 
     private AnimationSpeedConfig animationSpeedConfig;
@@ -43,7 +44,7 @@ public class CardWrapper : MonoBehaviour
 
     private void Update()
     {
-        if(!isCardPlayed)
+        if (!isCardPlayed)
         {
             UpdateRotation();
             UpdatePosition();
@@ -60,7 +61,7 @@ public class CardWrapper : MonoBehaviour
 
     private void OnCardPlayed(CardPlayed card)
     {
-        if(card.card != this)
+        if (card.card != this)
         {
             return;
         }
@@ -71,7 +72,7 @@ public class CardWrapper : MonoBehaviour
 
     private void UpdatePosition()
     {
-        if(!isDragged)
+        if (!isDragged)
         {
             Vector3 upDirection = transform.rotation * Vector3.up;
             Vector3 target = targetPosition + upDirection * targetVerticalDisplacement;
@@ -81,12 +82,14 @@ public class CardWrapper : MonoBehaviour
                 ? animationSpeedConfig.releasePosition
                 : animationSpeedConfig.position;
 
-            var lerped = Vector3.Lerp(transform.position, target,repositionSpeed / distance * Time.deltaTime);
+            // Whenever I mouserelease a card into the slot I want to reasing the target to that position.
+            var lerped = Vector3.Lerp(transform.position, target, repositionSpeed / distance * Time.deltaTime);
             transform.position = lerped;
-        } else
+        }
+        else
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out RaycastHit hit, float.MaxValue))
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue))
             {
                 transform.position = hit.point - dragStartPos;
             }
@@ -97,10 +100,10 @@ public class CardWrapper : MonoBehaviour
     {
         var currentAngle = transform.rotation.eulerAngles.z;
         currentAngle = currentAngle < 0 ? currentAngle + 360 : currentAngle;
-        var tempTargetRotation = isDragged? 0: targetRotation;
+        var tempTargetRotation = isDragged ? 0 : targetRotation;
         tempTargetRotation = tempTargetRotation < 0 ? tempTargetRotation + 360 : tempTargetRotation;
         var deltaAngle = Mathf.Abs(currentAngle - tempTargetRotation);
-        if(!(deltaAngle > EPS)) return;
+        if (!(deltaAngle > EPS)) return;
 
         var adjustedCurrent = deltaAngle > 180 && currentAngle < tempTargetRotation ? currentAngle + 360 : currentAngle;
         var adjustedTarget = deltaAngle > 180 && currentAngle > tempTargetRotation
@@ -115,11 +118,11 @@ public class CardWrapper : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;
             Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
-            if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
+            if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
             {
                 dragStartPos = hit.point - transform.position;
                 isDragged = true;
@@ -134,15 +137,5 @@ public class CardWrapper : MonoBehaviour
         isDragged = false;
         OnCardDragEnded?.Invoke(this);
         eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
-
-        if(currentDraggedCard != null)
-        {
-            Vector3 mousePosition = Input.mousePosition;
-            Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
-            if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
-            {
-
-            }
-        }
     }
 }

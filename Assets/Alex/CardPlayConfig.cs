@@ -7,7 +7,7 @@ namespace config
     [Serializable]
     public class CardPlayConfig
     {
-        public List<RectTransform> playableSlots = new List<RectTransform>();
+        public List<GameObject> playableSlots = new List<GameObject>();
 
         [SerializeField]
         public bool destroyOnPlay;

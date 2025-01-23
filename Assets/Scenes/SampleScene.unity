@@ -766,7 +766,12 @@ MonoBehaviour:
     position: 25
     releasePosition: 25
   cardPlayConfig:
-    playableSlots: []
+    playableSlots:
+    - {fileID: 891250201}
+    - {fileID: 754278035}
+    - {fileID: 1422713290}
+    - {fileID: 285281866}
+    - {fileID: 650388943}
     destroyOnPlay: 0
   eventsConfig:
     OnCardPlayed:
@@ -777,7 +782,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2021296737}
           m_TargetAssemblyTypeName: demo.ClonePreviewManager, Assembly-CSharp
-          m_MethodName: 
+          m_MethodName: OnCardClick
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -792,7 +797,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2021296737}
           m_TargetAssemblyTypeName: demo.ClonePreviewManager, Assembly-CSharp
-          m_MethodName: 
+          m_MethodName: OnCardRelease
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -814,7 +819,7 @@ Transform:
   m_GameObject: {fileID: 166025338}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.7138582, y: -2.7999992, z: -4}
+  m_LocalPosition: {x: 1.7138582, y: -2.7999992, z: -4.0000005}
   m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1215,7 +1220,7 @@ GameObject:
   - component: {fileID: 285281869}
   - component: {fileID: 285281868}
   - component: {fileID: 285281867}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1737,7 @@ MonoBehaviour:
     - {fileID: 249901233}
     - {fileID: 1002007096}
     - {fileID: 1776719204}
-    destroyOnPlay: 1
+    destroyOnPlay: 0
   eventsConfig:
     OnCardPlayed:
       m_PersistentCalls:
@@ -2309,7 +2314,7 @@ GameObject:
   - component: {fileID: 650388946}
   - component: {fileID: 650388945}
   - component: {fileID: 650388944}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2807,7 +2812,7 @@ GameObject:
   - component: {fileID: 754278038}
   - component: {fileID: 754278037}
   - component: {fileID: 754278036}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3203,7 +3208,7 @@ GameObject:
   - component: {fileID: 891250204}
   - component: {fileID: 891250203}
   - component: {fileID: 891250202}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4019,7 +4024,7 @@ GameObject:
   - component: {fileID: 1422713293}
   - component: {fileID: 1422713292}
   - component: {fileID: 1422713291}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5110,7 +5115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewHeightOffset: 1
   previewScaleMultiplier: 2.5
-  previewForwardOffset: 1
+  previewForwardOffset: 2
   previewArea: {fileID: 1551405519}
 --- !u!4 &2021296738
 Transform:

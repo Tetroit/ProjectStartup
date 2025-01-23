@@ -50,8 +50,8 @@ public class ChipManager : MonoBehaviour
     [ExecuteInEditMode]
     private void OnValidate()
     {
-        inventoryLayout = inventoryArea.GetComponent<AutoLayout>();
-        equationLayout = equationArea.GetComponent<AutoLayout>();
+        //inventoryLayout = inventoryArea.GetComponent<AutoLayout>();
+        //equationLayout = equationArea.GetComponent<AutoLayout>();
     }
     private void Start()
     {

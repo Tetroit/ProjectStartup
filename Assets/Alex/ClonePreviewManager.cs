@@ -14,9 +14,9 @@ namespace demo
     public class ClonePreviewManager : MonoBehaviour, CardPreviewManager
     {
         [SerializeField]
-        private float previewHeightOffset = 2f;
+        private float previewHeightOffset = 1f;
         [SerializeField]
-        private float previewScaleMultiplier = 3f;
+        private float previewScaleMultiplier = 2.5f;
         [SerializeField]
         private float previewForwardOffset = 0.5f;
 

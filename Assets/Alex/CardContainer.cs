@@ -52,8 +52,6 @@ public class CardContainer : MonoBehaviour
 
     private CardWrapper currentDraggedCard;
 
-    private bool forceFitContainer;
-
     private void Start()
     {
         InitCards();
@@ -137,24 +135,22 @@ public class CardContainer : MonoBehaviour
             return;
         }
 
-        for(int i = 0; i < cardPlayConfig.playableSlots.Count; i++)
+        int slotLayerMask = LayerMask.GetMask("Slot");
+        Vector3 mousePosition = Input.mousePosition;
+        Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
+        if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
         {
-            // if slot[i] is != null - return the cards to the hand
-            // else - assign the position of the card to slot
+            Vector3 slotPosition = hit.point;
+            Debug.Log("Slot position: " + slotPosition);
 
-            RectTransform slot = cardPlayConfig.playableSlots[i];
-            if(currentDraggedCard != null && IsCursorInPlayArea(slot))
-            {
-                // assign what slot you have targeted
+            eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard, null));
+            RemoveCard(currentDraggedCard);
+            currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, false);
+            currentDraggedCard.transform.localPosition = Vector3.zero;
+            currentDraggedCard.transform.localRotation = Quaternion.identity;
+            currentDraggedCard.transform.localScale = Vector3.one;
 
-
-                // remove card from the container (don't destroy)
-                // unparent from card container
-                // parent to the slot
-                eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard));
-                RemoveCard(currentDraggedCard);
-                currentDraggedCard.transform.SetParent(slot, false);
-            }
+            // figure out how to drag the cards from the slots back to the hand
         }
 
         currentDraggedCard = null;
