@@ -12,7 +12,9 @@ public class AutoLayout : MonoBehaviour
     [SerializeField]
     public bool shiftingMode = false;
     [SerializeField]
-    public int rows = 6;
+    public int columns = 6;
+    [SerializeField]
+    public int rows = 3;
     [SerializeField]
     public Vector2 cellSize = new Vector2(120, 120);
     [SerializeField]
@@ -91,7 +93,7 @@ public class AutoLayout : MonoBehaviour
     }
     public Vector3Int GetGridPosition(int i)
     {
-        return new Vector3Int(i % rows, -i / rows, 0);
+        return new Vector3Int(i % columns, -i / columns, 0);
     }
     public Vector3 GetLocalCellPosition(int i)
     {
@@ -101,7 +103,7 @@ public class AutoLayout : MonoBehaviour
     {
         if (pos.x < 0 || pos.y > 0 || pos.x >= 6)
             return -1;
-        return pos.x - pos.y * rows;
+        return pos.x - pos.y * columns;
     }
     public int GetIDToMove(Vector3 pos)
     {
@@ -109,8 +111,10 @@ public class AutoLayout : MonoBehaviour
         pos.y += 0.5f * grid.cellSize.y;
         Vector3Int gridPos = grid.LocalToCell(pos);
         int ID = GetGridID(gridPos);
-        if (ID > items.Count)
+        if (ID > rows*columns)
             return -1;
+        if (ID > items.Count)
+            return items.Count;
         return ID;
     }
 

@@ -5,6 +5,7 @@ using Equation;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using static UnityEngine.Rendering.DebugUI;
+using Unity.Burst.CompilerServices;
 
 
 public class Chip : MonoBehaviour
@@ -50,6 +51,13 @@ public class Chip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (hitBox.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f))
+            {
+                OnClick();
+            }
+        }
     }   
 
     void OnClick()
@@ -58,7 +66,8 @@ public class Chip : MonoBehaviour
         {
             if (duplicating)
             {
-                GameObject instance = Instantiate(gameObject);
+                GameObject instance = Instantiate(gameObject, chipManager.transform);
+                instance.transform.localRotation = transform.localRotation;
                 Chip chip = instance.GetComponent<Chip>();
                 chip.duplicating = false;
                 chipManager.Select(chip);
@@ -69,14 +78,5 @@ public class Chip : MonoBehaviour
             }
         }
 
-    }
-
-    private void OnMouseDown()
-    {
-        RaycastHit hit;
-        if (hitBox.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue))
-        {
-            OnClick();
-        }
     }
 }
