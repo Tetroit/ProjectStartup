@@ -19,6 +19,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     [ExecuteAlways]
     void OnDrawGizmos()
     {
+        Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = Color.red;
         foreach (Vector3 point in spawnPoints)
         {
@@ -54,6 +55,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         int id = enemies.Count;
         Vector3 nextSpawnpoint = spawnPoints[id];
         Enemy instance = Instantiate(enemy, nextSpawnpoint, Quaternion.identity, transform);
+        instance.transform.localPosition = nextSpawnpoint;
         enemies.Add(instance);
     }
     public void PickEnemy()
@@ -74,6 +76,13 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         foreach (Enemy enemy in enemies)
         {
             picked.Add(enemy);
+        }
+    }
+    public void OnCardPlayed(events.CardPlayed effect)
+    {
+        foreach (Enemy enemy in picked)
+        {
+            effect.card.CardEffect.ApplyEffect(enemy, 0);
         }
     }
 }

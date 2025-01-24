@@ -7,7 +7,6 @@ public class Enemy : MonoBehaviour
     public int health;
     public int damage;
     public int shield;
-    public string name;
     // Start is called before the first frame update
     void Start()
     {

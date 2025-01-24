@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class CardEffect : MonoBehaviour
 {
-    public abstract void ApplyEffect(int ammount);
+    public abstract void ApplyEffect(Enemy enemy, int ammount);
 }
