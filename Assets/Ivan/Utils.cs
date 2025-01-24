@@ -60,4 +60,10 @@ public static class Utils
         return obj.InverseTransformPoint(intersection);
 
     }
+
+    public static void LookAtCamera(Transform obj, Transform cam = null)
+    {
+        if (cam == null) cam = Camera.main.transform;
+        obj.LookAt(obj.position + cam.transform.forward);
+    }
 }

@@ -64,7 +64,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         for (int i = 0; i < enemies.Count; i++)
         {
             Collider collider = enemies[i].GetComponent<Collider>();
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+            if (collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f))
             {
                 picked.Add(enemies[i]);
                 return;
@@ -82,7 +82,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     {
         foreach (Enemy enemy in picked)
         {
-            effect.card.CardEffect.ApplyEffect(enemy, 0);
+            effect.card.CardEffect.ApplyEffect(enemy, 1);
         }
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Fireball : CardEffect
 {
-    public override void ApplyEffect(Enemy enemy, int ammount)
+    public override void ApplyEffect(Enemy enemy, int amount)
     {
-        enemy.health -= ammount;
+        enemy.GetDamage(amount);
         Debug.Log("Fire Damage");
     }
 }
