@@ -1296,13 +1296,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 12.86, z: -20}
+  m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
+  m_LocalPosition: {x: 0, y: 26.66, z: -8.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1372,7 +1372,7 @@ Transform:
   m_GameObject: {fileID: 341223821}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.7138582, y: 23.75, z: -7.52}
+  m_LocalPosition: {x: -1.7138582, y: 18.94, z: -5.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2655,7 +2655,7 @@ Transform:
   m_GameObject: {fileID: 807979497}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.7138582, y: -2.7999992, z: -4.0000005}
+  m_LocalPosition: {x: 1.7138582, y: -2.7999992, z: -4}
   m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2681,7 +2681,7 @@ MonoBehaviour:
   alignment: 1
   allowCardRepositioning: 1
   cardSpacing: 3
-  cardScreenYPosition: -12.5
+  cardScreenYPosition: -10.4
   flipCards: 0
   maxCardRotation: -16
   maxHeightDisplacement: 1
@@ -3651,8 +3651,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231747532}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31570667, y: -0, z: -0, w: 0.9488569}
-  m_LocalPosition: {x: -7.61, y: 5.33, z: -10.65}
+  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
+  m_LocalPosition: {x: -9.1, y: 11.75, z: -1.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3662,7 +3662,7 @@ Transform:
   - {fileID: 1220633781}
   - {fileID: 37283049}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 36.807, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}
 --- !u!1001 &1240470826
 PrefabInstance:
   m_ObjectHideFlags: 0
