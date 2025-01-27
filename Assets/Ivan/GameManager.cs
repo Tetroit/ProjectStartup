@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -12,6 +13,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     static GameManager _instance;
     public static GameManager instance => _instance;
+
+    public UnityEvent<GameState> OnGameStateChange => _stateMachine.OnGameStateChange;
+
+    [SerializeField]
+    StateMachine _stateMachine;
+    public StateMachine StateMachine { get; private set; }
+
+    public GameState currentState => _stateMachine.currentState;
 
     void Awake()
     {
@@ -48,7 +57,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
+        _stateMachine.SwitchState(_stateMachine.defaultState);
     }
     /// <summary>
     /// Restarts the game
@@ -61,8 +70,12 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
-    public void SwitchScene(string sceneName)
+    public void SwitchScene(string sceneName, GameState gameState = null)
     {
         SceneManager.LoadScene(sceneName);
+        if (gameState != null)
+            _stateMachine.SwitchState(gameState);
+        else
+            _stateMachine.SwitchState(_stateMachine.defaultState);
     }
 }
