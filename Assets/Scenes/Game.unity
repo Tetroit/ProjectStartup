@@ -449,6 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: 2
 --- !u!65 &108195559
@@ -571,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: 4
 --- !u!65 &167914470
@@ -693,6 +695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: 64
 --- !u!65 &218077269
@@ -815,6 +818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 1
   duplicating: 1
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: BracketOpen
 --- !u!65 &220770836
@@ -1483,6 +1487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: Plus
 --- !u!65 &376364559
@@ -1806,6 +1811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 402824952}
   - component: {fileID: 402824953}
+  - component: {fileID: 402824954}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1822,7 +1828,7 @@ Transform:
   m_GameObject: {fileID: 402824951}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.044107, y: 5.2256985, z: -28.802713}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1840,6 +1846,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77973d0a53c9d244da2716163ea52963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateMachine: {fileID: 402824954}
+--- !u!114 &402824954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402824951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a815b413a8b0249b294fe901df35c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentStateIndex: 0
+  _defaultStateIndex: 1
+  _states:
+  - {fileID: 11400000, guid: bb62bafce9640d846969d0fdf197f36c, type: 2}
+  - {fileID: 11400000, guid: cb665a53134d3ee4aba3580a7de1ba6e, type: 2}
+  OnGameStateChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &426635705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,6 +2097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 1
   duplicating: 1
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: BracketClose
 --- !u!65 &482113697
@@ -3590,6 +3618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: 10
 --- !u!65 &1227170436
@@ -3696,6 +3725,7 @@ MonoBehaviour:
   inventoryArea: {fileID: 1450918143}
   equationArea: {fileID: 1220633778}
   equationDisplay: {fileID: 288976127}
+  allowInteraction: 1
 --- !u!4 &1231747534
 Transform:
   m_ObjectHideFlags: 0
@@ -4606,6 +4636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDestructable: 0
   duplicating: 0
+  isInteractable: 1
   layout: {fileID: 0}
   elementName: Sqrt
 --- !u!65 &1992285043

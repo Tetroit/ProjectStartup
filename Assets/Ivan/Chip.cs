@@ -14,6 +14,7 @@ public class Chip : MonoBehaviour
     [SerializeField]
     public bool selfDestructable = false;
     public bool duplicating = false;
+    public bool isInteractable = true;
 
     public AutoLayout layout;
 
@@ -62,7 +63,7 @@ public class Chip : MonoBehaviour
 
     void OnClick()
     {
-        if (chipManager.selected == null)
+        if (chipManager.selected == null && isInteractable)
         {
             if (duplicating)
             {
