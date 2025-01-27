@@ -4,6 +4,7 @@ using System.Linq;
 using config;
 using DefaultNamespace;
 using events;
+using Unity.Burst.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -52,6 +53,9 @@ public class CardContainer : MonoBehaviour
     private List<CardWrapper> cards = new();
 
     private CardWrapper currentDraggedCard;
+
+    [SerializeField]
+    private GameObject colliderPlane;
 
     private void Start()
     {
@@ -127,10 +131,21 @@ public class CardContainer : MonoBehaviour
     private void OnCardDragStart(CardWrapper card)
     {
         currentDraggedCard = card;
+        colliderPlane.SetActive(true);
     }
 
     public void OnCardDragEnd(CardWrapper card)
     {
+        colliderPlane.SetActive(false);
+
+        if(!cards.Contains(card))
+        {
+            cards.Add(card);
+            card.transform.SetParent(transform, true);
+            StartCoroutine(SmoothMoveToHand(card.transform, transform)); 
+            return;
+        }
+
         if(currentDraggedCard != card)
         {
             return;
@@ -139,12 +154,14 @@ public class CardContainer : MonoBehaviour
         int slotLayerMask = LayerMask.GetMask("Slot");
         Vector3 mousePosition = Input.mousePosition;
         Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
-        if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
+        if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
         {
             Vector3 slotPosition = hit.point;
-            eventsConfig?.OnCardPlayed?.Invoke(new CardPlayed(currentDraggedCard));
+            //Remove this and trigger it from a button (End turn)
+            eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
             currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
             StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
+            eventsConfig.RaiseOnCardPlayed(new CardPlayed(card));
         }
 
         currentDraggedCard = null;
@@ -152,7 +169,7 @@ public class CardContainer : MonoBehaviour
 
     private IEnumerator SmoothMoveToSlot(Transform cardTransform, Transform slotTransform)
     {
-        float duration = 0.3f; 
+        float duration = 0.3f;
         float elapsedTime = 0f;
 
         Vector3 startPos = cardTransform.localPosition;
@@ -175,9 +192,41 @@ public class CardContainer : MonoBehaviour
         }
     }
 
+    private IEnumerator SmoothMoveToHand(Transform cardTransform, Transform slotTransform)
+    {
+        float duration = 0.3f;
+        float elapsedTime = 0f;
+
+        Vector3 startPos = cardTransform.localPosition;
+        Quaternion startRot = cardTransform.localRotation;
+        Vector3 startScale = cardTransform.localScale;
+
+        Vector3 endPos = new Vector3(0, 0, -0.3f);
+        Quaternion endRot = new Quaternion(0, 0, 0, 0);
+        Vector3 endScale = new Vector3(2, 3, 0);
+
+        while(elapsedTime <= duration)
+        {
+            float t = elapsedTime / duration;
+            cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
+            cardTransform.localRotation = Quaternion.Lerp(startRot, endRot, t);
+            cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        CardWrapper card = cardTransform.GetComponent<CardWrapper>();
+        if(card != null)
+        {
+            card.transform.SetParent(transform, true);
+            eventsConfig.OnCardPlayed += card.OnCardPlayed;
+        }
+    }
+
     private void UpdateCards()
     {
-        if(base.transform.childCount != cards.Count)
+        if(transform.childCount != cards.Count)
         {
             InitCards();
         }
@@ -209,15 +258,19 @@ public class CardContainer : MonoBehaviour
         }
     }
 
+
+
     private void UpdateCardOrder()
     {
         //Allows cards to be rearranged in the container.
         if(!allowCardRepositioning || currentDraggedCard == null) return;
 
+        var originalCardIdx = cards.IndexOf(currentDraggedCard);
+        if(originalCardIdx == -1) return;
+
         // Counts how many cards have their x position less than the dragged card.
         var newCardIdx = cards.Count(card => currentDraggedCard.transform.position.x < card.transform.position.x);
         //Finds the current position of the dragged card in the list.
-        var originalCardIdx = cards.IndexOf(currentDraggedCard);
         if(newCardIdx != originalCardIdx)
         {
             cards.RemoveAt(originalCardIdx);
@@ -283,8 +336,6 @@ public class CardContainer : MonoBehaviour
         card.OnCardStartDragStarted -= OnCardDragStart;
         card.OnCardDragEnded -= OnCardDragEnd;
         cards.Remove(card);
-        //eventsConfig.OnCardDestroy?.Invoke(new CardDestroy(card));
-        //Destroy(card.gameObject);
     }
 
     private bool IsCursorInPlayArea(RectTransform slot)

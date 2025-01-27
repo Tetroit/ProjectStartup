@@ -26,7 +26,7 @@ public class CardWrapper : MonoBehaviour
 
     private bool isDragged;
 
-    private bool isCardPlayed;
+    public bool isCardPlayed;
 
     private int xDeg = 75;
 
@@ -58,19 +58,19 @@ public class CardWrapper : MonoBehaviour
     {
         this.animationSpeedConfig = animationSpeedConfig;
         this.eventsConfig = eventsConfig;
-        eventsConfig?.OnCardPlayed.AddListener(OnCardPlayed);
+        eventsConfig.OnCardPlayed += OnCardPlayed;
         this.currentDraggedCard = currentDraggedCard;
     }
 
-    private void OnCardPlayed(CardPlayed card)
+    public void OnCardPlayed(CardPlayed card)
     {
         if(card.card != this)
         {
             return;
         }
 
-        
-        eventsConfig?.OnCardPlayed.RemoveListener(OnCardPlayed);
+
+        eventsConfig.OnCardPlayed -= OnCardPlayed;
         isCardPlayed = true;
     }
 
@@ -121,6 +121,7 @@ public class CardWrapper : MonoBehaviour
 
     private void OnMouseDown()
     {
+        
         if(Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;
@@ -129,9 +130,10 @@ public class CardWrapper : MonoBehaviour
             {
                 Debug.Log("Object: " + hit.collider.gameObject);
                 dragStartPos = hit.point - transform.position;
+                isCardPlayed = false;
                 isDragged = true;
                 OnCardStartDragStarted?.Invoke(this);
-                eventsConfig?.OnCardClick?.Invoke(new CardClick(this));
+                eventsConfig?.RaiseOnCardClick(new CardClick(this));
             }
         }
     }
@@ -140,6 +142,6 @@ public class CardWrapper : MonoBehaviour
     {
         isDragged = false;
         OnCardDragEnded?.Invoke(this);
-        eventsConfig?.OnCardRelease?.Invoke(new CardRelease(this));
+        eventsConfig?.RaiseCardRelease(new CardRelease(this));
     }
 }

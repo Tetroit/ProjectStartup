@@ -1,3 +1,5 @@
+using config;
+using events;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +18,9 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     public List<Enemy> picked;
     public Enemy prefab;
 
+    [SerializeField]
+    private EventsConfig eventConfig;
+
     [ExecuteAlways]
     void OnDrawGizmos()
     {
@@ -27,11 +32,21 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         }
     }
 
+    private void Awake()
+    {
+        eventConfig.OnCardPlayed += OnCardPlayed;
+    }
+
     private void Start()
     {
         SpawnEnemy(prefab);
         SpawnEnemy(prefab);
         SpawnEnemy(prefab);
+    }
+
+    private void OnDestroy()
+    {
+        eventConfig.OnCardPlayed += OnCardPlayed;
     }
     private void Update()
     {
@@ -60,9 +75,16 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     }
     public void PickEnemy()
     {
-        picked.Clear();
+        //picked.Clear();
         for (int i = 0; i < enemies.Count; i++)
         {
+            if(picked.Contains(enemies[i]))
+            {
+                //or we can do this instead
+                //picked.Remove(enemies[i]);
+                return;
+            }
+
             Collider collider = enemies[i].GetComponent<Collider>();
             if (collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f))
             {
@@ -78,11 +100,11 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
             picked.Add(enemy);
         }
     }
-    public void OnCardPlayed(events.CardPlayed effect)
+    public void OnCardPlayed(CardPlayed card)
     {
         foreach (Enemy enemy in picked)
         {
-            effect.card.CardEffect.ApplyEffect(enemy, 1);
+            card.card.CardEffect.ApplyEffect(enemy, 5);
         }
     }
 }

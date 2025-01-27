@@ -5,19 +5,34 @@ using UnityEngine.Events;
 
 namespace config
 {
-    [Serializable]
-    public class EventsConfig
+    public class EventsConfig : MonoBehaviour
     {
-        [SerializeField]
-        public UnityEvent<CardPlayed> OnCardPlayed;
+        public event Action<CardPlayed> OnCardPlayed;
 
-        [SerializeField]
-        public UnityEvent<CardClick> OnCardClick;
+        public event Action<CardClick> OnCardClick;
 
-        [SerializeField]
-        public UnityEvent<CardRelease> OnCardRelease;
+        public event Action<CardRelease> OnCardRelease;
 
-        [SerializeField]
-        public UnityEvent<CardDestroy> OnCardDestroy;
+        public event Action<CardDestroy> OnCardDestroy;
+
+        public void RaiseOnCardPlayed(CardPlayed cardPlayed)
+        {
+            OnCardPlayed?.Invoke(cardPlayed);
+        }
+
+        public void RaiseOnCardClick(CardClick cardClick)
+        {
+            OnCardClick?.Invoke(cardClick);
+        }
+
+        public void RaiseCardRelease(CardRelease cardRelease)
+        {
+            OnCardRelease?.Invoke(cardRelease);
+        }
+
+        public void RaiseCardDestroy(CardDestroy cardDestroy)
+        {
+            OnCardDestroy?.Invoke(cardDestroy);
+        }
     }
 }

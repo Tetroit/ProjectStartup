@@ -155,6 +155,7 @@ MonoBehaviour:
   previewScaleMultiplier: 1.2
   previewForwardOffset: 0.5
   previewArea: {fileID: 0}
+  eventsConfig: {fileID: 0}
 --- !u!4 &15588339
 Transform:
   m_ObjectHideFlags: 0
@@ -220,9 +221,9 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -5}
   - {x: 3, y: 0, z: -4}
   enemies: []
-  picked:
-  - {fileID: 0}
+  picked: []
   prefab: {fileID: 1435139994804944919, guid: 43725278fea0e8345a50f5989bbfab8d, type: 3}
+  eventConfig: {fileID: 1045021901}
 --- !u!1 &37283048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,31 +1772,8 @@ MonoBehaviour:
     - {fileID: 1002007096}
     - {fileID: 1776719204}
     destroyOnPlay: 1
-  eventsConfig:
-    OnCardPlayed:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardClick:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardRelease:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 15588338}
-          m_TargetAssemblyTypeName: demo.ClonePreviewManager, Assembly-CSharp
-          m_MethodName: OnCardRelease
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnCardDestroy:
-      m_PersistentCalls:
-        m_Calls: []
+  eventsConfig: {fileID: 0}
+  colliderPlane: {fileID: 0}
 --- !u!1 &402824951
 GameObject:
   m_ObjectHideFlags: 0
@@ -2750,43 +2728,8 @@ MonoBehaviour:
     - {fileID: 592620998}
     - {fileID: 426635705}
     destroyOnPlay: 0
-  eventsConfig:
-    OnCardPlayed:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardClick:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1420150429}
-          m_TargetAssemblyTypeName: demo.ClonePreviewManager, Assembly-CSharp
-          m_MethodName: OnCardClick
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnCardRelease:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1420150429}
-          m_TargetAssemblyTypeName: demo.ClonePreviewManager, Assembly-CSharp
-          m_MethodName: OnCardRelease
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnCardDestroy:
-      m_PersistentCalls:
-        m_Calls: []
+  eventsConfig: {fileID: 1045021901}
+  colliderPlane: {fileID: 1398058198}
 --- !u!1001 &867930624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3205,6 +3148,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002007095}
   m_CullTransparentMesh: 1
+--- !u!1 &1045021900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045021902}
+  - component: {fileID: 1045021901}
+  m_Layer: 0
+  m_Name: Events
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1045021901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045021900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0adf92e8ba2a04e85b0be51ced6689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1045021902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045021900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.655836, y: 0.39574924, z: -1.5365767}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1064325716
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,6 +3980,7 @@ MonoBehaviour:
   previewScaleMultiplier: 2.5
   previewForwardOffset: 2
   previewArea: {fileID: 89341358}
+  eventsConfig: {fileID: 1045021901}
 --- !u!1 &1450918143
 GameObject:
   m_ObjectHideFlags: 0
@@ -4907,3 +4895,4 @@ SceneRoots:
   - {fileID: 1788314777}
   - {fileID: 911317644}
   - {fileID: 24923426}
+  - {fileID: 1045021902}

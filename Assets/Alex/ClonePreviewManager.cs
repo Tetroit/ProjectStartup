@@ -29,6 +29,21 @@ namespace demo
 
         private CardWrapper currentCard;
 
+        [SerializeField]
+        private EventsConfig eventsConfig;
+
+        private void Awake()
+        {
+            eventsConfig.OnCardClick += OnCardClick;
+            eventsConfig.OnCardRelease += OnCardRelease;
+        }
+
+        private void OnDestroy()
+        {
+            eventsConfig.OnCardClick -= OnCardClick;
+            eventsConfig.OnCardRelease -= OnCardRelease;
+        }
+
         private void Update()
         {
             if (currentCard != null)

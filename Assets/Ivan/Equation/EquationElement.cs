@@ -31,8 +31,8 @@ namespace Equation
         public static EquationElement Get(string str, params object[] args)
         {
             Type type = Type.GetType("Equation." + str);
-            Debug.Log(str);
-            Debug.Log(type);
+/*            Debug.Log(str);
+            Debug.Log(type);*/
             if (type != null && typeof(EquationElement).IsAssignableFrom(type))
                 return Activator.CreateInstance(type, args) as EquationElement;
             else
