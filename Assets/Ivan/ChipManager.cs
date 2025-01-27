@@ -1,6 +1,9 @@
 using Equation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,12 +16,15 @@ public class ChipManager : MonoBehaviour
     GameObject inventoryArea;
     [SerializeField]
     GameObject equationArea;
+    [SerializeField]
+    ChipsPool pool;
+    [SerializeField]
+    GameObject chipPrefab;
 
     [SerializeField]
     TextMeshProUGUI equationDisplay;
     public AutoLayout inventoryLayout { get; private set; }
     public AutoLayout equationLayout { get; private set; }
-
 
     List<Chip> chips = new List<Chip>();
 
@@ -27,7 +33,9 @@ public class ChipManager : MonoBehaviour
 
     Formula formula = new Formula();
 
-    public bool allowInteraction = true;
+    bool _allowInteraction = true;
+
+    public bool allowInteraction => _allowInteraction;
 
     void Awake()
     {
@@ -38,15 +46,34 @@ public class ChipManager : MonoBehaviour
         else if (instance != this) Destroy(gameObject);
     }
 
-    public IEnumerable GetInventoryChips()
+    public IEnumerable<Chip> GetInventoryChips()
     {
-        return null;
+        return inventoryLayout.GetObjects<Chip>();
     }
-    public IEnumerable GetEquationChips()
+    public IEnumerable<EquationElement> GetInventoryElements()
     {
-        return null;
+        Chip[] inventoryChips = inventoryLayout.GetObjects<Chip>().ToArray();
+        EquationElement[] inventoryElements = new EquationElement[inventoryChips.Length];
+        for (int i=0; i<inventoryElements.Length; i++)
+        {
+            inventoryElements[i] = inventoryChips[i].element;
+        }
+        return inventoryElements;
     }
+    public IEnumerable<Chip> GetEquationChips()
+    {
+        return equationLayout.GetObjects<Chip>();
+    }
+    public GameObject CreateNewChip(EquationElement element, AutoLayout layout = null)
+    {
+        GameObject instance = Instantiate(chipPrefab);
+        Chip chip = instance.GetComponent<Chip>();
+        chip.element = element;
 
+        if (layout != null)
+            AddToLayout(chip, layout);
+        return instance;
+    }
     public void OnEnable()
     {
         OnStateChanged(GameManager.instance.currentState);
@@ -86,6 +113,10 @@ public class ChipManager : MonoBehaviour
                     Deselect();
             }
         }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Play();
+        }
     }
     [ExecuteAlways]
     private void OnDrawGizmos()
@@ -107,10 +138,13 @@ public class ChipManager : MonoBehaviour
                 chip.layout = equationLayout;
         }
     }
-    public void RemoveChip(Chip chip)
+    public void RemoveChip(Chip chip, bool destroy = false)
     {
         if (chips.Contains(chip))
             chips.Remove(chip);
+
+        if (destroy)
+            Destroy(chip.gameObject);
     }
     public void Select(Chip chip)
     {
@@ -188,9 +222,9 @@ public class ChipManager : MonoBehaviour
         chip.layout = layout;
 
         if (id == -1)
-            layout.AddObject(selected.gameObject, true);
+            layout.AddObject(chip.gameObject, true);
         else
-            layout.AddObject(selected.gameObject, id, true);
+            layout.AddObject(chip.gameObject, id, true);
 
     }
     void UpdateEquation()
@@ -206,6 +240,7 @@ public class ChipManager : MonoBehaviour
 
     void OnStateChanged(GameState state)
     {
+        Debug.Log("Switching state to " + state);
         if (state.allowChipInteraction && !allowInteraction)
             EnableInteraction();
         if (!state.allowChipInteraction && allowInteraction)
@@ -214,6 +249,7 @@ public class ChipManager : MonoBehaviour
 
     public void DisableInteraction()
     {
+        _allowInteraction = false;
         if (selected != null)
             AddBack(selected);
 
@@ -229,9 +265,41 @@ public class ChipManager : MonoBehaviour
 
     public void EnableInteraction()
     {
+        _allowInteraction = true;
         foreach (Chip chip in chips)
         {
             chip.isInteractable = true;
+        }
+    }
+    public void Play()
+    {
+        //SEND RESULT HERE
+        //to be implemented
+
+        //remove equation
+        Chip[] equationChips = GetEquationChips().ToArray();
+        for (int i = 0; i<equationChips.Length; i++)
+        {
+            Chip chip = equationChips[i];
+            RemoveChip(chip);
+            equationLayout.RemoveItem(0);
+        }
+        foreach (Chip chip in equationChips)
+        {
+            Debug.Log("Deleting chip");
+            Destroy(chip.gameObject);
+        }
+
+        formula.Clear();
+        UpdateEquation();
+
+        //top up the inventory
+
+        for (int i = 0; i<equationChips.Length; i++)
+        {
+            IEnumerable<EquationElement> IE = GetInventoryElements();
+            EquationElement element = pool.GetAny(IE, 0.5f);
+            CreateNewChip(element, inventoryLayout);
         }
     }
 }
