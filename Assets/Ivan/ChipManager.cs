@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class ChipManager : MonoBehaviour
 {
@@ -29,6 +27,8 @@ public class ChipManager : MonoBehaviour
 
     Formula formula = new Formula();
 
+    public bool allowInteraction = true;
+
     void Awake()
     {
         if (instance == null)
@@ -45,6 +45,16 @@ public class ChipManager : MonoBehaviour
     public IEnumerable GetEquationChips()
     {
         return null;
+    }
+
+    public void OnEnable()
+    {
+        OnStateChanged(GameManager.instance.currentState);
+        GameManager.instance.OnGameStateChange.AddListener(OnStateChanged);
+    }
+    public void OnDisable()
+    {
+        GameManager.instance.OnGameStateChange.RemoveListener(OnStateChanged);
     }
 
     [ExecuteInEditMode]
@@ -192,5 +202,36 @@ public class ChipManager : MonoBehaviour
             equationDisplay.color = Color.red;
 
         equationDisplay.text = formula.ToString() + (valid ? (" = " + formula.Calculate()) : "");
+    }
+
+    void OnStateChanged(GameState state)
+    {
+        if (state.allowChipInteraction && !allowInteraction)
+            EnableInteraction();
+        if (!state.allowChipInteraction && allowInteraction)
+            DisableInteraction();
+    }
+
+    public void DisableInteraction()
+    {
+        if (selected != null)
+            AddBack(selected);
+
+        inventoryLayout.DisableShifting();
+        equationLayout.DisableShifting();
+        selected = null;
+
+        foreach (Chip chip in chips)
+        {
+            chip.isInteractable = false;
+        }
+    }
+
+    public void EnableInteraction()
+    {
+        foreach (Chip chip in chips)
+        {
+            chip.isInteractable = true;
+        }
     }
 }
