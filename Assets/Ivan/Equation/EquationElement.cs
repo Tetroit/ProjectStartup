@@ -40,10 +40,6 @@ namespace Equation
         public static EquationElement Get(string str, params object[] args)
         {
             Type type = Type.GetType("Equation." + str);
-<<<<<<< Updated upstream
-/*            Debug.Log(str);
-            Debug.Log(type);*/
-=======
             if (type != null && typeof(EquationElement).IsAssignableFrom(type))
                 return Activator.CreateInstance(type, args) as EquationElement;
             else
@@ -52,7 +48,6 @@ namespace Equation
         public static EquationElement Get(OperationsNames name, params object[] args)
         {
             Type type = EquationElement.toTypes[name];
->>>>>>> Stashed changes
             if (type != null && typeof(EquationElement).IsAssignableFrom(type))
                 return Activator.CreateInstance(type, args) as EquationElement;
             else

@@ -18,14 +18,11 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     public List<Enemy> picked;
     public Enemy prefab;
 
-<<<<<<< Updated upstream
     [SerializeField]
     private EventsConfig eventConfig;
-=======
     bool _allowInteraction = true;
 
     public bool allowInteraction => _allowInteraction;
->>>>>>> Stashed changes
 
     [ExecuteAlways]
     void OnDrawGizmos()
