@@ -2640,7 +2640,7 @@ MonoBehaviour:
     - {fileID: 426635705}
     destroyOnPlay: 0
   eventsConfig: {fileID: 1045021901}
-  colliderPlane: {fileID: 1398058198}
+  colliderPlane: {fileID: 0}
 --- !u!1001 &867930624
 PrefabInstance:
   m_ObjectHideFlags: 0
