@@ -5,6 +5,8 @@ using config;
 using DefaultNamespace;
 using events;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor.Build.Reporting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -49,6 +51,12 @@ public class CardContainer : MonoBehaviour
     [SerializeField]
     private EventsConfig eventsConfig;
 
+    [Header("Card Prefabs")]
+    [SerializeField]
+    private List<GameObject> cardPrefabs;
+
+    [SerializeField]
+    private Transform cardSpawnPoint;
 
     private List<CardWrapper> cards = new();
 
@@ -142,8 +150,7 @@ public class CardContainer : MonoBehaviour
         {
             cards.Add(card);
             card.transform.SetParent(transform, true);
-            StartCoroutine(SmoothMoveToHand(card.transform, transform)); 
-            return;
+            StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
         if(currentDraggedCard != card)
@@ -161,7 +168,6 @@ public class CardContainer : MonoBehaviour
             eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
             currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
             StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
-            eventsConfig.RaiseOnCardPlayed(new CardPlayed(card));
         }
 
         currentDraggedCard = null;
@@ -202,7 +208,7 @@ public class CardContainer : MonoBehaviour
         Vector3 startScale = cardTransform.localScale;
 
         Vector3 endPos = new Vector3(0, 0, -0.3f);
-        Quaternion endRot = new Quaternion(0, 0, 0, 0);
+        Quaternion endRot = Quaternion.Euler(75, 0f, 0f);
         Vector3 endScale = new Vector3(2, 3, 0);
 
         while(elapsedTime <= duration)
@@ -249,11 +255,11 @@ public class CardContainer : MonoBehaviour
         {
             if(flipCards == true)
             {
-                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 50 + i;
+                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 + i;
 
             } else
             {
-                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 50 - i;
+                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 - i;
             }
         }
     }
@@ -305,11 +311,15 @@ public class CardContainer : MonoBehaviour
         // Set all children's positions to be evenly spaced out
         var currentX = transform.position.x - scaledWidth / 2f;
 
+        const float step = 0.01f;
+        float totalOffset = step * cards.Count;
+        float currentY = totalOffset / 2f;
         foreach(CardWrapper child in cards)
         {
             var adjustedChildWidth = cardSpacing * child.transform.lossyScale.x;
-            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y, cardScreenYPosition);
+            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y + currentY, cardScreenYPosition);
             currentX += adjustedChildWidth + distanceBetweenChildren;
+            currentY -= step;
         }
     }
 
@@ -336,6 +346,18 @@ public class CardContainer : MonoBehaviour
         card.OnCardStartDragStarted -= OnCardDragStart;
         card.OnCardDragEnded -= OnCardDragEnd;
         cards.Remove(card);
+    }
+
+    public void DrawCard()
+    {
+        GameObject randomCardPrefab = cardPrefabs[Random.Range(0, cardPrefabs.Count)];
+        GameObject newCard = Instantiate(randomCardPrefab, cardSpawnPoint.position, Quaternion.Euler(75, 0f, 0f), transform);
+        CardWrapper wrapper = newCard.AddComponent<CardWrapper>();
+
+        wrapper.Initialize(animationSpeedConfig, eventsConfig, currentDraggedCard);
+        wrapper.OnCardStartDragStarted += OnCardDragStart;
+        wrapper.OnCardDragEnded += OnCardDragEnd;
+        cards.Add(wrapper);
     }
 
     private bool IsCursorInPlayArea(RectTransform slot)

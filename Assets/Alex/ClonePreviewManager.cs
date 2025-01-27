@@ -89,7 +89,7 @@ namespace demo
             clone.transform.rotation = Quaternion.Euler(xDeg, card.transform.localRotation.y, 0f);
 
             Renderer renderer = clone.GetComponent<Renderer>();
-            renderer.material.renderQueue = (int)RenderQueue.GeometryLast + 100;
+            renderer.material.renderQueue = (int)RenderQueue.GeometryLast + 200;
 
             StripCloneComponents(clone);
             previews.Add(card, clone);
