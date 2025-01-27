@@ -7,8 +7,7 @@ namespace Equation
     [System.Serializable]
     public class Number : EquationElement
     {
-        [SerializeField]
-        int value;
+        public int value;
         public Number(int value) : base(Type.NUMBER)
         {
             this.value = value;

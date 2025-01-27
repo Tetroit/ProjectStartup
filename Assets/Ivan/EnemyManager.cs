@@ -20,6 +20,9 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
 
     [SerializeField]
     private EventsConfig eventConfig;
+    bool _allowInteraction = true;
+
+    public bool allowInteraction => _allowInteraction;
 
     [ExecuteAlways]
     void OnDrawGizmos()
@@ -50,7 +53,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _allowInteraction)
         {
             PickEnemy();
         }
@@ -106,5 +109,15 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         {
             card.card.CardEffect.ApplyEffect(enemy, 5);
         }
+    }
+
+    public void Enableinteraction()
+    {
+        _allowInteraction = true;
+    }
+    public void DisableInteraction()
+    {
+        picked.Clear();
+        _allowInteraction = false;
     }
 }

@@ -69,6 +69,10 @@ namespace Equation
                 }
             }
         }
+        public void Clear()
+        {
+            elements.Clear();
+        }
         public IEnumerable GetElements()
         {
             return elements;

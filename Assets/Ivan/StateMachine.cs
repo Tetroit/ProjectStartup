@@ -11,7 +11,6 @@ public class StateMachine : MonoBehaviour
     int _defaultStateIndex = 0;
     public GameState currentState => _states[_currentStateIndex];
     public GameState defaultState => _states[_defaultStateIndex];
-    public GameState animationState => _states[0];
 
     [SerializeField]
     List<GameState> _states;
@@ -34,5 +33,11 @@ public class StateMachine : MonoBehaviour
         else
             SwitchState(_states.IndexOf(newState));
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O)) 
+            SwitchState(0);
+        if (Input.GetKeyDown(KeyCode.P))
+            SwitchState(1);
+    }
 }

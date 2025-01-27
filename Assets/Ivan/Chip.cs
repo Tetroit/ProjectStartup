@@ -21,14 +21,18 @@ public class Chip : MonoBehaviour
     ChipManager chipManager;
     Collider hitBox;
 
-    [SerializeField]
-    string elementName = "Number";
+    public string elementName = "Number";
 
     [SerializeField]
     object aboba;
 
     EquationElement equationElement = null;
-    public EquationElement element => equationElement;
+    public EquationElement element
+    {
+        get { return equationElement; }
+        set { equationElement = value; 
+            elementName = value.GetType().Name; }
+    }
 
     private void OnEnable()
     {

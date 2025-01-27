@@ -42,8 +42,19 @@ public class AutoLayout : MonoBehaviour
     }
 
     List<LayoutInfo> items = new List<LayoutInfo>();
+    public int Count => items.Count;
 
-
+    public IEnumerable<T> GetObjects<T>()
+    {
+        List<T> list = new List<T>();
+        for (int i = 0; i < Count; i++)
+        {
+            T item = items[i].obj.GetComponent<T>();
+            if (item != null)
+                list.Add(item);
+        }
+        return list;
+    }
     private void Start()
     {
         for (int i = 0; i < grid.transform.childCount; i++)
@@ -210,6 +221,9 @@ public class AutoLayout : MonoBehaviour
         float elapsed = 0;
         while (elapsed < animTime)
         {
+            if (go == null)
+                yield break;
+
             elapsed += Time.deltaTime;
 
             float fac = (elapsed / animTime);
