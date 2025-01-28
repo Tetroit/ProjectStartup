@@ -140,7 +140,6 @@ public class CardContainer : MonoBehaviour
     {
         currentDraggedCard = card;
         colliderPlane.SetActive(true);
-        currentDraggedCard.transform.SetParent(transform, true);
     }
 
     public void OnCardDragEnd(CardWrapper card)
@@ -149,10 +148,10 @@ public class CardContainer : MonoBehaviour
 
         if (!cards.Contains(card))
         {
-            //If the card is coming from the slot
             cards.Add(card);
+            card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
-            StartCoroutine(SmoothMoveToHand(currentDraggedCard.transform, transform));
+            StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
         if (currentDraggedCard != card)
@@ -196,11 +195,14 @@ public class CardContainer : MonoBehaviour
             float t = elapsedTime / duration;
             cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
             cardTransform.localRotation = Quaternion.Lerp(startRot, endRot, t);
-            cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
+            //cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        cardTransform.localPosition = endPos;
+        cardTransform.localRotation = endRot;
+        //cardTransform.localScale = endScale;
     }
 
     private IEnumerator SmoothMoveToHand(Transform cardTransform, Transform slotTransform)
@@ -214,18 +216,22 @@ public class CardContainer : MonoBehaviour
 
         Vector3 endPos = new Vector3(0, 0, 3);
         Quaternion endRot = Quaternion.Euler(40, 0f, 0f);
-        Vector3 endScale = new Vector3(2, 3, 0);
+        Vector3 endScale = Vector3.one;
 
         while (elapsedTime <= duration)
         {
             float t = elapsedTime / duration;
             cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
             cardTransform.localRotation = Quaternion.Lerp(startRot, endRot, t);
-            cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
+            //cardTransform.localScale = Vector3.Lerp(startScale, endScale, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        cardTransform.localPosition = endPos;
+        cardTransform.localRotation = endRot;
+        //cardTransform.localScale = endScale;
 
         CardWrapper card = cardTransform.GetComponent<CardWrapper>();
         if (card != null)

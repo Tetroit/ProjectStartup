@@ -32,7 +32,7 @@ public class CardWrapper : MonoBehaviour
 
     private void Awake()
     {
-        var renderer = GetComponent<Renderer>();
+        var renderer = GetComponentInChildren<Renderer>();
         var mat = renderer.material;
         Material = new Material(mat);
         renderer.material = Material;
