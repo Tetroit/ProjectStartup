@@ -59,6 +59,7 @@ public class CardWrapper : MonoBehaviour
         this.animationSpeedConfig = animationSpeedConfig;
         this.eventsConfig = eventsConfig;
         eventsConfig.OnCardPlayed += OnCardPlayed;
+        eventsConfig.OnCardRemove += OnCardRemoved;
         this.currentDraggedCard = currentDraggedCard;
     }
 
@@ -69,9 +70,18 @@ public class CardWrapper : MonoBehaviour
             return;
         }
 
-          
         eventsConfig.OnCardPlayed -= OnCardPlayed;
         isCardPlayed = true;
+    }
+
+    public void OnCardRemoved(CardRemove card)
+    {
+        if(card.card != this)
+        {
+            return;
+        }
+
+        eventsConfig.OnCardRemove -= OnCardRemoved;
     }
 
     private void UpdatePosition()

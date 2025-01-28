@@ -151,6 +151,7 @@ public class CardContainer : MonoBehaviour
             cards.Add(card);
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
+            eventsConfig.RaiseCardRemove(new CardRemove(currentDraggedCard));
             //StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
@@ -205,7 +206,7 @@ public class CardContainer : MonoBehaviour
         //cardTransform.localScale = endScale;
     }
 
-    private IEnumerator SmoothMoveToHand(Transform cardTransform, Transform slotTransform)
+/*    private IEnumerator SmoothMoveToHand(Transform cardTransform, Transform slotTransform)
     {
         float duration = 0.3f;
         float elapsedTime = 0f;
@@ -239,7 +240,7 @@ public class CardContainer : MonoBehaviour
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
         }
-    }
+    }*/
 
     private void UpdateCards()
     {

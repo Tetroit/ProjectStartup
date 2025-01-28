@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
 
     private void OnDestroy()
     {
-        eventConfig.OnCardPlayed += OnCardPlayed;
+        eventConfig.OnCardPlayed -= OnCardPlayed;
     }
     private void Update()
     {
@@ -163,7 +163,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         cardContext = card.card;
         foreach (Enemy enemy in GetConnections(card.card))
         {
-            //card.card.CardEffect.ApplyEffect(enemy, 5);
+            //card.card.CardEffect.ApplyEffect(enemy, );
         }
     }
 

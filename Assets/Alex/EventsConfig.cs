@@ -13,7 +13,7 @@ namespace config
 
         public event Action<CardRelease> OnCardRelease;
 
-        public event Action<CardDestroy> OnCardDestroy;
+        public event Action<CardRemove> OnCardRemove;
 
         public void RaiseOnCardPlayed(CardPlayed cardPlayed)
         {
@@ -30,9 +30,9 @@ namespace config
             OnCardRelease?.Invoke(cardRelease);
         }
 
-        public void RaiseCardDestroy(CardDestroy cardDestroy)
+        public void RaiseCardRemove(CardRemove cardDestroy)
         {
-            OnCardDestroy?.Invoke(cardDestroy);
+            OnCardRemove?.Invoke(cardDestroy);
         }
     }
 }
