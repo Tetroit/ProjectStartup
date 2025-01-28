@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall and Floor Shader
-  m_Shader: {fileID: -6465566751694194690, guid: daa1f1b5c1bed50439cbe4e204e71ab0,
+  m_Name: Rope
+  m_Shader: {fileID: -6465566751694194690, guid: 9bcd277666bff2f4d97559377a90be60,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -40,11 +40,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _DiffuseTexture:
-        m_Texture: {fileID: 2800000, guid: ad80faa1eef74544fb794507cf7c3e99, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5f5f6f27414697a48947c4680551c86f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTexture:
-        m_Texture: {fileID: 2800000, guid: 752d2d41737c33840902f5618ae90730, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -65,14 +65,14 @@ Material:
     - _Frensel: 5
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
-    - _OutlineWidth: 7
+    - _OutlineWidth: 1.84
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ShadeSteps: 4
+    - _ShadeSteps: 12
     - _UseDiffuseTexture: 1
-    - _UseNormalTexture: 1
+    - _UseNormalTexture: 0
     m_Colors:
     - _Ambient: {r: 0, g: 0.16004416, b: 0.21568623, a: 0}
-    - _Diffuse: {r: 0.8349056, g: 0.96367913, b: 1, a: 0}
+    - _Diffuse: {r: 1, g: 1, b: 1, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

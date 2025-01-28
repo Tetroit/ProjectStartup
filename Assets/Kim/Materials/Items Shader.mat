@@ -65,7 +65,7 @@ Material:
     - _Frensel: 5
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
-    - _OutlineWidth: 1.84
+    - _OutlineWidth: 7
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ShadeSteps: 5
