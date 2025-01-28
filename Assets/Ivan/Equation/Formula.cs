@@ -72,6 +72,7 @@ namespace Equation
         public void Clear()
         {
             elements.Clear();
+            bracketOrder.Clear();
         }
         public IEnumerable GetElements()
         {
