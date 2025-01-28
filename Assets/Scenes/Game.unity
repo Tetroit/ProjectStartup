@@ -2767,14 +2767,14 @@ MonoBehaviour:
     destroyOnPlay: 0
   eventsConfig: {fileID: 1045021901}
   cardPrefabs:
-  - {fileID: 4129077660527682726, guid: c15090e43a3833349afb2bcc34ad558a, type: 3}
-  - {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db, type: 3}
-  - {fileID: 2972076792842072070, guid: 7d3663724c357cb43bee092d02197ff9, type: 3}
-  - {fileID: 6623480023403173421, guid: 6f5a216db6478c6448c018a85d1d0045, type: 3}
-  - {fileID: 7323486745798466329, guid: 47ab39b17a495db4d81b5edd01548f82, type: 3}
-  - {fileID: 581840655602648064, guid: 4d22f5dfa9fa7c84cb3b572ac74977b9, type: 3}
-  - {fileID: 179979814858671614, guid: ea1bd92e6b12b7d4f8a1ad91f94757d9, type: 3}
-  - {fileID: 179979814858671614, guid: ea1bd92e6b12b7d4f8a1ad91f94757d9, type: 3}
+  - {fileID: 6866206210825157177, guid: c15090e43a3833349afb2bcc34ad558a, type: 3}
+  - {fileID: 642732848315492155, guid: 49433a9bcc54abb45ad3e1196c48f82a, type: 3}
+  - {fileID: 8058004320351112757, guid: 8b30299861154d741b426e737b7cd647, type: 3}
+  - {fileID: 1759227956175987714, guid: 9c48a2aec1f2ef849a7c6d4567f8f721, type: 3}
+  - {fileID: 3847533330617026954, guid: 47ab39b17a495db4d81b5edd01548f82, type: 3}
+  - {fileID: 6246912456337117693, guid: 4d22f5dfa9fa7c84cb3b572ac74977b9, type: 3}
+  - {fileID: 8160883144990671302, guid: 0536981524ea94c48a670b7c8e9676ab, type: 3}
+  - {fileID: 1071230789820472581, guid: 8c96f688ef4205c488db538050cbc4b1, type: 3}
   cardSpawnPoint: {fileID: 1879930196}
   colliderPlane: {fileID: 1398058198}
 --- !u!1001 &867930624

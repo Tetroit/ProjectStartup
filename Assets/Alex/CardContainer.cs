@@ -262,18 +262,20 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsUILayers()
     {
-
         for (var i = 0; i < cards.Count; i++)
         {
+            int sortingOrderValue;
+
             if (flipCards == true)
             {
-                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 + i;
-
+                sortingOrderValue = (int)RenderQueue.GeometryLast + 100 + i;
             }
             else
-            {
-                cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 - i;
+            { 
+                sortingOrderValue = (int)RenderQueue.GeometryLast + 100 - i;
             }
+
+            cards[i].UpdateSortingOrder(sortingOrderValue);
         }
     }
 
@@ -326,13 +328,15 @@ public class CardContainer : MonoBehaviour
 
         const float step = 0.01f;
         float totalOffset = step * cards.Count;
-        float currentY = totalOffset / 2f;
+        float currentZ = totalOffset / 2f;
         foreach (CardWrapper child in cards)
         {
             var adjustedChildWidth = cardSpacing * child.transform.lossyScale.x;
-            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y + currentY, cardScreenYPosition);
+            Vector3 childForward = child.transform.rotation * Vector3.forward;
+            Vector3 forwardOffset = childForward * currentZ;
+            child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y, cardScreenYPosition) + forwardOffset;
             currentX += adjustedChildWidth + distanceBetweenChildren;
-            currentY -= step;
+            currentZ -= step;
         }
     }
 

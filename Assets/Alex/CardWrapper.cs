@@ -23,6 +23,7 @@ public class CardWrapper : MonoBehaviour
     private AnimationSpeedConfig animationSpeedConfig;
     private EventsConfig eventsConfig;
     private CardWrapper currentDraggedCard;
+    private Canvas cardCanvas;
 
     private bool isDragged;
 
@@ -38,6 +39,12 @@ public class CardWrapper : MonoBehaviour
         renderer.material = Material;
 
         CardEffect = GetComponent<CardEffect>();
+
+        cardCanvas = GetComponentInChildren<Canvas>();
+        if(cardCanvas != null)
+        {
+            cardCanvas.overrideSorting = true;
+        }
     }
 
     private void Start()
@@ -127,6 +134,16 @@ public class CardWrapper : MonoBehaviour
         var nextRotation = Mathf.Lerp(adjustedCurrent, adjustedTarget,
             animationSpeedConfig.rotation / newDelta * Time.deltaTime);
         transform.rotation = Quaternion.Euler(xDeg, 0, nextRotation);
+    }
+
+    public void UpdateSortingOrder(int sortingOrder)
+    {
+        if(cardCanvas != null)
+        {
+            //cardCanvas.sortingOrder = sortingOrder + 1; 
+        }
+
+        //Material.renderQueue = sortingOrder;
     }
 
     private void OnMouseDown()
