@@ -1,13 +1,12 @@
 using config;
 using events;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 public interface IEnemyManager
 {
-    public void PickEnemy();
+    public void EnemyClick();
     public void PickAll();
 }
 public class EnemyManager : MonoBehaviour, IEnemyManager
@@ -15,7 +14,12 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     public List<Vector3> spawnPoints = new List<Vector3>();
     public List<Enemy> enemies = new List<Enemy>();
 
-    public List<Enemy> picked;
+    //we attach a pin for each pair of enemy and card
+    [HideInInspector]
+    public Dictionary<(Enemy, CardWrapper), GameObject> pins = new Dictionary<(Enemy, CardWrapper), GameObject>();
+
+    public GameObject pinPrefab;
+
     public Enemy prefab;
 
     [SerializeField]
@@ -23,6 +27,14 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     bool _allowInteraction = true;
 
     public bool allowInteraction => _allowInteraction;
+
+    public UnityEvent<Enemy> OnEnemySelected;
+    public UnityEvent<Enemy> OnEnemyDeselected;
+    public UnityAction OnRequiredSelected;
+
+    CardWrapper cardContext;
+
+    public int targetCount = 2;
 
     [ExecuteAlways]
     void OnDrawGizmos()
@@ -55,7 +67,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     {
         if (Input.GetMouseButtonDown(0) && _allowInteraction)
         {
-            PickEnemy();
+            EnemyClick();
         }
     }
     public void SpawnEnemy(Enemy enemy)
@@ -76,48 +88,120 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         instance.transform.localPosition = nextSpawnpoint;
         enemies.Add(instance);
     }
-    public void PickEnemy()
+    public void EnemyClick()
     {
-        //picked.Clear();
+        if (cardContext == null)
+            return;
+        //DeselectAll();
         for (int i = 0; i < enemies.Count; i++)
         {
-            if(picked.Contains(enemies[i]))
-            {
-                //or we can do this instead
-                //picked.Remove(enemies[i]);
-                return;
-            }
-
             Collider collider = enemies[i].GetComponent<Collider>();
             if (collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f))
             {
-                picked.Add(enemies[i]);
-                return;
+                if (pins.Keys.Contains((enemies[i], cardContext)))
+                {
+                    DeselectEnemy(enemies[i], cardContext);
+                    return;
+                }
+                else
+                {
+                    if (GetConnections(cardContext).Count() < targetCount)
+                    {
+                        PickEnemy(enemies[i]);
+                        return;
+                    }
+                }
             }
         }
+    }
+    
+    public IEnumerable<Enemy> GetConnections(CardWrapper card)
+    {
+        List<Enemy> connections = new List<Enemy>();
+        foreach (var item in pins)
+        {
+            if (item.Key.Item2 == card)
+                connections.Add(item.Key.Item1);
+        }
+        return connections;
+    }
+    public void PickEnemy(Enemy enemy)
+    {
+        OnEnemySelected.Invoke(enemy);
+        DrawPin(enemy, cardContext);
     }
     public void PickAll()
     {
         foreach (Enemy enemy in enemies)
         {
-            picked.Add(enemy);
+            DrawPin(enemy, cardContext);
+            OnEnemySelected.Invoke(enemy);
         }
+    }
+    public void DeselectEnemy(Enemy enemy)
+    {
+        OnEnemyDeselected.Invoke(enemy);
+        RemovePin(enemy);
+    }
+    public void DeselectEnemy(Enemy enemy, CardWrapper card)
+    {
+        OnEnemyDeselected.Invoke(enemy);
+        RemovePin(enemy, card);
+    }
+
+
+    public void DeselectAll()
+    {
+        foreach (Enemy item in GetConnections(cardContext))
+            OnEnemyDeselected.Invoke(item);
+        foreach (GameObject pin in pins.Values)
+            Destroy(pin);
+        pins.Clear();
     }
     public void OnCardPlayed(CardPlayed card)
     {
-        foreach (Enemy enemy in picked)
+        cardContext = card.card;
+        foreach (Enemy enemy in GetConnections(card.card))
         {
-            card.card.CardEffect.ApplyEffect(enemy, 5);
+            //card.card.CardEffect.ApplyEffect(enemy, 5);
         }
     }
 
-    public void Enableinteraction()
+    public void DrawPin(Enemy enemy, CardWrapper card)
+    {
+        GameObject newPin = Instantiate(pinPrefab);
+        newPin.GetComponent<PinObject>().SetPositions(enemy.transform.position, card.transform.position);
+        pins.Add((enemy, card), newPin);
+
+    }
+    public void RemovePin(Enemy enemy)
+    {
+        List<(Enemy, CardWrapper)> enemyPins = new List<(Enemy, CardWrapper)>();
+        foreach (var pin in pins)
+        {
+            if (pin.Key.Item1 == enemy)
+            {
+                enemyPins.Add(pin.Key);
+            }
+        }
+        foreach (var pin in enemyPins)
+        {
+            Destroy(pins[pin]);
+            pins.Remove(pin);
+        }
+    }
+    public void RemovePin(Enemy enemy, CardWrapper card)
+    {
+        GameObject pin = pins[(enemy, card)];
+        pins.Remove((enemy, card));
+        Destroy(pin);
+    }
+    public void EnableInteraction()
     {
         _allowInteraction = true;
     }
     public void DisableInteraction()
     {
-        picked.Clear();
         _allowInteraction = false;
     }
 }

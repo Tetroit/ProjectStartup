@@ -66,12 +66,15 @@ public class ChipManager : MonoBehaviour
     }
     public GameObject CreateNewChip(EquationElement element, AutoLayout layout = null)
     {
-        GameObject instance = Instantiate(chipPrefab);
+        GameObject instance = Instantiate(chipPrefab, transform);
         Chip chip = instance.GetComponent<Chip>();
         chip.element = element;
 
         if (layout != null)
             AddToLayout(chip, layout);
+
+        instance.transform.localRotation = Quaternion.identity;
+
         return instance;
     }
     public void OnEnable()
@@ -277,10 +280,13 @@ public class ChipManager : MonoBehaviour
         //to be implemented
 
         //remove equation
+        int toAdd = 0;
         Chip[] equationChips = GetEquationChips().ToArray();
         for (int i = 0; i<equationChips.Length; i++)
         {
             Chip chip = equationChips[i];
+            if (!chip.selfDestructable)
+                toAdd++;
             RemoveChip(chip);
             equationLayout.RemoveItem(0);
         }
@@ -295,7 +301,7 @@ public class ChipManager : MonoBehaviour
 
         //top up the inventory
 
-        for (int i = 0; i<equationChips.Length; i++)
+        for (int i = 0; i<toAdd; i++)
         {
             IEnumerable<EquationElement> IE = GetInventoryElements();
             EquationElement element = pool.GetAny(IE, 0.5f);
