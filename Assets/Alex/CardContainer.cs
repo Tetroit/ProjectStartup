@@ -151,7 +151,7 @@ public class CardContainer : MonoBehaviour
             cards.Add(card);
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
-            StartCoroutine(SmoothMoveToHand(card.transform, transform));
+            //StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
         if (currentDraggedCard != card)

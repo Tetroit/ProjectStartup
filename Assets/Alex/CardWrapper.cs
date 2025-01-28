@@ -69,7 +69,7 @@ public class CardWrapper : MonoBehaviour
             return;
         }
 
-
+          
         eventsConfig.OnCardPlayed -= OnCardPlayed;
         isCardPlayed = true;
     }
