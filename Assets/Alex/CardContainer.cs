@@ -84,7 +84,7 @@ public class CardContainer : MonoBehaviour
 
     private void SetCardsRotation()
     {
-        for(var i = 0; i < cards.Count; i++)
+        for (var i = 0; i < cards.Count; i++)
         {
             cards[i].targetRotation = GetCardRotation(i);
             cards[i].targetVerticalDisplacement = GetCardVerticalDisplacement(i);
@@ -93,7 +93,7 @@ public class CardContainer : MonoBehaviour
 
     private float GetCardVerticalDisplacement(int index)
     {
-        if(cards.Count < 3) return 0;
+        if (cards.Count < 3) return 0;
         // Associate a vertical displacement based on the index in the cards list
         // so that the center card is at max displacement while the edges are at 0 displacement
         return maxHeightDisplacement *
@@ -102,7 +102,7 @@ public class CardContainer : MonoBehaviour
 
     private float GetCardRotation(int index)
     {
-        if(cards.Count < 3) return 0;
+        if (cards.Count < 3) return 0;
         // Associate a rotation based on the index in the cards list
         // so that the first and last cards are at max rotation, mirrored around the center
         return -maxCardRotation * (index - (cards.Count - 1) / 2f) / ((cards.Count - 1) / 2f);
@@ -116,13 +116,13 @@ public class CardContainer : MonoBehaviour
     void SetUpCards()
     {
         cards.Clear();
-        foreach(Transform card in transform)
+        foreach (Transform card in transform)
         {
             // get an array of card prefabs
             // spawn them dynamically here
 
             var wrapper = card.GetComponent<CardWrapper>();
-            if(wrapper == null)
+            if (wrapper == null)
             {
                 wrapper = card.gameObject.AddComponent<CardWrapper>();
             }
@@ -146,14 +146,15 @@ public class CardContainer : MonoBehaviour
     {
         colliderPlane.SetActive(false);
 
-        if(!cards.Contains(card))
+        if (!cards.Contains(card))
         {
             cards.Add(card);
             card.transform.SetParent(transform, true);
-            StartCoroutine(SmoothMoveToHand(card.transform, transform));
+            eventsConfig.OnCardPlayed += card.OnCardPlayed;
+            
         }
 
-        if(currentDraggedCard != card)
+        if (currentDraggedCard != card)
         {
             return;
         }
@@ -161,13 +162,21 @@ public class CardContainer : MonoBehaviour
         int slotLayerMask = LayerMask.GetMask("Slot");
         Vector3 mousePosition = Input.mousePosition;
         Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
-        if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
+        if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
         {
-            Vector3 slotPosition = hit.point;
-            //Remove this and trigger it from a button (End turn)
-            eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
-            currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
-            StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
+            int slotChildCount = hit.transform.childCount;
+            if (slotChildCount < 1)
+            {
+                //Relocate RaiseOnCardPlayer to a button so that the effect gets triggered with the End Turn button.
+                eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
+                currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
+                StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
+            } else
+            {
+                StartCoroutine(SmoothMoveToHand(card.transform, transform));
+            }
+
+
         }
 
         currentDraggedCard = null;
@@ -186,7 +195,7 @@ public class CardContainer : MonoBehaviour
         Quaternion endRot = Quaternion.identity;
         Vector3 endScale = Vector3.one;
 
-        while(elapsedTime <= duration)
+        while (elapsedTime <= duration)
         {
             float t = elapsedTime / duration;
             cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
@@ -211,7 +220,7 @@ public class CardContainer : MonoBehaviour
         Quaternion endRot = Quaternion.Euler(75, 0f, 0f);
         Vector3 endScale = new Vector3(2, 3, 0);
 
-        while(elapsedTime <= duration)
+        while (elapsedTime <= duration)
         {
             float t = elapsedTime / duration;
             cardTransform.localPosition = Vector3.Lerp(startPos, endPos, t);
@@ -223,7 +232,7 @@ public class CardContainer : MonoBehaviour
         }
 
         CardWrapper card = cardTransform.GetComponent<CardWrapper>();
-        if(card != null)
+        if (card != null)
         {
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
@@ -232,12 +241,12 @@ public class CardContainer : MonoBehaviour
 
     private void UpdateCards()
     {
-        if(transform.childCount != cards.Count)
+        if (transform.childCount != cards.Count)
         {
             InitCards();
         }
 
-        if(cards.Count == 0)
+        if (cards.Count == 0)
         {
             return;
         }
@@ -251,13 +260,14 @@ public class CardContainer : MonoBehaviour
     private void SetCardsUILayers()
     {
 
-        for(var i = 0; i < cards.Count; i++)
+        for (var i = 0; i < cards.Count; i++)
         {
-            if(flipCards == true)
+            if (flipCards == true)
             {
                 cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 + i;
 
-            } else
+            }
+            else
             {
                 cards[i].Material.renderQueue = (int)RenderQueue.GeometryLast + 100 - i;
             }
@@ -269,18 +279,18 @@ public class CardContainer : MonoBehaviour
     private void UpdateCardOrder()
     {
         //Allows cards to be rearranged in the container.
-        if(!allowCardRepositioning || currentDraggedCard == null) return;
+        if (!allowCardRepositioning || currentDraggedCard == null) return;
 
         var originalCardIdx = cards.IndexOf(currentDraggedCard);
-        if(originalCardIdx == -1) return;
+        if (originalCardIdx == -1) return;
 
         // Counts how many cards have their x position less than the dragged card.
         var newCardIdx = cards.Count(card => currentDraggedCard.transform.position.x < card.transform.position.x);
         //Finds the current position of the dragged card in the list.
-        if(newCardIdx != originalCardIdx)
+        if (newCardIdx != originalCardIdx)
         {
             cards.RemoveAt(originalCardIdx);
-            if(newCardIdx > originalCardIdx && newCardIdx < cards.Count - 1)
+            if (newCardIdx > originalCardIdx && newCardIdx < cards.Count - 1)
             {
                 newCardIdx--;
             }
@@ -304,7 +314,7 @@ public class CardContainer : MonoBehaviour
         var scaledWidth = transform.lossyScale.x;
 
         //if there is only 1 card we prevent division by zero on the line below.
-        if(cards.Count <= 1) return;
+        if (cards.Count <= 1) return;
 
         // Get the distance between each child
         var distanceBetweenChildren = (scaledWidth - totalCardWidth) / (cards.Count - 1);
@@ -314,7 +324,7 @@ public class CardContainer : MonoBehaviour
         const float step = 0.01f;
         float totalOffset = step * cards.Count;
         float currentY = totalOffset / 2f;
-        foreach(CardWrapper child in cards)
+        foreach (CardWrapper child in cards)
         {
             var adjustedChildWidth = cardSpacing * child.transform.lossyScale.x;
             child.targetPosition = new Vector3(currentX + adjustedChildWidth / 2, transform.position.y + currentY, cardScreenYPosition);
@@ -325,7 +335,7 @@ public class CardContainer : MonoBehaviour
 
     private void UpdateContainerPosition()
     {
-        switch(alignment)
+        switch (alignment)
         {
             case CardAlignment.Left:
                 transform.position = new Vector3(-4, transform.position.y, transform.position.z);
@@ -362,7 +372,7 @@ public class CardContainer : MonoBehaviour
 
     private bool IsCursorInPlayArea(RectTransform slot)
     {
-        if(slot == null) return false;
+        if (slot == null) return false;
 
         var cursorPosition = Input.mousePosition;
         var playArea = slot;

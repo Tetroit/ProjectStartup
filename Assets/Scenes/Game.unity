@@ -2653,7 +2653,7 @@ MonoBehaviour:
   - {fileID: 179979814858671614, guid: ea1bd92e6b12b7d4f8a1ad91f94757d9, type: 3}
   - {fileID: 179979814858671614, guid: ea1bd92e6b12b7d4f8a1ad91f94757d9, type: 3}
   cardSpawnPoint: {fileID: 1879930196}
-  colliderPlane: {fileID: 0}
+  colliderPlane: {fileID: 1398058198}
 --- !u!1001 &867930624
 PrefabInstance:
   m_ObjectHideFlags: 0

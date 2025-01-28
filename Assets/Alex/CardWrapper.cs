@@ -129,7 +129,6 @@ public class CardWrapper : MonoBehaviour
             if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
             {
                 //Make a check here so you are unable to click on the card while its moving towards the slot or taking it from the slot
-                Debug.Log("Object: " + hit.collider.gameObject);
                 dragStartPos = hit.point - transform.position;
                 isCardPlayed = false;
                 isDragged = true;
