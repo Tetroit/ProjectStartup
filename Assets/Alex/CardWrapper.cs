@@ -28,7 +28,7 @@ public class CardWrapper : MonoBehaviour
 
     public bool isCardPlayed;
 
-    private int xDeg = 75;
+    private int xDeg = 40;
 
     private void Awake()
     {

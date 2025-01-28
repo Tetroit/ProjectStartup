@@ -151,7 +151,7 @@ public class CardContainer : MonoBehaviour
             cards.Add(card);
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
-            
+            StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
         if (currentDraggedCard != card)
@@ -175,8 +175,6 @@ public class CardContainer : MonoBehaviour
             {
                 StartCoroutine(SmoothMoveToHand(card.transform, transform));
             }
-
-
         }
 
         currentDraggedCard = null;
@@ -191,7 +189,7 @@ public class CardContainer : MonoBehaviour
         Quaternion startRot = cardTransform.localRotation;
         Vector3 startScale = cardTransform.localScale;
 
-        Vector3 endPos = new Vector3(0, 0, -0.3f);
+        Vector3 endPos = new Vector3(0, 0, -0.1f);
         Quaternion endRot = Quaternion.identity;
         Vector3 endScale = Vector3.one;
 
@@ -216,9 +214,9 @@ public class CardContainer : MonoBehaviour
         Quaternion startRot = cardTransform.localRotation;
         Vector3 startScale = cardTransform.localScale;
 
-        Vector3 endPos = new Vector3(0, 0, -0.3f);
-        Quaternion endRot = Quaternion.Euler(75, 0f, 0f);
-        Vector3 endScale = new Vector3(2, 3, 0);
+        Vector3 endPos = new Vector3(0, 0, 3);
+        Quaternion endRot = Quaternion.Euler(40, 0f, 0f);
+        Vector3 endScale = new Vector3(1, 1.5f, 0);
 
         while (elapsedTime <= duration)
         {
