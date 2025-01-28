@@ -140,6 +140,7 @@ public class CardContainer : MonoBehaviour
     {
         currentDraggedCard = card;
         colliderPlane.SetActive(true);
+        currentDraggedCard.transform.SetParent(transform, true);
     }
 
     public void OnCardDragEnd(CardWrapper card)
@@ -148,10 +149,10 @@ public class CardContainer : MonoBehaviour
 
         if (!cards.Contains(card))
         {
+            //If the card is coming from the slot
             cards.Add(card);
-            card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
-            StartCoroutine(SmoothMoveToHand(card.transform, transform));
+            StartCoroutine(SmoothMoveToHand(currentDraggedCard.transform, transform));
         }
 
         if (currentDraggedCard != card)
@@ -171,9 +172,6 @@ public class CardContainer : MonoBehaviour
                 eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
                 currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
                 StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
-            } else
-            {
-                StartCoroutine(SmoothMoveToHand(card.transform, transform));
             }
         }
 
@@ -216,7 +214,7 @@ public class CardContainer : MonoBehaviour
 
         Vector3 endPos = new Vector3(0, 0, 3);
         Quaternion endRot = Quaternion.Euler(40, 0f, 0f);
-        Vector3 endScale = new Vector3(1, 1.5f, 0);
+        Vector3 endScale = new Vector3(2, 3, 0);
 
         while (elapsedTime <= duration)
         {
