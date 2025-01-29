@@ -111,7 +111,7 @@ public class CardWrapper : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out RaycastHit hit, float.MaxValue))
             {
-                transform.position = hit.point - dragStartPos;
+                transform.position = hit.point + dragStartPos;
             }
         }
     }
@@ -154,8 +154,7 @@ public class CardWrapper : MonoBehaviour
             Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
             if(Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue))
             {
-                //Make a check here so you are unable to click on the card while its moving towards the slot or taking it from the slot
-                dragStartPos = hit.point - transform.position;
+                dragStartPos = transform.position - hit.point;
                 isCardPlayed = false;
                 isDragged = true;
                 OnCardStartDragStarted?.Invoke(this);
