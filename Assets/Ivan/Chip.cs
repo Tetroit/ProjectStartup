@@ -36,11 +36,7 @@ public class Chip : MonoBehaviour
 
     private void OnEnable()
     {
-        int num;
-        if (int.TryParse(elementName, out num))
-            equationElement = EquationElementFactory.Get("Number", num);
-        else
-            equationElement = EquationElementFactory.Get(elementName);
+        AssignElement();
         chipManager = ChipManager.instance;
         chipManager.AddChip(this);
     }
@@ -83,5 +79,14 @@ public class Chip : MonoBehaviour
             }
         }
 
+    }
+
+    public void AssignElement()
+    {
+        int num;
+        if (int.TryParse(elementName, out num))
+            equationElement = EquationElementFactory.Get("Number", num);
+        else
+            equationElement = EquationElementFactory.Get(elementName);
     }
 }

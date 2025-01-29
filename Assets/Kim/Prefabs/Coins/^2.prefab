@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 5273404270350213811, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
       propertyPath: m_text
-      value: ^2
+      value: Sq
       objectReference: {fileID: 0}
     - target: {fileID: 5273404270350213811, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
@@ -26,7 +26,7 @@ PrefabInstance:
     - target: {fileID: 5273404270350213811, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
       propertyPath: m_margin.x
-      value: 4.817309
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5273404270350213811, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
@@ -85,13 +85,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6842480137015327298, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.0375
-      objectReference: {fileID: 0}
-    - target: {fileID: 6842480137015327298, guid: 7035ddc9d96daac4587c803d7ee3feeb,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.0105
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8517084287069581052, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
