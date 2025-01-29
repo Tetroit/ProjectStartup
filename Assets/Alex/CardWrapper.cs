@@ -2,6 +2,7 @@ using config;
 using events;
 using System;
 using System.ComponentModel;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,8 @@ public class CardWrapper : MonoBehaviour
     public bool isCardPlayed;
 
     private int xDeg = 40;
+
+    private const string dragLayer = "Drag";
 
     private void Awake()
     {
@@ -109,9 +112,9 @@ public class CardWrapper : MonoBehaviour
         } else
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out RaycastHit hit, float.MaxValue))
+            var layerMask = LayerMask.GetMask(dragLayer);
+            if(Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, layerMask))
             {
-                
                 transform.position = hit.point + dragStartPos;
             }
         }

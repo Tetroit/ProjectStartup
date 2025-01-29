@@ -64,6 +64,8 @@ public class CardContainer : MonoBehaviour
     [SerializeField]
     private RectTransform cardArea;
 
+    private const string slotLayer = "Slot";
+
     private void Start()
     {
         InitCards();
@@ -150,8 +152,6 @@ public class CardContainer : MonoBehaviour
             cards.Add(card);
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
-            eventsConfig.RaiseCardRemove(new CardRemove(currentDraggedCard));
-            //StartCoroutine(SmoothMoveToHand(card.transform, transform));
         }
 
         if (currentDraggedCard != card)
@@ -159,7 +159,7 @@ public class CardContainer : MonoBehaviour
             return;
         }
 
-        int slotLayerMask = LayerMask.GetMask("Slot");
+        int slotLayerMask = LayerMask.GetMask(slotLayer);
         Vector3 mousePosition = Input.mousePosition;
         Ray destinationRay = Camera.main!.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
@@ -167,11 +167,15 @@ public class CardContainer : MonoBehaviour
             int slotChildCount = hit.transform.childCount;
             if (slotChildCount < 1)
             {
-                //Relocate RaiseOnCardPlayer to a button so that the effect gets triggered with the End Turn button.
                 eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
                 currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
                 StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
-            }
+            } 
+        }
+
+        if(card.transform.parent == transform)
+        {
+            eventsConfig.RaiseCardRemove(new CardRemove(card));
         }
 
         currentDraggedCard = null;
@@ -277,8 +281,6 @@ public class CardContainer : MonoBehaviour
             cards[i].UpdateSortingOrder(sortingOrderValue);
         }
     }
-
-
 
     private void UpdateCardOrder()
     {
