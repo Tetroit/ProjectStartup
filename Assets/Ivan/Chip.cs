@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Equation;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using static UnityEngine.Rendering.DebugUI;
-using Unity.Burst.CompilerServices;
 
 
 public class Chip : MonoBehaviour
