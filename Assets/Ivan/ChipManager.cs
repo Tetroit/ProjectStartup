@@ -33,6 +33,7 @@ public class ChipManager : MonoBehaviour
     public static ChipManager instance => _instance;
 
     Formula formula = new Formula();
+    public int result = 0;
 
     bool _allowInteraction = true;
     public bool allowInteraction => _allowInteraction;
@@ -100,10 +101,12 @@ public class ChipManager : MonoBehaviour
     {
         OnStateChanged(GameManager.instance.currentState);
         GameManager.instance.OnGameStateChange.AddListener(OnStateChanged);
+        GameManager.instance.OnValidateTurn += ValidateResult;
     }
     public void OnDisable()
     {
         GameManager.instance.OnGameStateChange.RemoveListener(OnStateChanged);
+        GameManager.instance.OnValidateTurn -= ValidateResult;
     }
 
     [ExecuteInEditMode]
@@ -257,11 +260,14 @@ public class ChipManager : MonoBehaviour
     {
         bool valid = formula.Validate();
         if (valid)
+        {
             equationDisplay.color = Color.green;
+            result = formula.Calculate();
+        }
         else
             equationDisplay.color = Color.red;
 
-        equationDisplay.text = formula.ToString() + (valid ? (" = " + formula.Calculate()) : "");
+        equationDisplay.text = formula.ToString() + (valid ? (" = " + result) : "");
     }
 
     void OnStateChanged(GameState state)
@@ -296,6 +302,14 @@ public class ChipManager : MonoBehaviour
         {
             chip.isInteractable = true;
         }
+    }
+
+    public (bool, string) ValidateResult()
+    {
+        bool isFormulaValid = formula.Validate();
+        if (!isFormulaValid) 
+            return (isFormulaValid, "Incorrect formula");
+        return (true, "");
     }
     public void Play()
     {

@@ -80,7 +80,7 @@ namespace Equation
         }
         public bool Validate()
         {
-            if (elements.Count == 0) return true;
+            if (elements.Count == 0) return false;
             for (int i=0; i<elements.Count; i++)
             {
                 if (elements[i].ID != i) throw new Exception("ORDER");

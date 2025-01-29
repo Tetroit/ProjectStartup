@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -58,6 +59,27 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _stateMachine.SwitchState(_stateMachine.defaultState);
+    }
+
+    public delegate (bool, string) Validation();
+    public event Validation OnValidateTurn;
+
+    public Action OnTurnPassed;
+    public static void PassTurn()
+    {
+        if (instance.OnValidateTurn!=null)
+        {
+            foreach (Validation listener in instance.OnValidateTurn.GetInvocationList())
+            {
+                var info = listener();
+                if (!info.Item1)
+                {
+                    Debug.Log("Couldnt pass turn " + info.Item2);
+                    return;
+                }
+            }
+        }
+        instance.OnTurnPassed?.Invoke();
     }
     /// <summary>
     /// Restarts the game

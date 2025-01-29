@@ -55,7 +55,16 @@ public class EnemyManager : MonoBehaviour
         SpawnEnemy(prefab);
         SpawnEnemy(prefab);
     }
-
+    private void OnEnable()
+    {
+        GameManager.instance.OnTurnPassed += PassTurn;
+        GameManager.instance.OnValidateTurn += ValidateTurn;
+    }
+    private void OnDisable()
+    {
+        GameManager.instance.OnTurnPassed -= PassTurn;
+        GameManager.instance.OnValidateTurn -= ValidateTurn;
+    }
     private void OnDestroy()
     {
         eventConfig.OnCardPlayed -= OnCardPlayed;
@@ -112,6 +121,21 @@ public class EnemyManager : MonoBehaviour
         }
     }
     
+    public (bool, string) ValidateTurn()
+    {
+        if (pins.Count == 0) 
+            return (false, "No cards was played");
+        return (true, "");
+    }
+    public void PassTurn()
+    {
+        foreach (var bind in pins)
+        {
+            CardWrapper card = bind.Key.Item2;
+            Enemy enemy = bind.Key.Item1;
+            card.CardEffect.ApplyEffect(enemy, 10);
+        }
+    }
     public IEnumerable<Enemy> GetConnections(CardWrapper card)
     {
         List<Enemy> connections = new List<Enemy>();
