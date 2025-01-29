@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-public interface IEnemyManager
-{
-    public void EnemyClick();
-    public void PickAll();
-}
-public class EnemyManager : MonoBehaviour, IEnemyManager
+
+public class EnemyManager : MonoBehaviour
 {
     public List<Vector3> spawnPoints = new List<Vector3>();
     public List<Enemy> enemies = new List<Enemy>();
@@ -164,7 +160,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         cardContext = card.card;
         foreach (Enemy enemy in GetConnections(card.card))
         {
-            //card.card.CardEffect.ApplyEffect(enemy, );
+            card.card.CardEffect.ApplyEffect(enemy, 10);
         }
     }
 
