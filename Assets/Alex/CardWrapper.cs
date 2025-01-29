@@ -111,7 +111,8 @@ public class CardWrapper : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out RaycastHit hit, float.MaxValue))
             {
-                transform.position = hit.point + dragStartPos;
+                Vector3 center = hit.point + dragStartPos;
+                transform.position = Vector3.Lerp(transform.position, center, 1);
             }
         }
     }
