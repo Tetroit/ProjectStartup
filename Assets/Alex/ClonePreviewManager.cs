@@ -3,7 +3,6 @@ using config;
 using events;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 namespace demo
 {

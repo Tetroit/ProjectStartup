@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
 
-[CreateAssetMenu(fileName = "MainMenuLayout", menuName = "GameUI/MainMenuLayout")]
-public class MainMenuLayout : ScriptableObject
+using UnityEngine.UI;
+
+[System.Serializable]
+public class MainMenuLayout
 {
-    public Button playButton;
+    public Button startButton;
     public Button settingsButton;
     public Button exitButton;
 }

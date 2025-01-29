@@ -1,9 +1,7 @@
 using config;
 using events;
 using System;
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CardWrapper : MonoBehaviour
 {

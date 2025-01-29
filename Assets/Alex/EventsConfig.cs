@@ -1,7 +1,6 @@
 using System;
 using events;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace config
 {
