@@ -61,18 +61,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DiffuseTextureSteps: 25
-    - _Frensel: 5
+    - _DiffuseTextureSteps: 12
+    - _Frensel: 12
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
-    - _OutlineWidth: 1.84
+    - _OutlineWidth: 7
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ShadeSteps: 12
     - _UseDiffuseTexture: 1
     - _UseNormalTexture: 0
     m_Colors:
-    - _Ambient: {r: 0, g: 0.16004416, b: 0.21568623, a: 0}
+    - _Ambient: {r: 0.6037736, g: 0.09862045, b: 0.019935932, a: 0}
     - _Diffuse: {r: 1, g: 1, b: 1, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
