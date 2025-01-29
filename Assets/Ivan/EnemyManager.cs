@@ -46,7 +46,6 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
-        eventConfig.OnCardPlayed += OnCardPlayed;
     }
 
     private void Start()
@@ -57,11 +56,15 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnEnable()
     {
+        eventConfig.OnCardPlayed += OnCardPlayed;
+        eventConfig.OnCardRemove += OnCardRemoved;
         GameManager.instance.OnTurnPassed += PassTurn;
         GameManager.instance.OnValidateTurn += ValidateTurn;
     }
     private void OnDisable()
     {
+        eventConfig.OnCardPlayed -= OnCardPlayed;
+        eventConfig.OnCardRemove -= OnCardRemoved;
         GameManager.instance.OnTurnPassed -= PassTurn;
         GameManager.instance.OnValidateTurn -= ValidateTurn;
     }
@@ -182,16 +185,21 @@ public class EnemyManager : MonoBehaviour
     public void OnCardPlayed(CardPlayed card)
     {
         cardContext = card.card;
-        foreach (Enemy enemy in GetConnections(card.card))
+    }
+    public void OnCardRemoved(CardRemove card)
+    {
+        cardContext = null;
+        foreach (var enemy in GetConnections(card.card))
         {
-            card.card.CardEffect.ApplyEffect(enemy, 10);
+            RemovePin(enemy, card.card);
         }
     }
 
     public void DrawPin(Enemy enemy, CardWrapper card)
     {
         GameObject newPin = Instantiate(pinPrefab);
-        newPin.GetComponent<PinObject>().SetPositions(enemy.transform.position, card.transform.position);
+        newPin.GetComponent<PinObject>().SetTransforms(enemy.transform, card.transform,
+            new Vector3(0,1,0), new Vector3(0,0.7f,0));
         pins.Add((enemy, card), newPin);
 
     }
