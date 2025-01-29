@@ -112,7 +112,7 @@ public class AutoLayout : MonoBehaviour
     }
     public int GetGridID(Vector3Int pos)
     {
-        if (pos.x < 0 || pos.y > 0 || pos.x >= 6)
+        if (pos.x < 0 || pos.y > 0 || pos.x >= columns)
             return -1;
         return pos.x - pos.y * columns;
     }

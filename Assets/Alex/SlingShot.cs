@@ -6,7 +6,8 @@ public class SlingShot : CardEffect
 {
     public override void ApplyEffect(Enemy enemy, int amount)
     {
-        enemy.GetDamage(amount);
-        Debug.Log("Sling Shot");
+        int adjustedDamage = Mathf.CeilToInt(amount * 2);
+        enemy.GetDamage(adjustedDamage);
+        Debug.Log($"This did: {adjustedDamage} SlingShot Damage");
     }
 }

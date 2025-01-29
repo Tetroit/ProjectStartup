@@ -13,6 +13,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: (
       objectReference: {fileID: 0}
+    - target: {fileID: 2848870959141814874, guid: 7035ddc9d96daac4587c803d7ee3feeb,
+        type: 3}
+      propertyPath: duplicating
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848870959141814874, guid: 7035ddc9d96daac4587c803d7ee3feeb,
+        type: 3}
+      propertyPath: selfDestructable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5273404270350213811, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
       propertyPath: m_text

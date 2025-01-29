@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class PoisonDart : CardEffect
 {
+    [SerializeField]
+    private int statusEffectDuration = 1;
+    [SerializeField]
+    private int statusEffectAmount = 1;
+
     public override void ApplyEffect(Enemy enemy, int amount)
     {
-        enemy.GetDamage(amount);
-        Debug.Log("Poison Damage");
+        int adjustedDamage = Mathf.CeilToInt(amount);
+        enemy.GetDamage(adjustedDamage);
+        // Apply status effect for X amount of turns
+        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.DamageOverTime, statusEffectDuration, statusEffectAmount));
+        Debug.Log($"This did: {adjustedDamage} SlingShot Damage");
     }
 }

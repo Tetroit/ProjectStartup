@@ -65,6 +65,9 @@ public class CardContainer : MonoBehaviour
     [SerializeField]
     private GameObject colliderPlane;
 
+    [SerializeField]
+    private RectTransform cardArea;
+
     private void Start()
     {
         InitCards();
@@ -342,18 +345,23 @@ public class CardContainer : MonoBehaviour
 
     private void UpdateContainerPosition()
     {
+        RectTransform rectTransform = cardArea.GetComponent<RectTransform>();
+
         switch (alignment)
         {
             case CardAlignment.Left:
-                transform.position = new Vector3(-4, transform.position.y, transform.position.z);
+                transform.position = new Vector3(-3, transform.position.y, transform.position.z);
+                rectTransform.anchoredPosition = new Vector2(-Screen.width, rectTransform.anchoredPosition.y);
                 break;
 
             case CardAlignment.Right:
-                transform.position = new Vector3(4, transform.position.y, transform.position.z);
+                transform.position = new Vector3(3, transform.position.y, transform.position.z);
+                rectTransform.anchoredPosition = new Vector2(Screen.width, rectTransform.anchoredPosition.y);
                 break;
 
             case CardAlignment.Center:
                 transform.position = new Vector3(0, transform.position.y, transform.position.z);
+                rectTransform.anchoredPosition = new Vector2(0, rectTransform.anchoredPosition.y);
                 break;
         }
     }

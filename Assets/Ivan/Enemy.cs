@@ -1,5 +1,7 @@
 using GameUI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -32,10 +34,21 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     public UnityEvent<int> OnDamageChanged;
 
+    private List<StatusEffect> activeEffects = new List<StatusEffect>();
+
     private void OnEnable()
     {
         UpdateAll();
     }
+
+    public void UpdateAll()
+    {
+        UpdateMaxHealth();
+        UpdateHealth();
+        UpdateShield();
+        UpdateDamage();
+    }
+
     public void GetDamage(int value)
     {
         if (m_shield > 0)
@@ -49,13 +62,30 @@ public class Enemy : MonoBehaviour
         UpdateShield();
         UpdateHealth();
     }
-    public void UpdateAll()
+
+    public void ModifyDamage(int amount)
     {
-        UpdateMaxHealth();
-        UpdateHealth();
-        UpdateShield();
+        m_damage = Mathf.Max(0, m_damage + amount);
         UpdateDamage();
     }
+
+    public void ProcessEffects()
+    {
+        foreach(var effect in activeEffects.ToList())
+        {
+            effect.ApplyEffect(this);
+            effect.duration--;
+        }
+
+        // Remove expired effects
+        activeEffects.RemoveAll(e => e.duration <= 0);
+    }
+
+    public void ApplyStatusEffect(StatusEffect effect)
+    {
+        activeEffects.Add(effect);
+    }
+
     public void UpdateShield()
     {
         OnShieldChanged?.Invoke(m_shield);
