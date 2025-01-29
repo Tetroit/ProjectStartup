@@ -8,10 +8,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1626977673483659791, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_Name
       value: PoisonDart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403636431850017955, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: Deal 1*X <color=#3E6936>Poison</color> Damage to an enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5435104091735258750, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}

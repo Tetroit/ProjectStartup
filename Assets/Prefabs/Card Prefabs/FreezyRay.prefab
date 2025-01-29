@@ -8,15 +8,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1626977673483659791, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_Name
       value: FreezyRay
       objectReference: {fileID: 0}
+    - target: {fileID: 5403636431850017955, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: '1*X <color=#92D2FC>Ice</color> Damage to an enemy and apply 2 stacks
+        of <b>Brittle</b> '
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403636431850017955, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5435104091735258750, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_text
-      value: Freezy Rat
+      value: Frost Ray
       objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
