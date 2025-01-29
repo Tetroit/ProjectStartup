@@ -8,16 +8,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1626977673483659791, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_Name
       value: Shield
       objectReference: {fileID: 0}
+    - target: {fileID: 5403636431850017955, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_text
+      value: Give 0.5*X Shield to a target for 1 turn
+      objectReference: {fileID: 0}
     - target: {fileID: 5435104091735258750, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_text
-      value: Shield
+      value: Shield plan
       objectReference: {fileID: 0}
+    - target: {fileID: 6004410161825470299, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 3be8087df4ad67746b17428f08130e86, type: 3}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_LocalPosition.x
