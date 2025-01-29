@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ChipManager : MonoBehaviour
 {
@@ -34,8 +35,20 @@ public class ChipManager : MonoBehaviour
     Formula formula = new Formula();
 
     bool _allowInteraction = true;
-
     public bool allowInteraction => _allowInteraction;
+
+    [Serializable]
+    public struct EqElToGameObject
+    {
+        public string equationElement;
+        public GameObject gameObject;
+    }
+
+    [SerializeField]
+    List<EqElToGameObject> _prefabDict;
+
+    public Dictionary<string, GameObject> prefabDict => 
+        _prefabDict.ToDictionary(item => item.equationElement, item => item.gameObject);
 
     void Awake()
     {
@@ -66,7 +79,13 @@ public class ChipManager : MonoBehaviour
     }
     public GameObject CreateNewChip(EquationElement element, AutoLayout layout = null)
     {
-        GameObject instance = Instantiate(chipPrefab, transform);
+        string id;
+        if (element.type == EquationElement.Type.NUMBER)
+            id = (element as Number).value.ToString();
+        else
+            id = element.GetType().Name;
+
+        GameObject instance = Instantiate(prefabDict[id], transform);
         Chip chip = instance.GetComponent<Chip>();
         chip.element = element;
 
@@ -101,6 +120,10 @@ public class ChipManager : MonoBehaviour
             if (chip && chip.element != null)
                 formula.AddElement(chip.element);
         }
+        for (int i = 0; i < 8; i++)
+            CreateNewChip(pool.GetNumber(GetInventoryElements()), inventoryLayout);
+        for (int i = 0; i < 8; i++)
+            CreateNewChip(pool.GetOperation(GetInventoryElements()), inventoryLayout);
         UpdateEquation();
     }
     private void Update()

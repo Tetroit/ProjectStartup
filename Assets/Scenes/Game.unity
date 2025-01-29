@@ -4475,6 +4475,55 @@ MonoBehaviour:
   chipPrefab: {fileID: 6715116252684325074, guid: c1704acc5051ae048a8b98a4fdb57728,
     type: 3}
   equationDisplay: {fileID: 288976127}
+  _prefabDict:
+  - equationElement: Plus
+    gameObject: {fileID: 8557840630913965435, guid: d0615eaa472cc674981860d48bac1981,
+      type: 3}
+  - equationElement: Minus
+    gameObject: {fileID: 8186229152459930030, guid: d731e2c04a4514446979b1fee77585d6,
+      type: 3}
+  - equationElement: 1
+    gameObject: {fileID: 4865933409745847616, guid: 7035ddc9d96daac4587c803d7ee3feeb,
+      type: 3}
+  - equationElement: 2
+    gameObject: {fileID: 5196011872063222832, guid: 69b07d40e3c42414fa2d927f6ba6b495,
+      type: 3}
+  - equationElement: 3
+    gameObject: {fileID: 7235172007174502319, guid: a359805089e4f404c8e080c0ab1ae86d,
+      type: 3}
+  - equationElement: 4
+    gameObject: {fileID: 2362542287974493723, guid: 35dd983d6278630429e740c7fcbc1533,
+      type: 3}
+  - equationElement: 5
+    gameObject: {fileID: 3568161389995864230, guid: 40fcc0d014a751b44ad489b27ad0962d,
+      type: 3}
+  - equationElement: 6
+    gameObject: {fileID: 5973847821882650473, guid: 7904e8053be474944ad37092e5e6c74e,
+      type: 3}
+  - equationElement: 7
+    gameObject: {fileID: 6767429853644838222, guid: 39a8d46f0146f4746be36c830e101f6f,
+      type: 3}
+  - equationElement: 8
+    gameObject: {fileID: 6821147689046322771, guid: cdc45e68e17ea5541940b86cf85023c5,
+      type: 3}
+  - equationElement: 9
+    gameObject: {fileID: 3952586042955585618, guid: 7539326919e59d442930d980d70368c2,
+      type: 3}
+  - equationElement: Sqr
+    gameObject: {fileID: 4436465616091522130, guid: 0ef852052b285f04eb2039739e4e08f7,
+      type: 3}
+  - equationElement: Multiply
+    gameObject: {fileID: 5681084210502119003, guid: 5988f33b38f97c9419d858fccda8357e,
+      type: 3}
+  - equationElement: Divide
+    gameObject: {fileID: 4840403290007442950, guid: 10a0a12e2d092a74f9da23e295b97c9f,
+      type: 3}
+  - equationElement: BracketOpen
+    gameObject: {fileID: 4840403290007442950, guid: 10a0a12e2d092a74f9da23e295b97c9f,
+      type: 3}
+  - equationElement: BracketClose
+    gameObject: {fileID: 4840403290007442950, guid: 10a0a12e2d092a74f9da23e295b97c9f,
+      type: 3}
 --- !u!4 &1231747534
 Transform:
   m_ObjectHideFlags: 0
