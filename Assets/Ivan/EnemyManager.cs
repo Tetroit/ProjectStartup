@@ -32,6 +32,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     public UnityEvent<Enemy> OnEnemyDeselected;
     public UnityAction OnRequiredSelected;
 
+    [SerializeField]
     CardWrapper cardContext;
 
     public int targetCount = 2;

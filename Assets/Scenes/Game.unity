@@ -337,6 +337,7 @@ MonoBehaviour:
   OnEnemyDeselected:
     m_PersistentCalls:
       m_Calls: []
+  cardContext: {fileID: 0}
   targetCount: 2
 --- !u!1 &37283048
 GameObject:

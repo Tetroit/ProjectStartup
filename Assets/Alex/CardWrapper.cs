@@ -33,18 +33,18 @@ public class CardWrapper : MonoBehaviour
 
     private void Awake()
     {
-        var renderer = GetComponentInChildren<Renderer>();
-        var mat = renderer.material;
-        Material = new Material(mat);
-        renderer.material = Material;
+        //var renderer = GetComponentInChildren<Renderer>();
+        //var mat = renderer.material;
+        //Material = new Material(mat);
+        //renderer.material = Material;
 
         CardEffect = GetComponent<CardEffect>();
 
         cardCanvas = GetComponentInChildren<Canvas>();
-        if(cardCanvas != null)
-        {
-            cardCanvas.overrideSorting = true;
-        }
+        //if (cardCanvas != null)
+        //{
+        //    cardCanvas.overrideSorting = true;
+        //}
     }
 
     private void Start()
@@ -123,7 +123,7 @@ public class CardWrapper : MonoBehaviour
         var tempTargetRotation = isDragged ? 0 : targetRotation;
         tempTargetRotation = tempTargetRotation < 0 ? tempTargetRotation + 360 : tempTargetRotation;
         var deltaAngle = Mathf.Abs(currentAngle - tempTargetRotation);
-        if(!(deltaAngle > EPS)) return;
+        //if(!(deltaAngle > EPS)) return;
 
         var adjustedCurrent = deltaAngle > 180 && currentAngle < tempTargetRotation ? currentAngle + 360 : currentAngle;
         var adjustedTarget = deltaAngle > 180 && currentAngle > tempTargetRotation
@@ -133,16 +133,15 @@ public class CardWrapper : MonoBehaviour
 
         var nextRotation = Mathf.Lerp(adjustedCurrent, adjustedTarget,
             animationSpeedConfig.rotation / newDelta * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(xDeg, 0, nextRotation);
+        transform.rotation = Quaternion.Euler(xDeg, -2f, nextRotation);
     }
 
     public void UpdateSortingOrder(int sortingOrder)
     {
         if(cardCanvas != null)
         {
-            //cardCanvas.sortingOrder = sortingOrder + 1; 
+            cardCanvas.sortingOrder = sortingOrder + 1; 
         }
-
         //Material.renderQueue = sortingOrder;
     }
 
