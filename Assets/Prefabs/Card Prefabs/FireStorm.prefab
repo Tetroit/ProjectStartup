@@ -122,5 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d45d96378a5f114891184aa44fa8845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetCount: 0
+  targetAll: 1
+  redoEffect: 0
   statusEffectDuration: 1
   statusEffectAmount: 1

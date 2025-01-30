@@ -1,4 +1,5 @@
 using config;
+using CustomEvents;
 using events;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,16 @@ using UnityEngine.Events;
 public interface IDamageable
 {
     public void Select();
+    public int health { get; }
+    public int maxHealth { get; }
+    public int shield { get; }
+    public void UpdateShield();
+    public void UpdateHealth();
+    public void GetDamage(int amount);
+    public void ModifyDamage(int amount);
+    public void IgnoreShield(int amount);
+    public void ApplyShield(int amount);
+    public void ApplyStatusEffect(StatusEffect statusEffect);
 }
 
 public class EnemyManager : MonoBehaviour
@@ -67,6 +78,7 @@ public class EnemyManager : MonoBehaviour
         eventConfig.OnCardRemove += OnCardRemoved;
         GameManager.instance.OnTurnPassed += PassTurn;
         GameManager.instance.OnValidateTurn += ValidateTurn;
+        EventBus<EnemyDestroyed>.OnEvent += OnEnemyDestroyed;
     }
     private void OnDisable()
     {
@@ -74,6 +86,7 @@ public class EnemyManager : MonoBehaviour
         eventConfig.OnCardRemove -= OnCardRemoved;
         GameManager.instance.OnTurnPassed -= PassTurn;
         GameManager.instance.OnValidateTurn -= ValidateTurn;
+        EventBus<EnemyDestroyed>.OnEvent -= OnEnemyDestroyed;
     }
     private void OnDestroy()
     {
@@ -84,6 +97,12 @@ public class EnemyManager : MonoBehaviour
         {
             EnemyClick();
         }
+    }
+
+    public void OnEnemyDestroyed(EnemyDestroyed ev)
+    {
+        enemies.Remove(ev.enemy);
+        RemovePin(ev.enemy);
     }
     public void SpawnEnemy(Enemy enemy)
     {
@@ -143,8 +162,9 @@ public class EnemyManager : MonoBehaviour
     }
     public void PassTurn()
     {
-        foreach (var bind in pins)
+        for (int i=0; i<pins.Count; i++)
         {
+            var bind = pins.ElementAt(i);
             CardWrapper card = bind.Key.Item2;
             Enemy enemy = bind.Key.Item1;
             card.CardEffect.ApplyEffect(enemy, card.formula.Calculate());
@@ -157,6 +177,16 @@ public class EnemyManager : MonoBehaviour
         {
             if (item.Key.Item2 == card)
                 connections.Add(item.Key.Item1);
+        }
+        return connections;
+    }
+    public IEnumerable<CardWrapper> GetConnections(Enemy enemy)
+    {
+        List<CardWrapper> connections = new List<CardWrapper>();
+        foreach (var item in pins)
+        {
+            if (item.Key.Item1 == enemy)
+                connections.Add(item.Key.Item2);
         }
         return connections;
     }
@@ -207,6 +237,14 @@ public class EnemyManager : MonoBehaviour
     public void OnCardPlayed(CardPlayed card)
     {
         cardContext = card.card;
+
+        if (cardContext.CardEffect.targetAll)
+        {
+            targetCount = enemies.Count;
+            PickAll();
+        }
+        else
+            targetCount = card.card.CardEffect.targetCount;
     }
     public void OnCardRemoved(CardRemove card)
     {

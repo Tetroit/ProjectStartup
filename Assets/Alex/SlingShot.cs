@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlingShot : CardEffect
 {
-    public override void ApplyEffect(Enemy enemy, int amount)
+    public override void ApplyEffect(IDamageable enemy, int amount)
     {
         int adjustedDamage = amount * 2;
         enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);

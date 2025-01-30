@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class Redo : CardEffect
 {
-    public override void ApplyEffect(Enemy enemy, int ammount)
+    public override void ApplyEffect(IDamageable enemy, int ammount)
     {
         redoEffect = true;
     }

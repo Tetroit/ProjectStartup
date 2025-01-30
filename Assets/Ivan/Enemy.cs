@@ -1,3 +1,4 @@
+using CustomEvents;
 using GameUI;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
+        m_maxHealth = UnityEngine.Random.Range(26, 87);
+        m_health = m_maxHealth;
         UpdateAll();
     }
 
@@ -47,6 +50,23 @@ public class Enemy : MonoBehaviour, IDamageable
         UpdateDamage();
     }
 
+    void PlayHitAnimation()
+    {
+
+        Animator anim = GetComponentInChildren<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("trigger");
+        }
+    }
+    void PlayDeathAnimation()
+    {
+        Animator anim = GetComponentInChildren<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("deathtrigger");
+        }
+    }
     public void GetDamage(int value)
     {
         if (m_shield > 0)
@@ -57,6 +77,7 @@ public class Enemy : MonoBehaviour, IDamageable
         if (value == 0)
             return;
         m_health -= value;
+
         UpdateShield();
         UpdateHealth();
     }
@@ -64,6 +85,8 @@ public class Enemy : MonoBehaviour, IDamageable
     public void IgnoreShield(int value)
     {
         m_health -= value;
+
+
         UpdateHealth();
     }
 
@@ -105,7 +128,22 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     public void UpdateHealth()
     {
+        if (m_health <= 0)
+            PlayDeathAnimation();
+        else
+            PlayHitAnimation();
+
+
+        if (m_health <= 0)
+        {
+            EventBus<EnemyDestroyed>.Publish(new EnemyDestroyed(this));
+        }
         OnHealthChanged?.Invoke(m_health);
+    }
+    public void Despawn()
+    {
+        Debug.Log("L{F}IP{EGWHLRIJEOKF");
+        Destroy(gameObject);
     }
     public void UpdateDamage()
     {

@@ -8,7 +8,7 @@ public class ShieldUp : CardEffect
     private int statusEffectDuration = 0;
     [SerializeField]
     private int statusEffectAmount = 0;
-    public override void ApplyEffect(Enemy enemy, int amount)
+    public override void ApplyEffect(IDamageable enemy, int amount)
     {
         int adjustedAmount = Mathf.CeilToInt(amount * 0.5f);
         enemy.ApplyShield(redoEffect ? adjustedAmount * 2 : adjustedAmount);

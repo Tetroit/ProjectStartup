@@ -111,3 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1f61ecea33d8c4a84efd38d71db31f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetCount: 1
+  targetAll: 0
+  redoEffect: 0

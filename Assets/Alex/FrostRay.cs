@@ -9,7 +9,7 @@ public class FrostRay : CardEffect
     [SerializeField]
     private int statusEffectAmount = 1;
 
-    public override void ApplyEffect(Enemy enemy, int amount)
+    public override void ApplyEffect(IDamageable enemy, int amount)
     {
         int adjustedDamage = amount;
         enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);

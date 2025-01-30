@@ -9,6 +9,19 @@ public class animtrigger : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        AnimationClip death = null;
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+            if (clip.name == "Armature|death")
+            {
+                death = clip;
+            }
+
+        AnimationEvent ev = new()
+        {
+            time = 3.3f,
+            functionName = "Despawn"
+        };
+        death.AddEvent(ev);
     }
 
     // Update is called once per frame
@@ -26,5 +39,10 @@ public class animtrigger : MonoBehaviour
         {
             animator.SetTrigger("deathtrigger");
         }
+    }
+
+    public void Despawn()
+    {
+        GetComponentInParent<Enemy>().Despawn();
     }
 }

@@ -24,7 +24,7 @@ public class StatusEffect
         this.amount = amount;
     }
 
-    public void ApplyEffect(Enemy enemy)
+    public void ApplyEffect(IDamageable enemy)
     {
         switch (type)
         {

@@ -9,7 +9,7 @@ public class AbsoluteZero : CardEffect
     [SerializeField]
     private int statusEffectAmount = 1;
 
-    public override void ApplyEffect(Enemy enemy, int amount)
+    public override void ApplyEffect(IDamageable enemy, int amount)
     {
         enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
             , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));

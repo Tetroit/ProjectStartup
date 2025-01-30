@@ -27,5 +27,10 @@ namespace CustomEvents
         public Chip chip;
         public ChipPickedEvent(Chip chip) { this.chip = chip; }
     }
+    public class EnemyDestroyed : Event
+    {
+        public Enemy enemy;
+        public EnemyDestroyed(Enemy enemy) { this.enemy = enemy; }
+    }
 }
    

@@ -9,7 +9,7 @@ public class FireStorm : CardEffect
     [SerializeField]
     private int statusEffectAmount = 1;
 
-    public override void ApplyEffect(Enemy enemy, int amount)
+    public override void ApplyEffect(IDamageable enemy, int amount)
     {
         int adjustedDamage = (int)(amount * 0.5f);
         enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);
