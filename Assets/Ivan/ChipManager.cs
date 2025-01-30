@@ -26,8 +26,6 @@ public class ChipManager : MonoBehaviour
     GameObject chipPrefab;
 
     [SerializeField]
-    TextMeshProUGUI equationDisplay;
-    [SerializeField]
     private EventsConfig eventConfig;
     public AutoLayout inventoryLayout { get; private set; }
     public AutoLayout equationLayout { get; private set; }
@@ -107,18 +105,20 @@ public class ChipManager : MonoBehaviour
     }
     public void OnEnable()
     {
-        OnStateChanged(GameManager.instance.currentState);
-        GameManager.instance.OnGameStateChange.AddListener(OnStateChanged);
+        //OnStateChanged(GameManager.instance.currentState);
+        //GameManager.instance.OnGameStateChange.AddListener(OnStateChanged);
         //GameManager.instance.OnValidateTurn += ValidateResult;
         eventConfig.OnCardPlayed += OnCardPlayed;
         eventConfig.OnCardRemove += OnCardRemove;
+        GameManager.instance.OnTurnPassed += Play;
     }
     public void OnDisable()
     {
-        GameManager.instance.OnGameStateChange.RemoveListener(OnStateChanged);
+        //GameManager.instance.OnGameStateChange.RemoveListener(OnStateChanged);
         //GameManager.instance.OnValidateTurn -= ValidateResult;
         eventConfig.OnCardPlayed -= OnCardPlayed;
         eventConfig.OnCardRemove -= OnCardRemove;
+        GameManager.instance.OnTurnPassed -= Play;
     }
 
     [ExecuteInEditMode]
@@ -271,13 +271,8 @@ public class ChipManager : MonoBehaviour
         bool valid = formula.Validate();
         if (valid)
         {
-            equationDisplay.color = Color.green;
             result = formula.Calculate();
         }
-        else
-            equationDisplay.color = Color.red;
-
-        equationDisplay.text = formula.ToString() + (valid ? (" = " + result) : "");
     }
     
     public bool Validate()
@@ -320,35 +315,16 @@ public class ChipManager : MonoBehaviour
 
     public void Play()
     {
-        //SEND RESULT HERE
-        //to be implemented
-
-        //remove equation
-        int toAdd = 0;
-        Chip[] equationChips = GetEquationChips().ToArray();
-        for (int i = 0; i<equationChips.Length; i++)
+        IEnumerable<EquationElement> IE = GetInventoryElements();
+        for (int i = 0; i<numbersPlayed; i++)
         {
-            Chip chip = equationChips[i];
-            if (!chip.selfDestructable)
-                toAdd++;
-            RemoveChip(chip);
-            equationLayout.RemoveItem(0);
-        }
-        foreach (Chip chip in equationChips)
-        {
-            Debug.Log("Deleting chip");
-            Destroy(chip.gameObject);
+            EquationElement element = pool.GetNumber(IE);
+            CreateNewChip(element, inventoryLayout);
         }
 
-        formula.Clear();
-        UpdateEquation();
-
-        //top up the inventory
-
-        for (int i = 0; i<toAdd; i++)
+        for (int i = 0; i < operationsPlayed; i++)
         {
-            IEnumerable<EquationElement> IE = GetInventoryElements();
-            EquationElement element = pool.GetAny(IE, 0.5f);
+            EquationElement element = pool.GetOperation(IE);
             CreateNewChip(element, inventoryLayout);
         }
     }
@@ -362,9 +338,17 @@ public class ChipManager : MonoBehaviour
                 AddToLayout(item, inventoryLayout);
             }
         }
-        for (int i = 0; i < formula.size; i++)
+        var coll = formula.GetElements().ToArray();
+        for (int i = 0; i < coll.Length; i++)
         {
-            CreateNewChip(formula.GetElements().ToArray()[i], equationLayout);
+            if (coll[i].GetType() == typeof(Number))
+                numbersPlayed--;
+            else if (
+                coll[i].GetType() != typeof(BracketOpen) &&
+                coll[i].GetType() != typeof(BracketClose)
+                )
+                operationsPlayed--;
+            CreateNewChip(coll[i], equationLayout);
         }
     }
     public void PushFormula(CardWrapper card)
@@ -383,7 +367,7 @@ public class ChipManager : MonoBehaviour
             {
                 if (chip.element.GetType() == typeof(Number))
                     numbersPlayed++;
-                else
+                else if (!chip.selfDestructable)
                     operationsPlayed++;
             }
             RemoveChip(chip, true);

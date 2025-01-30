@@ -20,6 +20,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2848870959141814874, guid: 7035ddc9d96daac4587c803d7ee3feeb,
         type: 3}
+      propertyPath: elementName
+      value: BracketOpen
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848870959141814874, guid: 7035ddc9d96daac4587c803d7ee3feeb,
+        type: 3}
       propertyPath: selfDestructable
       value: 1
       objectReference: {fileID: 0}

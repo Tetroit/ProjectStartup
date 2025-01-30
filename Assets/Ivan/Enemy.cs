@@ -37,8 +37,10 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        m_maxHealth = UnityEngine.Random.Range(26, 87);
+        m_maxHealth = UnityEngine.Random.Range(20, 1000);
         m_health = m_maxHealth;
+        m_damage = UnityEngine.Random.Range(2, 10);
+        m_shield = UnityEngine.Random.Range(1, 10);
         UpdateAll();
     }
 
@@ -85,7 +87,6 @@ public class Enemy : MonoBehaviour, IDamageable
     public void IgnoreShield(int value)
     {
         m_health -= value;
-
 
         UpdateHealth();
     }
