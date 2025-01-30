@@ -1,4 +1,5 @@
 using config;
+using Equation;
 using events;
 using System;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ public class CardWrapper : MonoBehaviour
     private EventsConfig eventsConfig;
     private CardWrapper currentDraggedCard;
     private Canvas cardCanvas;
+    public Formula formula = null;
 
     private bool isDragged;
 

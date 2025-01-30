@@ -70,7 +70,6 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        eventConfig.OnCardPlayed -= OnCardPlayed;
     }
     private void Update()
     {
@@ -128,6 +127,11 @@ public class EnemyManager : MonoBehaviour
     {
         if (pins.Count == 0) 
             return (false, "No cards was played");
+        foreach (var card in GetCards())
+        {
+            if (!card.formula.Validate())
+                return (false, "Card has invalid formula");
+        }
         return (true, "");
     }
     public void PassTurn()
@@ -136,7 +140,7 @@ public class EnemyManager : MonoBehaviour
         {
             CardWrapper card = bind.Key.Item2;
             Enemy enemy = bind.Key.Item1;
-            card.CardEffect.ApplyEffect(enemy, 10);
+            card.CardEffect.ApplyEffect(enemy, card.formula.Calculate());
         }
     }
     public IEnumerable<Enemy> GetConnections(CardWrapper card)
@@ -161,6 +165,17 @@ public class EnemyManager : MonoBehaviour
             DrawPin(enemy, cardContext);
             OnEnemySelected.Invoke(enemy);
         }
+    }
+    public IEnumerable<CardWrapper> GetCards()
+    {
+        List<CardWrapper> list = new List<CardWrapper>();
+        foreach(var item in pins)
+        {
+            var card = item.Key.Item2;
+            if (!list.Contains(item.Key.Item2))
+                list.Add(card);
+        }
+        return list;
     }
     public void DeselectEnemy(Enemy enemy)
     {

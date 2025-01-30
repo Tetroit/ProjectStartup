@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8111953712412438203}
   - component: {fileID: 8468353552597936319}
   - component: {fileID: 5435104091735258750}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 5960883457000953376}
   - component: {fileID: 5735606991802680578}
   - component: {fileID: 5403636431850017955}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5321728826733253222}
   - component: {fileID: 1928813479071430531}
   - component: {fileID: 6004410161825470299}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,8 +372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_IgnoreReversedGraphics: 0
+  m_BlockingObjects: 2
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 6154868618095770631}
   - component: {fileID: 6178817705618104800}
   - component: {fileID: 2275297188551165580}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DefaultCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,6 +458,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e9ece317ad4c546a96d4f16e65373c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetCount: 0
+  targetAll: 0
+  redoEffect: 0
+  statusEffectDuration: 1
+  statusEffectAmount: 1
 --- !u!65 &2275297188551165580
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -490,7 +495,7 @@ GameObject:
   - component: {fileID: 8315512317206321715}
   - component: {fileID: 7781323648901705304}
   - component: {fileID: 1626977673483659791}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -625,7 +630,7 @@ GameObject:
   - component: {fileID: 2438816789378676728}
   - component: {fileID: 7949348560567843625}
   - component: {fileID: 7567168247619318268}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: RawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

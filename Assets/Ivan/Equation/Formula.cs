@@ -74,7 +74,7 @@ namespace Equation
             elements.Clear();
             bracketOrder.Clear();
         }
-        public IEnumerable GetElements()
+        public IEnumerable<EquationElement> GetElements()
         {
             return elements;
         }
@@ -83,7 +83,8 @@ namespace Equation
             if (elements.Count == 0) return false;
             for (int i=0; i<elements.Count; i++)
             {
-                if (elements[i].ID != i) throw new Exception("ORDER");
+                if (elements[i].ID != i) 
+                    throw new Exception("ORDER");
             }
             ElType current = elements[0].type;
             ElType previous = ElType.NONE;

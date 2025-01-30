@@ -479,6 +479,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlingShot
       objectReference: {fileID: 0}
+    - target: {fileID: 4727489568477638196, guid: 8c96f688ef4205c488db538050cbc4b1,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7399601018485506054, guid: 8c96f688ef4205c488db538050cbc4b1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -828,7 +833,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 330585546}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 191
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -1439,6 +1444,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2347892943078817028, guid: 8b30299861154d741b426e737b7cd647,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 8058004320351112757, guid: 8b30299861154d741b426e737b7cd647,
         type: 3}
       propertyPath: m_Name
@@ -1865,6 +1875,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 807979498}
     m_Modifications:
+    - target: {fileID: 1157150393111464200, guid: c15090e43a3833349afb2bcc34ad558a,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 3973517899680130874, guid: c15090e43a3833349afb2bcc34ad558a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2166,7 +2181,7 @@ GameObject:
   - component: {fileID: 1220633781}
   - component: {fileID: 1220633780}
   - component: {fileID: 1220633779}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Grid (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2277,6 +2292,7 @@ MonoBehaviour:
   chipPrefab: {fileID: 6715116252684325074, guid: c1704acc5051ae048a8b98a4fdb57728,
     type: 3}
   equationDisplay: {fileID: 288976127}
+  eventConfig: {fileID: 1045021901}
   result: 0
   _prefabDict:
   - equationElement: Plus
@@ -2409,6 +2425,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8801022272609188539, guid: 47ab39b17a495db4d81b5edd01548f82,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2544,7 +2565,7 @@ GameObject:
   - component: {fileID: 1450918146}
   - component: {fileID: 1450918145}
   - component: {fileID: 1450918144}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3835,15 +3856,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 807979498}
     m_Modifications:
+    - target: {fileID: 235581731718013216, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 393759480506527041, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 769429674567548717, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
       propertyPath: m_Name
       value: FireBall
-      objectReference: {fileID: 0}
-    - target: {fileID: 4397504676636614916, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6154868618095770631, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
         type: 3}
@@ -3914,6 +3945,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7393596981404632156, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233071845457777205, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527456825058459953, guid: 0d1d015fe4e1f4d4c9d8988383da90db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

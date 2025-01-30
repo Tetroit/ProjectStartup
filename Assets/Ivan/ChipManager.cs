@@ -1,4 +1,6 @@
+using config;
 using Equation;
+using events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.WSA;
 
 public class ChipManager : MonoBehaviour
 {
@@ -24,6 +27,8 @@ public class ChipManager : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI equationDisplay;
+    [SerializeField]
+    private EventsConfig eventConfig;
     public AutoLayout inventoryLayout { get; private set; }
     public AutoLayout equationLayout { get; private set; }
 
@@ -34,6 +39,9 @@ public class ChipManager : MonoBehaviour
 
     Formula formula = new Formula();
     public int result = 0;
+
+    int numbersPlayed = 0;
+    int operationsPlayed = 0;
 
     bool _allowInteraction = true;
     public bool allowInteraction => _allowInteraction;
@@ -101,12 +109,16 @@ public class ChipManager : MonoBehaviour
     {
         OnStateChanged(GameManager.instance.currentState);
         GameManager.instance.OnGameStateChange.AddListener(OnStateChanged);
-        GameManager.instance.OnValidateTurn += ValidateResult;
+        //GameManager.instance.OnValidateTurn += ValidateResult;
+        eventConfig.OnCardPlayed += OnCardPlayed;
+        eventConfig.OnCardRemove += OnCardRemove;
     }
     public void OnDisable()
     {
         GameManager.instance.OnGameStateChange.RemoveListener(OnStateChanged);
-        GameManager.instance.OnValidateTurn -= ValidateResult;
+        //GameManager.instance.OnValidateTurn -= ValidateResult;
+        eventConfig.OnCardPlayed -= OnCardPlayed;
+        eventConfig.OnCardRemove -= OnCardRemove;
     }
 
     [ExecuteInEditMode]
@@ -127,6 +139,7 @@ public class ChipManager : MonoBehaviour
             CreateNewChip(pool.GetNumber(GetInventoryElements()), inventoryLayout);
         for (int i = 0; i < 8; i++)
             CreateNewChip(pool.GetOperation(GetInventoryElements()), inventoryLayout);
+
         UpdateEquation();
     }
     private void Update()
@@ -150,10 +163,7 @@ public class ChipManager : MonoBehaviour
     [ExecuteAlways]
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.yellow;
-
-
     }
    
     public void AddChip(Chip chip)
@@ -304,13 +314,6 @@ public class ChipManager : MonoBehaviour
         }
     }
 
-    public (bool, string) ValidateResult()
-    {
-        bool isFormulaValid = formula.Validate();
-        if (!isFormulaValid) 
-            return (isFormulaValid, "Incorrect formula");
-        return (true, "");
-    }
     public void Play()
     {
         //SEND RESULT HERE
@@ -343,6 +346,63 @@ public class ChipManager : MonoBehaviour
             IEnumerable<EquationElement> IE = GetInventoryElements();
             EquationElement element = pool.GetAny(IE, 0.5f);
             CreateNewChip(element, inventoryLayout);
+        }
+    }
+
+    public void ReadFormula(Formula formula)
+    {
+        if (equationLayout.Count != 0)
+        {
+            foreach (var item in GetInventoryChips())
+            {
+                AddToLayout(item, inventoryLayout);
+            }
+        }
+        for (int i = 0; i < formula.size; i++)
+        {
+            CreateNewChip(formula.GetElements().ToArray()[i], equationLayout);
+        }
+    }
+    public void PushFormula(CardWrapper card)
+    {
+        card.formula = formula;
+        formula = new Formula();
+
+        numbersPlayed = 0;
+        operationsPlayed = 0;
+
+        Chip[] equationChips = GetEquationChips().ToArray();
+        for (int i = 0; i < equationChips.Length; i++)
+        {
+            Chip chip = equationChips[i];
+            if (!chip.selfDestructable)
+            {
+                if (chip.element.GetType() == typeof(Number))
+                    numbersPlayed++;
+                else
+                    operationsPlayed++;
+            }
+            RemoveChip(chip, true);
+            equationLayout.RemoveItem(0);
+        }
+    }
+
+    public void OnCardPlayed(CardPlayed cardPlayed)
+    {
+        if (cardPlayed.card.formula == null)
+        {
+            PushFormula(cardPlayed.card);
+            UpdateEquation();
+        }
+    }
+    public void OnCardRemove(CardRemove cardRemove)
+    {
+        //formula = cardRemove.card.formula;
+        if (cardRemove.card.formula != null)
+        {
+            ReadFormula(cardRemove.card.formula);
+            cardRemove.card.formula = null;
+            UpdateEquation();
         }
     }
 }
