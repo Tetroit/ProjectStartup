@@ -162,14 +162,18 @@ public class EnemyManager : MonoBehaviour
     }
     public void PassTurn()
     {
+        List<CardWrapper> toDelete = new();
         for (int i=0; i<pins.Count; i++)
         {
             var bind = pins.ElementAt(i);
             CardWrapper card = bind.Key.Item2;
             Enemy enemy = bind.Key.Item1;
             card.CardEffect.ApplyEffect(enemy, card.formula.Calculate());
-            RemoveCard(card);
+            if (!toDelete.Contains(card))
+                toDelete.Add(card);
         }
+        foreach(var card in toDelete) 
+            RemoveCard(card);
     }
     public IEnumerable<Enemy> GetConnections(CardWrapper card)
     {
