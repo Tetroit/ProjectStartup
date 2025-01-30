@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShieldUp : CardEffect
 {
     [SerializeField]
-    private int statusEffectDuration = 1;
+    private int statusEffectDuration = 0;
     [SerializeField]
     private int statusEffectAmount = 0;
     public override void ApplyEffect(Enemy enemy, int amount)
