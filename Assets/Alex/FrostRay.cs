@@ -11,7 +11,7 @@ public class FrostRay : CardEffect
 
     public override void ApplyEffect(Enemy enemy, int amount)
     {
-        int adjustedDamage = Mathf.CeilToInt(amount);
+        int adjustedDamage = amount;
         enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);
         enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
             , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));

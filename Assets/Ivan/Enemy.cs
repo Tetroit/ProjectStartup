@@ -63,6 +63,12 @@ public class Enemy : MonoBehaviour
         UpdateHealth();
     }
 
+    public void IgnoreShield(int value)
+    {
+        m_health -= value;
+        UpdateHealth();
+    }
+
     public void ApplyShield(int amount)
     {
         m_shield = Mathf.Max(0, m_shield + amount);
