@@ -165,7 +165,7 @@ public class CardContainer : MonoBehaviour
         if (Physics.Raycast(destinationRay, out RaycastHit hit, float.MaxValue, slotLayerMask))
         {
             int slotChildCount = hit.transform.childCount;
-            if (slotChildCount < 1)
+            if (slotChildCount < 1 && ChipManager.instance.Validate())
             {
                 eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
                 currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);

@@ -279,7 +279,11 @@ public class ChipManager : MonoBehaviour
 
         equationDisplay.text = formula.ToString() + (valid ? (" = " + result) : "");
     }
-
+    
+    public bool Validate()
+    {
+        return formula.Validate();
+    }
     void OnStateChanged(GameState state)
     {
         Debug.Log("Switching state to " + state);
@@ -353,7 +357,7 @@ public class ChipManager : MonoBehaviour
     {
         if (equationLayout.Count != 0)
         {
-            foreach (var item in GetInventoryChips())
+            foreach (var item in GetEquationChips())
             {
                 AddToLayout(item, inventoryLayout);
             }
@@ -389,8 +393,9 @@ public class ChipManager : MonoBehaviour
 
     public void OnCardPlayed(CardPlayed cardPlayed)
     {
-        if (cardPlayed.card.formula == null)
+        if (cardPlayed.card.formula == null || cardPlayed.card.formula.size == 0)
         {
+            Debug.Log(name + ": Card played");
             PushFormula(cardPlayed.card);
             UpdateEquation();
         }
@@ -398,8 +403,9 @@ public class ChipManager : MonoBehaviour
     public void OnCardRemove(CardRemove cardRemove)
     {
         //formula = cardRemove.card.formula;
-        if (cardRemove.card.formula != null)
+        if (cardRemove.card.formula != null && cardRemove.card.formula.size != 0)
         {
+            Debug.Log(name + ": Card removed");
             ReadFormula(cardRemove.card.formula);
             cardRemove.card.formula = null;
             UpdateEquation();
