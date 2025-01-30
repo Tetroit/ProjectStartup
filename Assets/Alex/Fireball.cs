@@ -13,8 +13,10 @@ public class Fireball : CardEffect
     {
         // rounds a floating point number up to the nearest whole number.
         int adjustedDamage = Mathf.CeilToInt(amount * 1.5f);
-        enemy.GetDamage(adjustedDamage);
-        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.DamageOverTime, statusEffectDuration, statusEffectAmount));
-        Debug.Log($"This did: {adjustedDamage} FireBall Damage");
+        enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);
+        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.DamageOverTime, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
+            , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));
+        redoEffect = false;
+        Debug.Log($"This did: {adjustedDamage} FireBall Damage and {statusEffectAmount} dot damage for {statusEffectDuration} turns");
     }
 }

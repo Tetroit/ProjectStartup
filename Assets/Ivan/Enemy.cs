@@ -63,6 +63,12 @@ public class Enemy : MonoBehaviour
         UpdateHealth();
     }
 
+    public void ApplyShield(int amount)
+    {
+        m_shield = Mathf.Max(0, m_shield + amount);
+        UpdateShield();
+    }
+
     public void ModifyDamage(int amount)
     {
         m_damage = Mathf.Max(0, m_damage + amount);
@@ -77,7 +83,6 @@ public class Enemy : MonoBehaviour
             effect.duration--;
         }
 
-        // Remove expired effects
         activeEffects.RemoveAll(e => e.duration <= 0);
     }
 

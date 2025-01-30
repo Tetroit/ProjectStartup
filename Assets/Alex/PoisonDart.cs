@@ -12,9 +12,10 @@ public class PoisonDart : CardEffect
     public override void ApplyEffect(Enemy enemy, int amount)
     {
         int adjustedDamage = Mathf.CeilToInt(amount);
-        enemy.GetDamage(adjustedDamage);
-        // Apply status effect for X amount of turns
-        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.DamageOverTime, statusEffectDuration, statusEffectAmount));
-        Debug.Log($"This did: {adjustedDamage} SlingShot Damage");
+        enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);
+        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.DamageOverTime, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
+            , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));
+        redoEffect = false;
+        Debug.Log($"This did: {adjustedDamage} Poison Damage and {statusEffectAmount} dot dmg for {statusEffectDuration} turns");
     }
 }

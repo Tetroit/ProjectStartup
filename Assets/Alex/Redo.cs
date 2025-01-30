@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Redo : MonoBehaviour
+public class Redo : CardEffect
 {
-    //The next action card is triggered twice
+    public override void ApplyEffect(Enemy enemy, int ammount)
+    {
+        redoEffect = true;
+    }
 }

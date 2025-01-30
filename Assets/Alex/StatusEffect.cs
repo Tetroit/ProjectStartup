@@ -6,13 +6,15 @@ using UnityEngine;
 public enum StatusEffectType
 {
     DamageOverTime,
-    AttackReduction
+    AttackReduction,
+    Shield,
+
 }
 
 public class StatusEffect
 {
     public StatusEffectType type;
-    public int duration; 
+    public int duration;
     public int amount;
 
     public StatusEffect(StatusEffectType type, int duration, int amount)
@@ -24,13 +26,16 @@ public class StatusEffect
 
     public void ApplyEffect(Enemy enemy)
     {
-        switch(type)
+        switch (type)
         {
             case StatusEffectType.DamageOverTime:
                 enemy.GetDamage(amount);
                 break;
             case StatusEffectType.AttackReduction:
                 enemy.ModifyDamage(amount);
+                break;
+            case StatusEffectType.Shield:
+                enemy.ApplyShield(amount);
                 break;
         }
     }

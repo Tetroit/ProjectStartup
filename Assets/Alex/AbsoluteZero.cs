@@ -11,7 +11,9 @@ public class AbsoluteZero : CardEffect
 
     public override void ApplyEffect(Enemy enemy, int amount)
     {
-        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, statusEffectDuration, statusEffectAmount));
-        Debug.Log($"AbsoluteZero added:  brittle stacks to all enemies");
+        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
+            , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));
+        redoEffect = false;
+        Debug.Log($"AbsoluteZero added:{statusEffectAmount}  brittle stacks to all enemies for {statusEffectDuration} turns");
     }
 }

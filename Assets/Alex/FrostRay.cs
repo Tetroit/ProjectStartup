@@ -12,8 +12,10 @@ public class FrostRay : CardEffect
     public override void ApplyEffect(Enemy enemy, int amount)
     {
         int adjustedDamage = Mathf.CeilToInt(amount);
-        enemy.GetDamage(adjustedDamage);
-        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, statusEffectDuration, statusEffectAmount));
-        Debug.Log($"This did: {adjustedDamage} FrostRay Damage");
+        enemy.GetDamage(redoEffect ? adjustedDamage * 2 : adjustedDamage);
+        enemy.ApplyStatusEffect(new StatusEffect(StatusEffectType.AttackReduction, redoEffect ? statusEffectDuration * 2 : statusEffectDuration
+            , redoEffect ? statusEffectAmount * 2 : statusEffectAmount));
+        redoEffect = false;
+        Debug.Log($"This did: {adjustedDamage} FrostRay Damage and {statusEffectAmount} brittle stacks for {statusEffectDuration} turns");
     }
 }
