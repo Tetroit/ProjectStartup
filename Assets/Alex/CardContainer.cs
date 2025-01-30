@@ -55,6 +55,7 @@ public class CardContainer : MonoBehaviour
     private Transform cardSpawnPoint;
 
     private List<CardWrapper> cards = new();
+    private List<CardWrapper> removedCards = new();   
 
     private CardWrapper currentDraggedCard;
 
@@ -150,6 +151,7 @@ public class CardContainer : MonoBehaviour
         if (!cards.Contains(card))
         {
             cards.Add(card);
+            removedCards.Remove(card);
             card.transform.SetParent(transform, true);
             eventsConfig.OnCardPlayed += card.OnCardPlayed;
         }
@@ -170,6 +172,7 @@ public class CardContainer : MonoBehaviour
                 eventsConfig?.RaiseOnCardPlayed(new CardPlayed(currentDraggedCard));
                 currentDraggedCard.transform.SetParent(hit.collider.gameObject.transform, true);
                 StartCoroutine(SmoothMoveToSlot(currentDraggedCard.transform, hit.collider.gameObject.transform));
+                removedCards.Add(currentDraggedCard);
             } 
         }
 
@@ -373,14 +376,30 @@ public class CardContainer : MonoBehaviour
 
     public void DrawCard()
     {
-        GameObject randomCardPrefab = cardPrefabs[Random.Range(0, cardPrefabs.Count)];
-        GameObject newCard = Instantiate(randomCardPrefab, cardSpawnPoint.position, Quaternion.Euler(75, 0f, 0f), transform);
-        CardWrapper wrapper = newCard.AddComponent<CardWrapper>();
+        
+        int cardHandAmount = 5;
+        if(cards.Count < cardHandAmount)
+        {
+            int difference = cardHandAmount - cards.Count();
 
-        wrapper.Initialize(animationSpeedConfig, eventsConfig, currentDraggedCard);
-        wrapper.OnCardStartDragStarted += OnCardDragStart;
-        wrapper.OnCardDragEnded += OnCardDragEnd;
-        cards.Add(wrapper);
+            for (int i = 0; i < difference; i++)
+            {
+                GameObject randomCardPrefab = cardPrefabs[Random.Range(0, cardPrefabs.Count)];
+                GameObject newCard = Instantiate(randomCardPrefab, cardSpawnPoint.position, Quaternion.Euler(75, 0f, 0f), transform);
+                CardWrapper wrapper = newCard.AddComponent<CardWrapper>();
+
+                wrapper.Initialize(animationSpeedConfig, eventsConfig, currentDraggedCard);
+                wrapper.OnCardStartDragStarted += OnCardDragStart;
+                wrapper.OnCardDragEnded += OnCardDragEnd;
+                cards.Add(wrapper);
+            }
+        }
+
+        for (int i = 0; i < removedCards.Count; i++)
+        {
+            Destroy(removedCards[i].gameObject);
+        }
+        removedCards.Clear();
     }
 
     private bool IsCursorInPlayArea(RectTransform slot)

@@ -168,6 +168,7 @@ public class EnemyManager : MonoBehaviour
             CardWrapper card = bind.Key.Item2;
             Enemy enemy = bind.Key.Item1;
             card.CardEffect.ApplyEffect(enemy, card.formula.Calculate());
+            RemoveCard(card);
         }
     }
     public IEnumerable<Enemy> GetConnections(CardWrapper card)
@@ -252,6 +253,15 @@ public class EnemyManager : MonoBehaviour
         foreach (var enemy in GetConnections(card.card))
         {
             RemovePin(enemy, card.card);
+        }
+    }
+
+    public void RemoveCard(CardWrapper card)
+    {
+        cardContext = null;
+        foreach (var enemy in GetConnections(card))
+        {
+            RemovePin(enemy, card);
         }
     }
 
