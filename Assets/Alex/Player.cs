@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public int health => m_health;
     public int maxHealth => m_maxHealth;
 
+    public int shield => m_shield;
+
     private void OnEnable()
     {
         UpdateAll();

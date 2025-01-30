@@ -5,6 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+public interface IDamageable
+{
+    public void Select();
+}
+
 public class EnemyManager : MonoBehaviour
 {
     public List<Vector3> spawnPoints = new List<Vector3>();
@@ -32,6 +37,8 @@ public class EnemyManager : MonoBehaviour
     CardWrapper cardContext;
 
     public int targetCount = 2;
+
+    public List<IDamageable> damageables = new List<IDamageable>();
 
     [ExecuteAlways]
     void OnDrawGizmos()

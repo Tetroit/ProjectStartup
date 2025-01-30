@@ -7,9 +7,8 @@ using UnityEngine.Events;
 
 
 [Serializable]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
-
     [SerializeField]
     int m_health;
     [SerializeField]
@@ -18,7 +17,6 @@ public class Enemy : MonoBehaviour
     int m_damage;
     [SerializeField]
     int m_shield;
-
 
     public int health => m_health;
     public int maxHealth => m_maxHealth;
@@ -112,5 +110,10 @@ public class Enemy : MonoBehaviour
     public void UpdateDamage()
     {
         OnDamageChanged?.Invoke(m_damage);
+    }
+
+    public void Select()
+    {
+        throw new NotImplementedException();
     }
 }
