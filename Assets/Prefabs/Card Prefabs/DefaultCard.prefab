@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8111953712412438203}
   - component: {fileID: 8468353552597936319}
   - component: {fileID: 5435104091735258750}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 5960883457000953376}
   - component: {fileID: 5735606991802680578}
   - component: {fileID: 5403636431850017955}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5321728826733253222}
   - component: {fileID: 1928813479071430531}
   - component: {fileID: 6004410161825470299}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 6154868618095770631}
   - component: {fileID: 6178817705618104800}
   - component: {fileID: 2275297188551165580}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: DefaultCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 8315512317206321715}
   - component: {fileID: 7781323648901705304}
   - component: {fileID: 1626977673483659791}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 2438816789378676728}
   - component: {fileID: 7949348560567843625}
   - component: {fileID: 7567168247619318268}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: RawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
