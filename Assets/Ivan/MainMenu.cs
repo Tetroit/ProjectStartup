@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField]
-    MainMenuLayout layout;
+    [SerializeField] private GameObject MainMenuUI, NewRunMenuUI;
+
+    //[SerializeField]
+    //MainMenuLayout layout;
     [SerializeField]
     public string gameScene = "Game";
     public void StartGame()
@@ -18,5 +20,17 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Quit Game");
         GameManager.instance.Exit();
+    }
+
+    public void OpenNewRunUI()
+    {
+        MainMenuUI.SetActive(false);
+        NewRunMenuUI.SetActive(true);
+    }
+
+    public void OpenMainMenuUI()
+    {
+        MainMenuUI.SetActive(true);
+        NewRunMenuUI.SetActive(false);
     }
 }
