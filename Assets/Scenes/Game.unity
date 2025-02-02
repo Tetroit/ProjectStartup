@@ -563,7 +563,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -2057,7 +2057,6 @@ MonoBehaviour:
   pool: {fileID: 11400000, guid: 2efa87fdb97c0e645b0a0ac25fb0086f, type: 2}
   chipPrefab: {fileID: 6715116252684325074, guid: c1704acc5051ae048a8b98a4fdb57728,
     type: 3}
-  equationDisplay: {fileID: 0}
   eventConfig: {fileID: 1045021901}
   result: 0
   _prefabDict:
